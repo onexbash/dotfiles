@@ -1,0 +1,40 @@
+*helptags.txt*
+
+==================================
+=          HELPTAG HELP          =
+==================================
+=                                =
+=                                =
+=                                =
+=                                =
+==================================
+This is a helptag with all helptags :D :D
+
+==============
+= Completion =
+==============
+
+:h ins-completion   - help: insert completion
+
+=======
+= LSP =
+=======
+:h lspconfig        - help: lsp configs
+
+================
+= AUTOCOMMANDS =
+================
+:h autocommands     - help: autocommands
+
+
+===============
+= VIM MOTIONS =
+===============
+
+
+===========
+= KEYMAPS =
+===========
+:h map              - help: keymaps
+
+

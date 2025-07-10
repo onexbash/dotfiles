@@ -1,0 +1,52 @@
+local M = {}
+  M.lang_servers = {
+    angularls = "angular-language-server",
+    ansiblels = "ansible-language-server",
+    awk_ls = "awk-language-server",
+    azure_pipelines_ls = "azure-pipelines-language-server",
+    bashls = "bash-language-server",
+    clangd = "clangd",
+    cmake = "cmake-language-server",
+    csharp_ls = "csharp-language-server",
+    cssls = "css-lsp",
+    css_variables = "css-variables-language-server",
+    docker_compose_language_service = "docker-compose-language-service",
+    dockerls = "dockerfile-language-server",
+    gh_actions_ls = "gh-actions-language-server",
+    gitlab_ci_ls = "gitlab-ci-ls",
+    gopls = "gopls",
+    graphql = "graphql-language-service-cli",
+    harper_ls = "harper-ls",
+    html = "html-lsp",
+    htmx = "htmx-lsp",
+    hyprls = "hyprls",
+    intelephense = "intelephense",
+    jqls = "jq-lsp",
+    jsonls = "json-lsp",
+    ltex = "ltex-ls",
+    lua_ls = "lua-language-server",
+    marksman = "marksman",
+    postgres_lsp = "postgrestools",
+    powershell_es = "powershell-editor-services",
+    prismals = "prisma-language-server",
+    ruff_lsp = "ruff",
+    rust_analyzer = "rust-analyzer",
+    shopify_cli = "shopify-cli",
+    svelte = "svelte-language-server",
+    mesonlsp = "mesonlsp",
+    systemd_ls = "systemd-language-server",
+    tailwindcss = "tailwindcss-language-server",
+    taplo = "taplo",
+    terraformls = "terraform-ls",
+    tofu_ls = "tofu-ls",
+    tsquery_ls = "ts_query_ls",
+    tsp_server = "tsp-server",
+    tsserver = "typescript-language-server",
+    vimls = "vim-language-server",
+    yamlls = "yaml-language-server"
+  }
+
+  M.formatters = {
+  "prettier"
+  }
+return M
