@@ -1,16 +1,62 @@
+# -- OPTIONS -- #
+# start-up
 start-at-login = true
 after-startup-command = []
-automatically-unhide-macos-hidden-apps = true
-
+# normalization
 enable-normalization-flatten-containers = true
 enable-normalization-opposite-orientation-for-nested-containers = true
-
-
+# container layout
 default-root-container-layout = 'tiles'
-
 default-root-container-orientation = 'horizontal'
+# follow focus with cursor
+on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
+# hidden apps
+automatically-unhide-macos-hidden-apps = true
 
+# -- KEYMAPS -- #
+# switch workspace
+[mode.main.binding]
+ctrl-f = "fullscreen"
+# focus tiles
+ctrl-h = "focus left"
+ctrl-j = "focus down"
+ctrl-k = "focus up"
+ctrl-l = "focus right"
+# move tiles
+ctrl-shift-h = "move left"
+ctrl-shift-j = "move down"
+ctrl-shift-k = "move up"
+ctrl-shift-l = "move right"
+# focus workspace
+ctrl-1 = "workspace 1"
+ctrl-2 = "workspace 2"
+ctrl-3 = "workspace 3"
+ctrl-4 = "workspace 4"
+ctrl-5 = "workspace 5"
+ctrl-6 = "workspace 6"
+# move node to workspace
+ctrl-shift-1 = "move-node-to-workspace 1"
+ctrl-shift-2 = "move-node-to-workspace 2"
+ctrl-shift-3 = "move-node-to-workspace 3"
+ctrl-shift-4 = "move-node-to-workspace 4"
+ctrl-shift-5 = "move-node-to-workspace 5"
+ctrl-shift-6 = "move-node-to-workspace 6"
+# resize
+ctrl-shift-left = "resize width -50"
+ctrl-shift-up = "resize height +50"
+ctrl-shift-down = "resize height -50"
+ctrl-shift-right = "resize width +50"
 
+# -- MONITOR ASSIGNMENTS -- #
+[workspace-to-monitor-force-assignment]
+1 = "main"
+2 = "main"
+3 = "secondary"
+4 = "secondary"
+5 = "secondary"
+6 = "secondary"
+
+# -- PADDING -- #
 [gaps]
 inner.horizontal = 10
 inner.vertical = 10
@@ -18,3 +64,38 @@ outer.left = 10
 outer.bottom = 10
 outer.top = 10
 outer.right = 10
+
+# -- PIN WINDOWS -- #
+# Workspace 1
+[[on-window-detected]]
+if.app-id = 'org.alacritty'
+run = "move-node-to-workspace 1"
+[[on-window-detected]]
+if.app-id = 'dev.zed.Zed'
+run = "move-node-to-workspace 1"
+# Workspace 2 (free)
+# . . . #
+# Workspace 3
+[[on-window-detected]]
+if.app-id = 'org.mozilla.firefoxdeveloperedition'
+run = "move-node-to-workspace 3"
+# Workspace 4
+[[on-window-detected]]
+if.app-id = 'com.microsoft.Outlook'
+run = "move-node-to-workspace 4"
+[[on-window-detected]]
+if.app-id = 'com.microsoft.teams2'
+run = "move-node-to-workspace 4"
+
+# Workspace 5
+[[on-window-detected]]
+if.app-id = 'com.spotify.client'
+run = "move-node-to-workspace 5"
+[[on-window-detected]]
+if.app-id = 'com.hnc.Discord'
+run = "move-node-to-workspace 5"
+
+# Workspace 6
+[[on-window-detected]]
+if.app-id = 'org.keepassxc.keepassxc'
+run = "move-node-to-workspace 6"
