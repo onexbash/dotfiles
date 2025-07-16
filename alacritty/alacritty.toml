@@ -1,0 +1,30 @@
+# -- GENERAL -- #
+[general]
+import = ["/opt/onexcloud/dev/codex/onexbash/onextheme/themes/alacritty.toml"]
+# -- SHELL ENVIRONMENT -- #
+[env]
+# SHELL = "/opt/homebrew/bin/zsh" # setting this envvar avoids conflicts with the shell program setting
+TERM = "xterm-256color"
+
+# -- APPEARANCE -- #
+[window]
+startup_mode = "Windowed"   # "Windowed" | "Maximized" | "Fullscreen"
+decorations = "Buttonless"  # "Buttonless" | "Full" | "None"
+dynamic_padding = false     # auto padding (turn off to ensure consistent column & line values)
+padding.x = 10
+padding.y = 10
+opacity = 0.5               # transparency (0 is fully transparent)
+blur = true                 # background blur
+option_as_alt = "OnlyRight" # "No" | "OnlyRight" | "OnlyLeft" | "Yes"
+[font]
+size = 18
+normal = { family = "Hurmit Nerd Font", style = "Regular" }
+bold = { family = "Hurmit Nerd Font", style = "Bold" }
+italic = { family = "Hurmit Nerd Font", style = "Italic" }
+offset = { x = 0, y = 0 }
+glyph_offset = { x = 0, y = 0 }
+builtin_box_drawing = true                                  # whether alacritty uses a custom font for box drawing characters
+
+# -- KEYMAPS -- #
+[keyboard]
+bindings = []
