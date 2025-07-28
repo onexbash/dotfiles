@@ -67,35 +67,45 @@ outer.right = 10
 
 # -- PIN WINDOWS -- #
 # Workspace 1
-[[on-window-detected]]
+[[on-window-detected]] # Alacritty
 if.app-id = 'org.alacritty'
 run = "move-node-to-workspace 1"
-[[on-window-detected]]
+[[on-window-detected]] # Zed
 if.app-id = 'dev.zed.Zed'
 run = "move-node-to-workspace 1"
 # Workspace 2 (free)
 # . . . #
 # Workspace 3
-[[on-window-detected]]
+[[on-window-detected]] # Firefox Developer Edition
 if.app-id = 'org.mozilla.firefoxdeveloperedition'
 run = "move-node-to-workspace 3"
 # Workspace 4
-[[on-window-detected]]
+[[on-window-detected]] # Outlook
 if.app-id = 'com.microsoft.Outlook'
 run = "move-node-to-workspace 4"
-[[on-window-detected]]
+[[on-window-detected]] # Teams
 if.app-id = 'com.microsoft.teams2'
 run = "move-node-to-workspace 4"
-
 # Workspace 5
-[[on-window-detected]]
+[[on-window-detected]] # Spotify
 if.app-id = 'com.spotify.client'
 run = "move-node-to-workspace 5"
-[[on-window-detected]]
+[[on-window-detected]] # Discord
 if.app-id = 'com.hnc.Discord'
 run = "move-node-to-workspace 5"
-
+[[on-window-detected]] # Proton Mail
+if.app-id = 'ch.protonmail.desktop'
+run = "move-node-to-workspace 5"
+[[on-window-detected]] # Proton Pass
+if.app-id = 'me.proton.pass.electron'
+run = "move-node-to-workspace 5"
+[[on-window-detected]] # Proton Drive
+if.app-id = 'ch.protonmail.drive'
+run = "move-node-to-workspace 5"
+[[on-window-detected]] # Proton VPN
+if.app-id = 'ch.protonvpn.mac'
+run = "move-node-to-workspace 5"
 # Workspace 6
-[[on-window-detected]]
+[[on-window-detected]] # KeepassXC
 if.app-id = 'org.keepassxc.keepassxc'
 run = "move-node-to-workspace 6"
