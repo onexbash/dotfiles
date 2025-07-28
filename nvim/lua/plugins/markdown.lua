@@ -4,16 +4,15 @@ return {
   'MeanderingProgrammer/render-markdown.nvim',
   enabled = true,
   init = function()
-    -- Define color variables
-    local color1_bg = colors['linkarzu_color18']
-    local color2_bg = colors['linkarzu_color19']
-    local color3_bg = colors['linkarzu_color20']
-    local color4_bg = colors['linkarzu_color21']
-    local color5_bg = colors['linkarzu_color22']
-    local color6_bg = colors['linkarzu_color23']
-    local colorInline_bg = colors['linkarzu_color02']
-    local color_fg = colors['linkarzu_color26']
-    -- local color_sign = "#ebfafa"
+    -- Define color variables using your palette
+    local color1_bg = colors.palette.mauve.hex
+    local color2_bg = colors.palette.blue.hex
+    local color3_bg = colors.palette.sapphire.hex
+    local color4_bg = colors.palette.teal.hex
+    local color5_bg = colors.palette.green.hex
+    local color6_bg = colors.palette.yellow.hex
+    local colorInline_bg = colors.palette.surface0.hex
+    local color_fg = colors.palette.text.hex
 
     -- Heading colors (when not hovered over), extends through the entire line
     vim.cmd(string.format([[highlight Headline1Bg guifg=%s guibg=%s]], color_fg, color1_bg))
@@ -24,7 +23,6 @@ return {
     vim.cmd(string.format([[highlight Headline6Bg guifg=%s guibg=%s]], color_fg, color6_bg))
     -- Define inline code highlight for markdown
     vim.cmd(string.format([[highlight RenderMarkdownCodeInline guifg=%s guibg=%s]], colorInline_bg, color_fg))
-    -- vim.cmd(string.format([[highlight RenderMarkdownCodeInline guifg=%s]], colorInline_bg))
 
     -- Highlight for the heading and sign icons (symbol on the left)
     -- I have the sign disabled for now, so this makes no effect
@@ -43,9 +41,6 @@ return {
     checkbox = {
       -- Turn on / off checkbox state rendering
       enabled = true,
-      -- Determines how icons fill the available space:
-      --  inline:  underlying text is concealed resulting in a left aligned icon
-      --  overlay: result is left padded with spaces to hide any additional text
       position = 'inline',
       unchecked = {
         -- Replaces '[ ]' of 'task_list_marker_unchecked'
@@ -65,7 +60,6 @@ return {
       },
     },
     html = {
-      -- Turn on / off all HTML rendering
       enabled = true,
       comment = {
         -- Turn on / off HTML comment concealing
