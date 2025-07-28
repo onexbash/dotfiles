@@ -1,3 +1,9 @@
+[core]
+    editor = vim
 [user]
-	email = fabian@schlegelone
-	name = onexbash
+    name = onexbash
+    email = fabian@schlegel.one
+[url "git@github.com:"]
+    insteadOf = https://github.com/
+[pull]
+    rebase = true
