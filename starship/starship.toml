@@ -1,3 +1,6 @@
+"$schema" = 'https://starship.rs/config-schema.js'
+add_newline = true
+
 # -- PROMPT SETTINGS -- #
 command_timeout = 1000
 
