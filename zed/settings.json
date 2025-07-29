@@ -1,0 +1,57 @@
+// Zed settings
+//
+// For information on how to configure Zed, see the Zed
+// documentation: https://zed.dev/docs/configuring-zed
+//
+// To see all of Zed's default settings without changing your
+// custom settings, run `zed: open default settings` from the
+// command palette (cmd-shift-p / ctrl-shift-p)
+{
+  // -- -- -- -- -- -- //
+  // --   STYLING   -- //
+  // -- -- -- -- -- -- //
+  // theme
+  "theme": {
+    "mode": "system",
+    "light": "Catppuccin Frappé - No Italics",
+    "dark": "Catppuccin Mocha - No Italics"
+  },
+  // font
+  "ui_font_size": 16,
+  "buffer_font_size": 16,
+  // indentation
+  "tab_size": 2,
+  // tab bar
+  "tab_bar": {
+    "show": true,
+    "show_nav_history_buttons": false,
+    "show_tab_bar_buttons": true
+  },
+  // vim
+  "vim_mode": true,
+  "relative_line_numbers": true,
+
+  // -- -- -- -- -- -- //
+  // --    TOOLS    -- //
+  // -- -- -- -- -- -- //
+  // formatter
+  "formatter": "prettier",
+  "format_on_save": "on",
+  "use_on_type_format": true,
+  "code_actions_on_format": {},
+  "prettier": {
+    "allowed": true,
+    "bracketSpacing": true,
+    "singleQuote": true,
+    "tabWidth": 2,
+    "trailingComma": "none"
+  },
+  // indent guides
+  "indent_guides": {
+    "enabled": true,
+    "line_width": 1,
+    "active_line_width": 2,
+    "coloring": "indent_aware",
+    "background_coloring": "disabled"
+  }
+}
