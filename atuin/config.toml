@@ -1,0 +1,7 @@
+db_path = "~/.local/share/atuin/history.db"
+search_mode = "fuzzy"
+style = "full"                              # compact/full
+show_preview = true
+show_help = false
+[theme]
+name = "catppuccin-mocha"
