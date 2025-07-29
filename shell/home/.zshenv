@@ -11,6 +11,7 @@
 export ONEXCLOUD="/opt/onexcloud"
 export ONEXCORE="/opt/onexcore"
 export ONEXDOTFILES="/opt/dotfiles"
+export CODEX="${ONEXCORE}/codex"
 
 # tools
 export STARSHIP_CONFIG="${XDG_CONFIG_HOME}/starship/starship.toml"
