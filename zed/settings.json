@@ -19,6 +19,7 @@
   // font
   "ui_font_size": 16,
   "buffer_font_size": 16,
+  "buffer_font_family": "Hurmit Nerd Font",
   // indentation
   "tab_size": 2,
   // tab bar
