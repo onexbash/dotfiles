@@ -8,6 +8,7 @@
 function load_config() {
   source "${ZDOTDIR}/tools.sh"
   source "${ZDOTDIR}/aliases.sh"
+  source "${ZDOTDIR}/functions.sh"
 }
 
 function load_external_config() {

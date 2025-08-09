@@ -10,3 +10,5 @@ alias py="python"
 alias pn="pnpm"
 
 alias cl="clear"
+
+alias pd="podman"
