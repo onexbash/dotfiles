@@ -5,13 +5,7 @@
 # --     $ZDOTDIR/.zshenv    -- #
 # -- -- -- -- -- -- -- -- -- -- #
 
-# -- ENVIRONMENT VARIABLES -- #
-
-# customs
-export ONEXCLOUD="/opt/onexcloud"
-export ONEXCORE="/opt/onexcore"
-export ONEXDOTFILES="/opt/dotfiles"
-export CODEX="${ONEXCORE}/codex"
-
-# tools
-export STARSHIP_CONFIG="${XDG_CONFIG_HOME}/starship/starship.toml"
+function load_config() {
+  source "${ZDOTDIR}/env_vars.sh"
+}
+load_config
