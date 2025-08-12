@@ -1,0 +1,72 @@
+dotfile_mapping:
+    # nvim
+  - name: nvim
+    type: directory
+    origin: '{{ dotfiles_dir }}/nvim'
+    target: '{{ H_XDG_CONFIG_HOME }}/nvim'
+    # eza
+  - name: eza
+    type: directory
+    origin: '{{ dotfiles_dir }}/eza'
+    target: '{{ H_XDG_CONFIG_HOME }}/eza'
+    # zed
+  - name: zed
+    type: directory
+    origin: '{{ dotfiles_dir }}/zed'
+    target: '{{ H_XDG_CONFIG_HOME }}/zed'
+    # lazygit
+  - name: lazygit
+    type: directory
+    origin: '{{ dotfiles_dir }}/lazygit'
+    target: '{{ H_XDG_CONFIG_HOME }}/lazygit'
+    # aerospace
+  - name: 'aerospace'
+    type: directory
+    origin: '{{ dotfiles_dir }}/aerospace'
+    target: '{{ H_XDG_CONFIG_HOME }}/aerospace'
+    # alacritty
+  - name: 'alacritty'
+    type: directory
+    origin: '{{ dotfiles_dir }}/alacritty'
+    target: '{{ H_XDG_CONFIG_HOME }}/alacritty'
+    # atuin
+  - name: 'atuin'
+    type: directory
+    origin: '{{ dotfiles_dir }}/atuin'
+    target: '{{ H_XDG_CONFIG_HOME }}/atuin'
+    # git
+  - name: "git"
+    type: directory
+    origin: "{{ dotfiles_dir }}/git"
+    target: '{{ H_XDG_CONFIG_HOME }}/git'
+    # starship
+  - name: "starship"
+    type: directory
+    origin: '{{ dotfiles_dir }}/starship'
+    target: '{{ H_XDG_CONFIG_HOME }}/starship'
+    # shell (home)
+  - name: "shell_home"
+    type: directory
+    origin: '{{ dotfiles_dir }}/shell/home'
+    target: '{{ H_ZDOTDIR }}'
+    # shell (global)
+  - name: profile_global
+    type: file
+    origin: '{{ dotfiles_dir }}/shell/global/profile'
+    target: '/etc/profile'
+  - name: zshrc_global
+    type: file
+    origin: '{{ dotfiles_dir }}/shell/global/zshrc'
+    target: '/etc/zshrc'
+  - name: zshenv_global
+    type: file
+    origin: '{{ dotfiles_dir }}/shell/global/zshenv'
+    target: '/etc/zshenv'
+  - name: zprofile_global
+    type: file
+    origin: '{{ dotfiles_dir }}/shell/global/zprofile'
+    target: '/etc/zprofile'
+  - name: zlogout_global
+    type: file
+    origin: '{{ dotfiles_dir }}/shell/global/zlogout'
+    target: '/etc/zlogout'
