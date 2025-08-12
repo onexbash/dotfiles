@@ -8,7 +8,7 @@ alias gr="grep"
 alias lg="lazygit"
 alias py="python"
 alias pn="pnpm"
-
+alias br="brew"
 alias cl="clear"
 
 alias pd="podman"

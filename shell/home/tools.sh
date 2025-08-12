@@ -3,6 +3,9 @@
 # --    TOOLS    -- #
 # -- -- -- -- -- -- #
 
+# Zoxide (better cd)
+eval "$(zoxide init zsh --cmd cd --hook pwd)"
+
 # Starship
 eval "$(starship init zsh)"
 
