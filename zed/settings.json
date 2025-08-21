@@ -11,6 +11,12 @@
   // --   STYLING   -- //
   // -- -- -- -- -- -- //
   // theme
+  "agent": {
+    "default_model": {
+      "provider": "copilot_chat",
+      "model": "gpt-5"
+    }
+  },
   "theme": {
     "mode": "system",
     "light": "Catppuccin Frappé - No Italics",
