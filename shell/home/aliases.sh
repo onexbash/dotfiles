@@ -4,6 +4,7 @@
 # -- -- -- -- -- -- #
 
 alias nv="nvim"
+alias v="vim"
 alias gr="grep"
 alias lg="lazygit"
 alias py="python"

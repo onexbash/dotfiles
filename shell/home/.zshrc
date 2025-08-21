@@ -1,9 +1,12 @@
-#!/usr/bin/env zsh
 # -- -- -- -- -- -- -- -- -- -- #
 # --        HOME ZSHRC       -- #
 # -- -- -- -- -- -- -- -- -- -- #
 # --     $ZDOTDIR/.zshrc     -- #
 # -- -- -- -- -- -- -- -- -- -- #
+
+function load_helper() {
+  source "${ZDOTDIR}/scripts/helper.sh" && load_stylings
+}
 
 function load_config() {
   source "${ZDOTDIR}/tools.sh"
@@ -15,6 +18,5 @@ function load_external_config() {
   source "${XDG_CONFIG_HOME}/eza/shell.sh"
 }
 
-load_config
-load_external_config
+load_helper && load_config && load_external_config
 

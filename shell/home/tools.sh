@@ -17,3 +17,4 @@ eval "$(fnm env --use-on-cd --shell zsh)"
 
 # Atuin (shell history)
 eval "$(atuin init zsh)"
+
