@@ -1,0 +1,22 @@
+# -- -- -- -- -- -- -- -- #
+# --    USER-GLOBAL    -- #
+# --     .gitignore    -- #
+# -- -- -- -- -- -- -- -- #
+
+# --  [ MacOS ]  -- #
+.DS_Store
+# --  [ Linux ]  -- #
+# --  [ Windows ]  -- #
+
+# --  [ IDEs ]  -- #
+.idea/
+.vscode/
+.zed/
+
+# --  [ Swap Files ]  -- #
+*~
+
+# --  [ Log Files ]  -- #
+.nvimlog
+log/
+*.log
