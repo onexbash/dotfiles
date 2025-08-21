@@ -1,0 +1,8 @@
+records.db*
+last_version_check_time
+latest_version
+
+# TODO: remove after encrypting with ansible-vault
+host_id
+# TODO: remove after encrypting with ansible-vault
+key 
