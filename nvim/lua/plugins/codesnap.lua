@@ -42,6 +42,6 @@ return {
     has_line_number = true,
     show_workspace = false,
     min_width = 0,
-    save_path = vim.env.ONEXCLOUD .. '/media/images/screenshots/codesnap',
+    save_path = vim.env.XCLOUD .. '/media/images/screenshots/codesnap',
   },
 }
