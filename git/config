@@ -5,8 +5,6 @@
 [user]
   name = onexbash
   email = fabian@schlegel.one
-[url "git@github.com:"]
-  insteadOf = https://github.com/
 [pull]
   rebase = true
 [credential "https://dev.azure.com"]
