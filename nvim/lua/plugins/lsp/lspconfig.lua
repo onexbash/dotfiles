@@ -2,7 +2,7 @@ return {
   "neovim/nvim-lspconfig",
   dependencies = {
     "nvim-treesitter/nvim-treesitter",
-    "mason-org/mason.nvim"
+    "WhoIsSethDaniel/mason-tool-installer.nvim"
   },
   init = function ()
     local lang_servers = require("utils.tools").lang_servers

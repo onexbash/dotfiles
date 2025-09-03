@@ -8,4 +8,10 @@
 ## Bugs & Misconfigurations
 - [] bufferline only showing up when opening a file with `nvim ./file.xy` not with just opening `nvim`
 
+## Prerequesites
+### packages
+- tree-sitter
+- tree-sitter-cli
+### environment variables
+- ONEXDEV
 
