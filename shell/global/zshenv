@@ -10,7 +10,8 @@
 # -- -- -- -- -- -- -- -- -- -- #
 
 # --         TOGGLES         -- #
-export TOGGLE_PATH_HELPER=0
+export TOGGLE_PATH_HELPER=0 # enable/disable usage of MacOS path helper utility
+export TOGGLE_SCRIPT_DEBUG_MODE=0 # enable/disable debug-mode in scripts sourcing the `onexhelper` script
 
 # --      XDG BASE DIRS      -- #
 # RICHTIG

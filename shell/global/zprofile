@@ -4,8 +4,44 @@
 # --      /etc/zprofile      -- #
 # -- -- -- -- -- -- -- -- -- -- #
 
-if (( TOGGLE_PATH_HELPER )); then
-  if [[ -x /usr/libexec/path_helper ]]; then
-    eval "$(/usr/libexec/path_helper -s)"
+# Execute the MacOS path_helper utility when `$TOGGLE_PATH_HELPER` is enabled (1)
+function osx_path_helper() {
+  if [[ "$TOGGLE_PATH_HELPER" -eq 1 ]]; then
+    echo -e "Environment Variable '$TOGGLE_PATH_HELPER' is set to '1' -> Loading MacOS Path Helper"
+    if [[ -x /usr/libexec/path_helper ]]; then
+      eval "$(/usr/libexec/path_helper -s)"
+    fi
   fi
-fi
+}
+
+# Construct `$PATH` variable based on path files
+function set_path() {
+  # define path files in the desired order
+  local path_files=(
+    "${ZDOTDIR}/paths/custom.env"
+    "${ZDOTDIR}/paths/default.env" 
+    "${ZDOTDIR}/paths/system.env"
+  )
+  # read previously defined path files
+  local path_list=() 
+  for path_file in "${path_files[@]}"; do
+    if [[ -f "$path_file" ]]; then
+      # append each line as a new entry of the $PATH variable
+      while IFS= read -r line; do
+        if [[ -n "$line" && ! "$line" =~ ^[[:space:]]*# ]]; then # skip empty lines and comments `#`
+          path_list+=("$line")
+        fi
+      done < "$path_file"
+    fi
+  done
+  # clear $PATH variable
+  export PATH=""
+  # append path_list to $PATH variable
+  if (( ${#path_list[@]} )); then
+    joined=$(IFS=:; printf '%s' "${path_list[*]}")     # convert array to colon-separated string
+    export PATH="$joined"     # set the complete path (since we cleaned it up)
+  fi
+}
+
+# Function Calls
+osx_path_helper && set_path

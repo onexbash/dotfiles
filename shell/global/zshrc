@@ -10,7 +10,7 @@
 
 # Correctly display UTF-8 with combining characters.
 if [[ "$(locale LC_CTYPE)" == "UTF-8" ]]; then
-    setopt COMBINING_CHARS
+  setopt COMBINING_CHARS
 fi
 
 # Disable built-in log (conflicts with /usr/bin/log)

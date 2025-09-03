@@ -27,7 +27,7 @@ function load_stylings(){
   export I_DONE="${C_BLACK}[${C_GREEN} DONE ${C_BLACK}] ${C_RESET}"     # done
   export I_ASK="${C_BLACK}[${C_BLUE} ? ${C_BLACK}] ${C_RESET}"          # ask user for anything
   export I_ASK_YN="${C_BLACK}[${C_BLUE} [Y/N] ${C_BLACK}] ${C_RESET}"   # ask user for yes or no
-  
+
   # -- ASCIIMojis -- # TODO: find collection with ascii emojis
   # basic
   export E_CROSS="♱"
@@ -76,14 +76,14 @@ function load_stylings(){
 function set_modes() {
   # Exit on error & pipe failures
   set -eo pipefail
-  # Prompt whether script should run in debug-mode when $TOGGLE_SCRIPT_DEBUG env var is not set.
-  if [[ -z $TOGGLE_SCRIPT_DEBUG ]]; then
+  # Prompt whether script should run in debug-mode when $TOGGLE_SCRIPT_DEBUG_MODE env var is not set.
+  if [[ -z $TOGGLE_SCRIPT_DEBUG_MODE ]]; then
     read -p "$(echo -e "${I_ASK_YN}Run Script in Debug Mode? ")" -r answer
       case "$answer" in
-        [Yy]) TOGGLE_SCRIPT_DEBUG=1;;
-        *)    TOGGLE_SCRIPT_DEBUG=0;;
+        [Yy]) TOGGLE_SCRIPT_DEBUG_MODE=1;;
+        *)    TOGGLE_SCRIPT_DEBUG_MODE=0;;
     esac
-    if [[ $TOGGLE_SCRIPT_DEBUG -eq 1 ]]; then
+    if [[ $TOGGLE_SCRIPT_DEBUG_MODE -eq 1 ]]; then
       set -x && echo -e "${I_OK}Running Script in Debug Mode"
     fi
   fi
