@@ -21,7 +21,7 @@ end
 vim.opt.rtp:prepend(lazy_data_dir)
 
 --    setup     --
-require("lazy").setup({ { import = "plugins" }, { import = "plugins.lsp" } }, {
+require("lazy").setup({ { import = "plugins" }, { import = "plugins.onex" } }, {
   defaults = {
     version = "*", -- latest stable version if semantic versioning is supported
     lazy = false, -- lazy loading enabled on all plugins unless specifically turned off
