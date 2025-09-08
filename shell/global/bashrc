@@ -1,0 +1,16 @@
+# -- -- -- -- -- -- -- -- #
+# --   GLOBAL BASHRC   -- #
+# -- -- -- -- -- -- -- -- #
+# --    /etc/bashrc       #
+# -- -- -- -- -- -- -- -- #
+if [ -z "$PS1" ]; then
+   return
+fi
+
+PS1='\h:\W \u\$ '
+
+# Make bash check its window size after a process completes
+shopt -s checkwinsize
+
+# source /etc/bashrc_Apple_Terminal if running in Apple Terminal
+[ -r "/etc/bashrc_$TERM_PROGRAM" ] && . "/etc/bashrc_$TERM_PROGRAM"
