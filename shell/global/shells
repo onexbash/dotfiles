@@ -1,0 +1,11 @@
+# -- -- -- -- -- -- -- -- -- #
+# --    ALLOWED SHELLS    -- #
+# -- -- -- -- -- -- -- -- -- #
+# --     /etc/shells      -- #
+# -- -- -- -- -- -- -- -- -- #
+/bin/sh
+/bin/bash
+/bin/zsh
+/opt/homebrew/bin/bash
+/opt/homebrew/bin/zsh
+/opt/homebrew/opt/powershell/bin/pwsh
