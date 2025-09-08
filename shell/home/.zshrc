@@ -5,7 +5,9 @@
 # -- -- -- -- -- -- -- -- -- -- #
 
 function load_helper() {
-  source "${ZDOTDIR}/scripts/helper.sh" && load_stylings
+  source "${ZDOTDIR}/scripts/helper.sh"
+  load_colors
+  load_stylings
 }
 
 function load_config() {
