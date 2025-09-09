@@ -19,13 +19,13 @@ function chinfo() {
       local perms user group filename
       read -r perms user group filename <<< "$stat_output"
       
-      echo -e "${C_PURPLE}Filename:${C_RESET}${C_WHITE} $filename${C_RESET}"
-      echo -e "${C_PURPLE}Permissions:${C_RESET}${C_WHITE} $perms${C_RESET}"
-      echo -e "${C_PURPLE}Owner (user):${C_RESET}${C_WHITE} $user${C_RESET}"
-      echo -e "${C_PURPLE}Owner (group):${C_RESET}${C_WHITE} $group${C_RESET}"
-      echo -e "${C_PURPLE}Readable for $USER?:${C_RESET}${C_WHITE} $([ -r "$target_path" ] && echo "Yes" || echo "No")${C_RESET}"
-      echo -e "${C_PURPLE}Writable for $USER?:${C_RESET}${C_WHITE} $([ -w "$target_path" ] && echo "Yes" || echo "No")${C_RESET}"
-      echo -e "${C_PURPLE}Executable for $USER?:${C_RESET}${C_WHITE} $([ -x "$target_path" ] && echo "Yes" || echo "No")${C_RESET}"
+      echo -e "${FG_PURPLE}Filename:${FG_RESET}${FG_WHITE} $filename${FG_RESET}"
+      echo -e "${FG_PURPLE}Permissions:${FG_RESET}${FG_WHITE} $perms${FG_RESET}"
+      echo -e "${FG_PURPLE}Owner (user):${FG_RESET}${FG_WHITE} $user${FG_RESET}"
+      echo -e "${FG_PURPLE}Owner (group):${FG_RESET}${FG_WHITE} $group${FG_RESET}"
+      echo -e "${FG_PURPLE}Readable for $USER?:${FG_RESET}${FG_WHITE} $([ -r "$target_path" ] && echo "Yes" || echo "No")${FG_RESET}"
+      echo -e "${FG_PURPLE}Writable for $USER?:${FG_RESET}${FG_WHITE} $([ -w "$target_path" ] && echo "Yes" || echo "No")${FG_RESET}"
+      echo -e "${FG_PURPLE}Executable for $USER?:${FG_RESET}${FG_WHITE} $([ -x "$target_path" ] && echo "Yes" || echo "No")${FG_RESET}"
     else
       echo -e "${I_ERR}Failed to get file information"
     fi
@@ -44,19 +44,19 @@ function chinfo() {
     if [ $? -eq 0 ]; then
       local perms user group filename
       read -r perms user group filename <<< "$stat_output"
-      echo -e "${C_PURPLE}[FILENAME]${C_RESET}${C_WHITE} $filename${C_RESET}"
-      echo -e "${C_PURPLE}[PERMISSIONS]${C_RESET}${C_WHITE} $perms${C_RESET}"
-      echo -e "${C_PURPLE}[USER]${C_RESET}${C_WHITE} $user${C_RESET}"
-      echo -e "${C_PURPLE}[GROUP]${C_RESET}${C_WHITE} $group${C_RESET}"
-      echo -e "${C_PURPLE}[r]${C_WHITE} by ${USER}: $([ -r "$target_path" ] && echo "${C_GRAY}[${C_GREEN}YES${C_GRAY}" || echo "${C_RED}NO")${C_RESET}"
-      echo -e "${C_PURPLE}[w]${C_WHITE} by ${USER}: $([ -w "$target_path" ] && echo "${C_GRAY}[${C_GREEN}YES${C_GRAY}" || echo "${C_RED}NO")${C_RESET}"
-      echo -e "${C_PURPLE}[x]${C_WHITE} by ${USER}: $([ -x "$target_path" ] && echo "${C_GRAY}[${C_GREEN}YES${C_GRAY}" || echo "${C_RED}NO")${C_RESET}"
+      echo -e "${FG_PURPLE}[FILENAME]${FG_RESET}${FG_WHITE} $filename${FG_RESET}"
+      echo -e "${FG_PURPLE}[PERMISSIONS]${FG_RESET}${FG_WHITE} $perms${FG_RESET}"
+      echo -e "${FG_PURPLE}[USER]${FG_RESET}${FG_WHITE} $user${FG_RESET}"
+      echo -e "${FG_PURPLE}[GROUP]${FG_RESET}${FG_WHITE} $group${FG_RESET}"
+      echo -e "${FG_PURPLE}[r]${FG_WHITE} by ${USER}: $([ -r "$target_path" ] && echo "${FG_GRAY}[${FG_GREEN}YES${FG_GRAY}" || echo "${FG_RED}NO")${FG_RESET}"
+      echo -e "${FG_PURPLE}[w]${FG_WHITE} by ${USER}: $([ -w "$target_path" ] && echo "${FG_GRAY}[${FG_GREEN}YES${FG_GRAY}" || echo "${FG_RED}NO")${FG_RESET}"
+      echo -e "${FG_PURPLE}[x]${FG_WHITE} by ${USER}: $([ -x "$target_path" ] && echo "${FG_GRAY}[${FG_GREEN}YES${FG_GRAY}" || echo "${FG_RED}NO")${FG_RESET}"
       return
     fi
   }
   
   unknown() {
-    echo -e "${I_ERR}Unsupported Platform Detected: ${C_RED}unknown${C_RESET}"
+    echo -e "${I_ERR}Unsupported Platform Detected: ${FG_RED}unknown${FG_RESET}"
     return 1
   }
   
@@ -65,7 +65,7 @@ function chinfo() {
   
   # Check if file/directory exists first
   if [ ! -e "$target_path" ]; then
-    echo -e "${I_ERR}Path does not exist: ${C_RED}$target_path${C_RESET}"
+    echo -e "${I_ERR}Path does not exist: ${FG_RED}$target_path${FG_RESET}"
     return 1
   fi
   
@@ -95,7 +95,7 @@ function sysinfo() {
 
 # Print formatted output of the `$PATH` variable
 function print_path() {
-  local I_PATH="${C_BLACK}[${C_GREEN} $E_CROSS ${C_BLACK}] ${C_RESET}"
+  local I_PATH="${FG_BLACK}[${FG_GREEN} $E_CROSS ${FG_BLACK}] ${FG_RESET}"
   local tmp_path="$PATH"
   while [[ -n "$tmp_path" ]]; do
       # extract the first path entry

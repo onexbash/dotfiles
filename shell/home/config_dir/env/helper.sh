@@ -1,11 +1,3 @@
-#!/usr/bin/env bash
-# -- -- -- -- -- -- -- -- -- -- #
-# --      HELPER SCRIPT      -- #
-# -- -- -- -- -- -- -- -- -- -- #
-# this script loads prompt stylings, sets some options
-# and provides reusable functions that can be sourced by other scripts.
-
-# Function to export all common colors as environment variables (background & foreground)
 function load_colors() {
   # -- DEFINE ANSI CODES -- #
   declare -A colorcodes
@@ -55,52 +47,25 @@ function load_colors() {
   export BOLD="\e[1m"
 }
 
-
-# -- PROMPT STYLINGS -- #
-function load_stylings(){
-  # Terminal Prompts
-  export I_OK="${C_BLACK}[${C_GREEN}  OK  ${C_BLACK}] ${C_RESET}"       # ok
-  export I_WARN="${C_BLACK}[${C_YELLOW} WARNING ${C_BLACK}] ${C_RESET}" # warning
-  export I_ERR="${C_BLACK}[${C_RED} ERROR ${C_BLACK}] ${C_RESET}"    # error
-  export I_INFO="${C_BLACK}[${C_PURPLE} INFO ${C_BLACK}] ${C_RESET}"    # info
-  export I_DO="${C_BLACK}[${C_PURPLE}  ...  ${C_BLACK}] ${C_RESET}"     # do
-  export I_DONE="${C_BLACK}[${C_GREEN} DONE ${C_BLACK}] ${C_RESET}"     # done
-  export I_ASK="${C_BLACK}[${C_BLUE} ? ${C_BLACK}] ${C_RESET}"          # ask user for anything
-  export I_ASK_YN="${C_BLACK}[${C_BLUE} [Y/N] ${C_BLACK}] ${C_RESET}"   # ask user for yes or no
-  # ASCII-Mojis
-  export E_CROSS="♱"
-  export E_HEART="❤︎"
-  export E_STAR="✮"
-  export E_ARROW_RIGHT="»"
-  export E_ARROW_LEFT="«"
-  export E_CHECK="✔"
-  export E_X="✘"
-  export E_HEADPHONES="☊"
-  export E_MUSIC="♪"
-  export E_MUSIC2="♫ "
-  export E_MICROPHONE="🎤︎︎"
-  export E_SUN="☀︎ "
-  export E_MOON="⏾"
-  export E_BOLT="⚡︎" 
-  export E_EURO="€"
-  export E_DOLLAR="$"
-  export E_YEN="¥" 
-  export E_YUAN="Y̶"
-  # ASCII Arts TODO: find collection & fetch automatically
-  export A_CROSSES=". ݁₊ ⊹ . ݁ ⟡ ݁ . ⊹ ₊ ݁."
-  export A_STARS="─── ⋆⋅☆⋅⋆ ───"
-  export A_STAR_BANG="˗ˏˋ ★ ˎˊ˗"
-  export A_SNIPER="▄︻デ══━一" 
-  export A_BORDER_SINGLE="────────────────"
-  export A_BORDER_DOUBLE="════════════════"
-  export A_BORDER_CHAINS="⫘⫘⫘⫘⫘⫘⫘⫘⫘⫘⫘⫘⫘⫘⫘⫘"
-  export A_BORDER_STARS="── ⋆⋅☆⋅⋆ ──"
-  export A_BORDER1="✦•┈๑⋅⋯ ⋯⋅๑┈•✦" 
-  export A_BORDER3=""
-  export A_BORDER4=""
+# Load Prompt Style Variables
+function load_prompt_styles() {
+  # ok
+  export I_OK="${FG_BLACK}[${FG_GREEN}  OK  ${FG_BLACK}] ${RESET}"       
+  # warning
+  export I_WARN="${FG_BLACK}[${FG_YELLOW} WARNING ${FG_BLACK}] ${RESET}" 
+  # error
+  export I_ERR="${FG_BLACK}[${FG_RED} ERROR ${FG_BLACK}] ${RESET}"    
+  # info
+  export I_INFO="${FG_BLACK}[${FG_PURPLE} INFO ${FG_BLACK}] ${RESET}"    
+  # do
+  export I_DO="${FG_BLACK}[${FG_PURPLE}  ...  ${FG_BLACK}] ${RESET}"     
+  # ask user for anything
+  export I_ASK="${FG_BLACK}[${FG_BLUE} ? ${FG_BLACK}] ${RESET}"          
+  # ask user for yes or no
+  export I_ASK_YN="${FG_BLACK}[${FG_BLUE} [Y/N] ${FG_BLACK}] ${RESET}"   
 }
 
-# -- SCRIPT MODES -- #
+# Set Script modes (exit behaviour etc.)
 function set_modes() {
   # Exit on error & pipe failures
   set -eo pipefail
@@ -117,16 +82,7 @@ function set_modes() {
   fi
 }
 
-# -- DETECT OPERATING SYSTEM -- #
-function detect_os() {
-  case "$(uname -s)" in
-    Linux*)  echo "linux";;
-    Darwin*) echo "macos";;
-    *)       echo "unknown";;
-  esac
-}
-
-# -- DETECT SCRIPT CWD -- #
+# Get Working Directory where a script is located.
 function get_script_pwd() {
   SOURCE="${BASH_SOURCE[0]}"
   while [ -L "$SOURCE" ]; do
@@ -142,10 +98,9 @@ function get_script_pwd() {
   REPO_ROOT="$(git rev-parse --show-toplevel)" && export REPO_ROOT="$REPO_ROOT"
 }
 
-# -- LOAD ENV FILES -- #
+# Accepts a directory as parameter & loads variables from all .env files inside of it.
+# usage: load_env_file "/path/to/project/directory"
 function load_env_file() {
-  # Accepts a directory as parameter & loads variables from all .env files inside of it.
-  # usage: load_env_file "/directory/with/env_files"
   local env_dir="$1"
   if [ -f "$env_dir/.env" ]; then
     set -a
@@ -155,5 +110,4 @@ function load_env_file() {
     echo "No .env file found in $env_dir" >&2
   fi
 }
-
 

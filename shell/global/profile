@@ -3,7 +3,6 @@
 # -- -- -- -- -- -- -- -- -- -- -- #
 # --        /etc/profile        -- #
 # -- -- -- -- -- -- -- -- -- -- -- #
-if [ "$SHELL" == *"bash"* ]; then
-	[ -r "/etc/bashrc" ] && source "/etc/bashrc" || echo "!!! '/etc/bashrc' not found !!!"
+if [ "${BASH-no}" != "no" ]; then
+    [ -r /etc/bashrc ] && . /etc/bashrc
 fi
-

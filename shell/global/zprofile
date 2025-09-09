@@ -1,3 +1,4 @@
+#!/usr/bin/env zsh
 # -- -- -- -- -- -- -- -- -- -- #
 # --     GLOBAL ZPROFILE     -- #
 # -- -- -- -- -- -- -- -- -- -- #
@@ -19,11 +20,11 @@ function set_path() {
   # define path files in the desired order
   local path_files=(
     "${ZDOTDIR}/paths/custom.env"
-    "${ZDOTDIR}/paths/default.env" 
+    "${ZDOTDIR}/paths/default.env"
     "${ZDOTDIR}/paths/system.env"
   )
   # read previously defined path files
-  local path_list=() 
+  local path_list=()
   for path_file in "${path_files[@]}"; do
     if [[ -f "$path_file" ]]; then
       # append each line as a new entry of the $PATH variable
