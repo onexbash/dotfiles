@@ -4,6 +4,7 @@ function load_env() {
   source "${env_dir}/vars.sh"
   source "${env_dir}/helper.sh"
   load_colors && load_prompt_styles
+  source "${env_dir}/tools.sh"
 }
 
 # Load Shared & specific bash/zsh Config Files

@@ -13,4 +13,4 @@ eval "$(fnm env --use-on-cd --shell bash)"
 eval "$(zoxide init bash)"
 
 # Atuin (shell history)
-#eval "$(atuin init bash)"
+eval "$(atuin init bash)"
