@@ -1,0 +1,30 @@
+# -- Theme -- #
+theme = catppuccin-mocha.conf
+
+# -- Font -- #
+font-family = ShureTech Nerd Font Mono
+font-size = 18
+
+# -- Cursor -- #
+cursor-style = block
+cursor-style-blink = false
+mouse-hide-while-typing = true
+cursor-click-to-move = true
+mouse-scroll-multiplier = 2
+
+
+# -- Window -- #
+macos-titlebar-style = hidden
+window-padding-color = extend
+window-padding-x = 5
+window-padding-y = 5
+window-padding-balance = true
+
+# -- Background -- #
+background-opacity = 0.8
+background-blur = 20
+
+# -- Options -- #
+confirm-close-surface = false
+shell-integration-features = no-cursor,sudo,no-title
+copy-on-select = clipboard

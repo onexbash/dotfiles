@@ -1,9 +1,8 @@
 # -- GENERAL -- #
 [general]
 import = ["/opt/onexcloud/dev/codex/onexbash/onextheme/themes/alacritty.toml"]
-# -- SHELL ENVIRONMENT -- #
+# -- ENVIRONMENT -- #
 [env]
-# SHELL = "/opt/homebrew/bin/zsh" # setting this envvar avoids conflicts with the shell program setting
 TERM = "xterm-256color"
 
 # -- APPEARANCE -- #
