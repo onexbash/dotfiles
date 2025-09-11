@@ -1,0 +1,1 @@
+/Users/fschlegelone/.local/share/dotfiles/shell/home/zshenv

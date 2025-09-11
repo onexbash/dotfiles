@@ -9,7 +9,7 @@ export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
 export XDG_STATE_HOME="${XDG_STATE_HOME:-$HOME/.local/state}"
 
 # -- SHELL [zsh] -- #
-export ZDOTDIR="$HOME" # directory where zsh searches for config files (user-home)
+export ZDOTDIR="${XDG_CONFIG_HOME:-$HOME/.config}/shell/zsh"
 
 # -- DIRECTORY SHORTCUTS -- #
 export ONEXCLOUD="/opt/onexcloud" && export XCLOUD="$ONEXCLOUD" # Network Storage (Personal Cloud)

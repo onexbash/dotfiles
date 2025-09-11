@@ -3,8 +3,9 @@ function load_env() {
   local env_dir="${XDG_CONFIG_HOME:-$HOME/.config}/shell/env"
   source "${env_dir}/vars.sh"
   source "${env_dir}/helper.sh"
-  load_colors && load_prompt_styles
+  load_colors && load_styles && load_prompts
   source "${env_dir}/tools.sh"
+  source "${env_dir}/path.sh"
 }
 
 # Load Shared & specific bash/zsh Config Files

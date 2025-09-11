@@ -1,6 +1,32 @@
-#!/usr/bin/env zsh
 # -- -- -- -- -- -- -- -- -- -- #
 # --      GLOBAL ZSHENV      -- #
 # -- -- -- -- -- -- -- -- -- -- #
 # --       /etc/zshenv       -- #
 # -- -- -- -- -- -- -- -- -- -- #
+# -- XDG BASE DIRS (System-wide defaults) -- #
+# These are just defaults; users can override in their ~/.zshenv
+export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
+export XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"
+export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
+export XDG_STATE_HOME="${XDG_STATE_HOME:-$HOME/.local/state}"
+
+# -- SHELL [zsh] -- #
+export ZDOTDIR="${XDG_CONFIG_HOME:-$HOME/.config}/shell/zsh"
+# -- macOS path_helper -- #
+# Only run if enabled and available
+if [[ "${TOGGLE_PATH_HELPER:-0}" -eq 1 && -x /usr/libexec/path_helper ]]; then
+    eval "$(/usr/libexec/path_helper -s)"
+fi
+
+# -- System-wide PATH setup -- #
+# Basic system paths that should be available to all users
+system_paths=(
+    /usr/local/bin
+    /usr/bin
+    /bin
+    /usr/sbin
+    /sbin
+)
+
+# Construct basic PATH
+export PATH=$(IFS=:; echo "${system_paths[*]}")
