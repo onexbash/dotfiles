@@ -28,3 +28,9 @@ background-blur = 20
 confirm-close-surface = false
 shell-integration-features = no-cursor,sudo,no-title
 copy-on-select = clipboard
+
+
+keybind=cmd+a=select_all
+keybind=ctrl+r=reload_config
+keybind=ctrl+u=scroll_page_up
+keybind=ctrl+d=scroll_page_down
