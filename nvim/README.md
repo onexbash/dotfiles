@@ -5,6 +5,7 @@
 - [x] [Greater](./lua/plugins/dashboard.lua)
 - [x] [Markdown Reader](./lua/plugins/markdown.lua)
 
+
 ## Bugs & Misconfigurations
 - [] bufferline only showing up when opening a file with `nvim ./file.xy` not with just opening `nvim`
 
@@ -15,3 +16,5 @@
 ### environment variables
 - ONEXDEV
 
+## Roadmap
+- [ ] Update nvim working directory when navigating in file explorer

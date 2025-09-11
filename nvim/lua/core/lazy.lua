@@ -22,9 +22,10 @@ vim.opt.rtp:prepend(lazy_data_dir)
 
 --    setup     --
 require("lazy").setup({ { import = "plugins" } }, {
+  -- plugin defaults
   defaults = {
     version = "*", -- latest stable version if semantic versioning is supported
-    lazy = false, -- lazy loading enabled on all plugins unless specifically turned off
+    lazy = false,
   },
   install = {
     colorscheme = { "catppuccin" },
