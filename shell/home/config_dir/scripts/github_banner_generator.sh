@@ -20,12 +20,12 @@ fi
 
 # Function to display the title and description
 display_info() {
-    echo -e "${FG_YELLOW}============================${FG_RESET}"
-    echo -e "${FG_GREEN}  GitHub Social Image Generator  ${FG_RESET}"
-    echo -e "${FG_YELLOW}============================${FG_RESET}"
+    echo -e "${FG_YELLOW}============================${S_RESET}"
+    echo -e "${FG_GREEN}  GitHub Social Image Generator  ${S_RESET}"
+    echo -e "${FG_YELLOW}============================${S_RESET}"
     echo -e "This tool automatically generates beautiful social media images for your GitHub repositories."
-    echo -e "Created by: ${FG_CYAN}github.com/mahendraplus - Mahendra Mali${FG_RESET}"
-    echo -e "${FG_YELLOW}============================${FG_RESET}"
+    echo -e "Created by: ${FG_CYAN}github.com/mahendraplus - Mahendra Mali${S_RESET}"
+    echo -e "${FG_YELLOW}============================${S_RESET}"
 }
 
 # Parse command-line arguments
@@ -33,7 +33,7 @@ while getopts ":u:r:" opt; do
     case $opt in
         u) USERNAME="$OPTARG" ;;
         r) REPO_NAME="$OPTARG" ;;
-        \?) echo -e "${FG_RED}Invalid option: -$OPTARG${FG_RESET}" >&2; exit 1 ;;
+        \?) echo -e "${FG_RED}Invalid option: -$OPTARG${S_RESET}" >&2; exit 1 ;;
     esac
 done
 
@@ -56,26 +56,26 @@ mkdir -p "./"
 # Function to download images for a specific repository
 download_images() {
     local repo_name="$1"
-    echo -e "${FG_BLUE}Processing repository: $repo_name${FG_RESET}"
+    echo -e "${FG_BLUE}Processing repository: $repo_name${S_RESET}"
 
     # URL to fetch images from the API for the current repository
     API_URL="https://lpf64gdwdb.execute-api.us-east-1.amazonaws.com/?repo=https://github.com/$USERNAME/$repo_name"
 
     # Fetching image URLs with error handling
     if ! response=$(curl -s --fail "$API_URL"); then
-        echo -e "${FG_RED}Failed to fetch images for $repo_name${FG_RESET}"
+        echo -e "${FG_RED}Failed to fetch images for $repo_name${S_RESET}"
         return 1
     fi
 
     # Check if response is valid JSON
     if ! jq -e . >/dev/null 2>&1 <<<"$response"; then
-        echo -e "${FG_RED}Invalid API response for $repo_name${FG_RESET}"
+        echo -e "${FG_RED}Invalid API response for $repo_name${S_RESET}"
         return 1
     fi
 
     # Extract image URLs safely
     if ! img_urls=$(jq -r '.[]?' <<<"$response"); then
-        echo -e "${FG_RED}Failed to parse image URLs for $repo_name${FG_RESET}"
+        echo -e "${FG_RED}Failed to parse image URLs for $repo_name${S_RESET}"
         return 1
     fi
 
@@ -117,13 +117,13 @@ else
 
     # Fetch repositories with error handling
     if ! repo_response=$(curl -s --fail $auth_header "$GITHUB_API_URL"); then
-        echo -e "${FG_RED}Failed to fetch repositories for $USERNAME${FG_RESET}"
+        echo -e "${FG_RED}Failed to fetch repositories for $USERNAME${S_RESET}"
         exit 1
     fi
 
     # Extract repository names safely
     if ! repo_names=$(jq -r '.[].name' <<< "$repo_response"); then
-        echo -e "${FG_RED}Failed to parse repository names${FG_RESET}"
+        echo -e "${FG_RED}Failed to parse repository names${S_RESET}"
         exit 1
     fi
 
@@ -134,4 +134,4 @@ else
     done <<< "$repo_names"
 fi
 
-echo -e "${FG_GREEN}All images have been saved to current working directory: ${PWD} ${FG_RESET}."
+echo -e "${FG_GREEN}All images have been saved to current working directory: ${PWD} ${S_RESET}."

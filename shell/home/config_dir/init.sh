@@ -5,6 +5,7 @@ function load_env() {
   source "${env_dir}/vars.sh"
   source "${env_dir}/helper.sh"
   load_colors && load_styles && load_prompts
+  OS="$(detect_os)" && export OS
   source "${env_dir}/tools.sh"
   source "${env_dir}/path.sh"
 }

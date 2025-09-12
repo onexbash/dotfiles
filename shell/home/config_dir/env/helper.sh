@@ -141,12 +141,11 @@ function load_env_file() {
   fi
 }
 
-
 # -- DETECT OPERATING SYSTEM -- #
 function detect_os() {
   case "$(uname -s)" in
-    Linux*)  export OS="linux";;
-    Darwin*) export OS="macos";;
-    *)       export OS="unknown";;
+    Linux*)  echo "linux";;
+    Darwin*) echo "macos";;
+    *)       echo "unknown";;
   esac
 }
