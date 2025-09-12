@@ -16,7 +16,7 @@ function print_path() {
 
 # Display File Permissions
 function chinfo() {
-  local target_path="$(pwd)/$1"
+  local target_path && target_path="$1"
   
   # Define OS-specific functions
   linux() {
@@ -67,15 +67,19 @@ function chinfo() {
     return 1
   }
   
-  # Execute above's function block for the detected platform
-  local platform=$(detect_os)
-  
+ 
   # Check if file/directory exists first
   if [ ! -e "$target_path" ]; then
     echo -e "${I_ERR}Path does not exist: ${FG_RED}$target_path${FG_RESET}"
     return 1
   fi
   
-  $platform
+  # Execute above's function block for the detected platform
+  detect_os && echo "$OS"
+  
+}
+
+function get_bundle_id() {
+  detect_os && echo "$OS"
 }
 

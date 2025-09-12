@@ -1,4 +1,4 @@
-# -- TOOLS -- #
+# -- TOOLS ENVIRONMENT -- #
 # Starship
 export STARSHIP_CONFIG="${XDG_CONFIG_HOME}/starship/starship.toml"
 # Zoxide (smart cd)
@@ -13,4 +13,7 @@ export HOMEBREW_NO_ENV_HINTS=1 # disable hints about homebrew environment variab
 
 # GoLang
 export GOPATH="${XDG_CONFIG_HOME}/go"
+
+# Claude-Code
+export DISABLE_AUTOUPDATER=1 # disable Claude-Code Auto-Updater to be managed by homebrew
 

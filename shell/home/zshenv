@@ -1,2 +1,2 @@
-source "${XDG_CONFIG_HOME:-$HOME/.config}/shell/init.sh"
-load_env
+source "${XDG_CONFIG_HOME:-$HOME/.config}/shell/init.sh" && load_env || echo "failed to source init-script & call load_env()"
+
