@@ -19,7 +19,7 @@ local lsp_list = {
   "html",
   "htmx",
   "intelephense",
-  "java_language_server",
+  -- "java_language_server",
   "jinja_lsp",
   "jsonls",
   "lua_ls",
