@@ -101,10 +101,17 @@ function set_modes() {
 
 # -- GET DYNAMIC PATHS -- #
 function get_paths() {
-  export THIS_FILE=$(realpath "$0")
-  export THIS_DIR=$(dirname "$(realpath "$0")")
+  THIS_FILE=$(realpath "$0")
+  THIS_DIR=$(dirname "$(realpath "$0")")
+  REPO_ROOT="$(git rev-parse --show-toplevel)"
+  # Export Default Path Variables
+  export THIS_FILE
+  export THIS_DIR
+  # Export Git Path Variables
   if git rev-parse --git-dir > /dev/null 2>&1; then
-    export REPO_ROOT="$(git rev-parse --show-toplevel)"
+    export REPO_ROOT
+  else
+    echo -e "${I_WARN}The REPO_ROOT variable can only be detected inside of a git repository."
   fi
 }
 
@@ -143,9 +150,21 @@ function load_env_file() {
 
 # -- DETECT OPERATING SYSTEM -- #
 function detect_os() {
-  case "$(uname -s)" in
-    Linux*)  echo "linux";;
-    Darwin*) echo "macos";;
-    *)       echo "unknown";;
+  local platform
+  platform=$(uname -s)
+
+  case "$platform" in
+  Linux*)
+    export OS="linux"
+    ;;
+  Darwin*)
+    export OS="macos"
+    ;;
+  CYGWIN* | MINGW* | MSYS*)
+    export OS="windows"
+    ;;
+  *)
+    export OS="unsupported"
+    ;;
   esac
 }
