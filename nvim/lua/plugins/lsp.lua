@@ -15,7 +15,6 @@ local lsp_list = {
   "golangci_lint_ls",
   "eslint",
   "graphql",
-  "harper_ls",
   "html",
   "htmx",
   "intelephense",
@@ -39,26 +38,29 @@ local lsp_list = {
   "tflint",
   "ts_ls",
   "vimls",
-  "yamlls"
+  "yamlls",
 }
 
 return {
   -- mason
   {
     "williamboman/mason-lspconfig.nvim",
+    lazy = true,
+    event = { "VimEnter" },
     dependencies = { { "williamboman/mason.nvim", opts = {} } },
     opts = {
-      ensure_installed = lsp_list
-    }
+      ensure_installed = lsp_list,
+    },
   },
   -- lsp-config
   {
     "neovim/nvim-lspconfig",
     dependencies = { "williamboman/mason-lspconfig.nvim" },
     config = function()
+      -- Enable all LSP's from lsp_list{}
       for _, lsp_name in ipairs(lsp_list) do
         vim.lsp.enable(lsp_name)
       end
-    end
-  }
+    end,
+  },
 }

@@ -1,19 +1,19 @@
 ---@type vim.lsp.Config
 return {
-  cmd = { 'bash-language-server', 'start' },
+  cmd = { "bash-language-server", "start" },
   settings = {
     bashIde = {
       enableShellcheck = true,
       shellcheckArguments = {
-        -- Exclude shellcheck rules
-        "--exclude=SC1090", -- Disable warning when sourcing files at dynamic filepaths
-        "--exclude=SC1091", -- -- Disable warning when checking binaries at dynamic filepaths
-        "--exclude=SC2181", -- Disable warning for indirect exit-code checking with $?
+        -- Disable shellcheck Rules
+        "--exclude=SC1090", -- Warning when sourcing files at dynamic filepaths
+        "--exclude=SC1091", -- -- Warning when checking binaries at dynamic filepaths
+        "--exclude=SC2181", -- Warning for indirect exit-code checking with $?
+        "--exclude=SC2028", -- Warning to use printf over echo for expanding escape sequences.
       },
-      -- Glob pattern for finding and parsing shell script files in the workspace.
-      globPattern = vim.env.GLOB_PATTERN or '*@(.sh|.inc|.bash|.zsh|.command)', -- Default: "**/*@(.sh|.inc|.bash|.command)".
+      globPattern = vim.env.GLOB_PATTERN or "*@(.sh|.inc|.bash|.zsh|.command|.env)", -- file extensions
     },
   },
   filetypes = { "sh", "bash", "zsh" },
-  root_markers = { '.git' },
+  root_markers = { ".git" },
 }
