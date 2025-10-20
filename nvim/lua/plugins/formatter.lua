@@ -1,6 +1,3 @@
-local prettier_fmt = { "prettierd", "prettier", stop_after_first = true }
-local eslint_prettier_fmt = { "prettierd", "eslint_d", stop_after_first = false }
-
 return {
   -- mason-tool-installer.nvim
   {
@@ -11,9 +8,7 @@ return {
       },
       opts = {
         ensure_installed = {
-          "prettierd",
           "prettier",
-          "eslint_d",
           "eslint",
           "shfmt",
           "stylua",
@@ -42,13 +37,15 @@ return {
     opts = {
       formatters_by_ft = {
         -- prettier
-        javascript = eslint_prettier_fmt,
-        typescript = eslint_prettier_fmt,
-        css = eslint_prettier_fmt,
-        scss = eslint_prettier_fmt,
-        html = eslint_prettier_fmt,
-        json = eslint_prettier_fmt,
-        yaml = eslint_prettier_fmt,
+        typescript = { "eslint", "prettier", stop_after_first = true },
+        typescriptreact = { "eslint", "prettier", stop_after_first = true },
+        javascript = { "eslint", "prettier", stop_after_first = true },
+        javascriptreact = { "eslint", "prettier", stop_after_first = true },
+        css = { "eslint", "prettier", stop_after_first = true },
+        scss = { "eslint", "prettier", stop_after_first = true },
+        html = { "eslint", "prettier", stop_after_first = true },
+        json = { "eslint", "prettier", stop_after_first = true },
+        yaml = { "eslint", "prettier", stop_after_first = true },
         -- shell
         sh = { "shfmt" },
         bash = { "shfmt" },
@@ -73,7 +70,7 @@ return {
         xml = { "xmllint" },
       },
       default_format_opts = {
-        lsp_format = "prefer",
+        lsp_format = "fallback",
       },
       -- overwrite formatter defaults
       formatters = {
