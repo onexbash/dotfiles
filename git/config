@@ -1,11 +1,13 @@
 [core]
-  editor = vim
+  editor = "vim"
   sshCommand = "ssh"
 	excludesfile = "~/.config/git/gitignore"
 [user]
-  name = onexbash
-  email = fabian@schlegel.one
+  name = "onexbash"
+  email = "fabian@schlegel.one"
 [pull]
   rebase = true
 [credential "https://dev.azure.com"]
   useHttpPath = true
+[push]
+	autoSetupRemote = true
