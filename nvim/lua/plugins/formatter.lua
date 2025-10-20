@@ -1,4 +1,6 @@
-local prettier_fmt = { "prettierd", "eslint_d" }
+local prettier_fmt = { "prettierd", "prettier", stop_after_first = true }
+local eslint_prettier_fmt = { "prettierd", "eslint_d", stop_after_first = false }
+
 return {
   -- mason-tool-installer.nvim
   {
@@ -9,31 +11,20 @@ return {
       },
       opts = {
         ensure_installed = {
-          -- prettier ecosystem
           "prettierd",
+          "prettier",
           "eslint_d",
-          -- shell
+          "eslint",
           "shfmt",
-          -- lua
           "stylua",
-          -- python
           "isort",
           "ruff",
-          -- rust (installed via rustup usually)
-          -- "rustfmt", -- comment out, use rustup
-          -- go (installed with go toolchain)
-          -- "gofmt", -- comment out, comes with go
-          -- c/c++
           "clang-format",
-          -- ansible
           "ansible-lint",
-          -- terraform
           "terraform-ls", -- includes terraform fmt
-          -- toml
           "taplo",
-          -- xml (comes with system, not in mason)
         },
-        auto_update = false,
+        auto_update = true,
         run_on_start = true,
       },
     },
@@ -42,7 +33,7 @@ return {
   {
     "stevearc/conform.nvim",
     dependencies = { "WhoIsSethDaniel/mason-tool-installer.nvim" },
-    event = { "BufWritePre" },
+    event = { "BufWritePre", "BufNewFile" },
     cmd = { "ConformInfo" },
     init = function()
       -- set formatexpr for usage with 'gq{vim_motion}'
@@ -51,13 +42,13 @@ return {
     opts = {
       formatters_by_ft = {
         -- prettier
-        javascript = prettier_fmt,
-        typescript = prettier_fmt,
-        css = prettier_fmt,
-        scss = prettier_fmt,
-        html = prettier_fmt,
-        json = prettier_fmt,
-        yaml = prettier_fmt,
+        javascript = eslint_prettier_fmt,
+        typescript = eslint_prettier_fmt,
+        css = eslint_prettier_fmt,
+        scss = eslint_prettier_fmt,
+        html = eslint_prettier_fmt,
+        json = eslint_prettier_fmt,
+        yaml = eslint_prettier_fmt,
         -- shell
         sh = { "shfmt" },
         bash = { "shfmt" },
@@ -80,6 +71,9 @@ return {
         toml = { "taplo" },
         -- xml
         xml = { "xmllint" },
+      },
+      default_format_opts = {
+        lsp_format = "prefer",
       },
       -- overwrite formatter defaults
       formatters = {
