@@ -1,0 +1,15 @@
+#!/usr/bin/env zsh
+
+# directory basename used as session name
+session_name="$(basename $(pwd))" 
+
+# log session info
+echo -e "${I_INFO}Session name: ${I_OK}$session_name${I_RESET}"
+echo -e "${I_INFO}Working directory: ${I_OK}$(pwd)${I_RESET}"
+
+# check if a zellij session with the name already exists
+if zellij list-sessions | grep -Fxq "$session_name"; then
+  zellij attach "$session_name"
+else
+  zellij attach --create "$session_name"
+fi
