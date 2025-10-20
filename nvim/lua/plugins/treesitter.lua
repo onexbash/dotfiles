@@ -1,11 +1,16 @@
 return {
   "nvim-treesitter/nvim-treesitter",
-  event = { "BufReadPre", "BufNewFile" },
+  branch = "master",
+  lazy = false,
   build = ":TSUpdate",
+  event = { "BufReadPre", "BufNewFile" },
+  init = function()
+    vim.treesitter.language.register("bash", "dotenv") -- assign bash parser to dotenv files (.env.*)
+  end,
   config = function()
     local ts_config = require("nvim-treesitter.configs")
     ts_config.setup({
-      sync_install = false,
+      sync_install = true,
       highlight = {
         enable = true,
         additional_vim_regex_highlighting = true,
@@ -14,7 +19,7 @@ return {
         enable = true,
       },
       ensure_installed = {
-        -- "awk",
+        "awk",
         "bash",
         "c",
         "c_sharp",

@@ -1,6 +1,6 @@
--- | -- | MOTION OVERRIDES | -- | --
 local keymap = vim.keymap.set
 
+-- | VIM MOTIONS | --
 -- paste
 -- keymap({ 'n', 'v' }, 'p', 'P', { desc = 'paste (no yank)' })
 -- keymap({ 'n', 'v' }, 'P', 'p', { desc = 'paste (with yank)' })
@@ -10,7 +10,7 @@ local keymap = vim.keymap.set
 -- keymap({ 'n', 'v' }, '"_C', 'C', { desc = 'change (with yank)' })
 -- keymap({ 'n', 'v' }, 'C', '"_C', { desc = 'change (no yank)' })
 
--- | -- | KEYMAPS | -- | --
+-- | KEYMAPS | --
 
 -- open file explorer
 keymap("n", "<C-n>", "<CMD>Oil<CR>", { desc = "oil: open filetree" })
@@ -21,7 +21,7 @@ keymap("n", "<leader>F5", "<cmd>source %<CR>", { desc = "reload config" })
 -- clear search highlight
 keymap("n", "<ESC>", "<CMD>nohlsearch<CR>", { desc = "clear search highlight" })
 
--- | restart nvim | --
+-- restart nvim
 local restart_nvim = function()
   -- safe session file
   local sesh_file = vim.env.ONEXCORE .. "/tmp/nvim_session.restored"

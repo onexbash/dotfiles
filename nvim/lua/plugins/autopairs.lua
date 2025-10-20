@@ -29,21 +29,30 @@ return {
     "kylechui/nvim-surround",
     event = { "VeryLazy" },
     dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-treesitter/nvim-treesitter-textobjects" },
-    opts = {
-      keymaps = {
-        visual = "s",
-        -- disable all other keymaps as visual is all you need
-        insert = false,
-        insert_line = false,
-        normal = false,
-        normal_cur = false,
-        normal_line = false,
-        normal_cur_line = false,
-        visual_line = false,
-        delete = false,
-        change = false,
-        change_line = false,
-      },
-    },
+    config = function()
+      local surround = require("nvim-surround")
+      surround.setup({
+        keymaps = {
+          visual = "s",
+          -- disable all other keymaps as visual is all you need
+          insert = false,
+          insert_line = false,
+          normal = false,
+          normal_cur = false,
+          normal_line = false,
+          normal_cur_line = false,
+          visual_line = false,
+          delete = false,
+          change = false,
+          change_line = false,
+        },
+        surrounds = {
+          -- prevent whitespace inserted when surrounding with characters that have no openinng or closing delimiter (e.g: ")
+          ['"'] = { add = { '"', '"' } },
+          ["'"] = { add = { "'", "'" } },
+          ["`"] = { add = { "`", "`" } },
+        },
+      })
+    end,
   },
 }

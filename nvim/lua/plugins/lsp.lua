@@ -55,7 +55,7 @@ return {
   -- lsp-config
   {
     "neovim/nvim-lspconfig",
-    dependencies = { "williamboman/mason-lspconfig.nvim" },
+    dependencies = { "williamboman/mason-lspconfig.nvim", "nvim-treesitter/nvim-treesitter" },
     config = function()
       -- Enable all LSP's from lsp_list{}
       for _, lsp_name in ipairs(lsp_list) do
