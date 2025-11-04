@@ -70,7 +70,7 @@ return {
         xml = { "xmllint" },
       },
       default_format_opts = {
-        lsp_format = "fallback",
+        lsp_format = "prefer",
       },
       -- overwrite formatter defaults
       formatters = {

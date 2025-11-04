@@ -49,7 +49,7 @@ return {
         "json",
         "jsonc", -- json with comments
         "llvm",
-        "latex",
+        -- "latex", -- TODO: uncomment after fixing grammar.js
         "lua",
         "make",
         "markdown",
@@ -67,7 +67,7 @@ return {
         "sql",
         "ssh_config",
         "svelte",
-        "swift",
+        -- "swift", -- TODO: uncomment after fixing grammar.js
         "terraform",
         "tsx",
         "typescript",

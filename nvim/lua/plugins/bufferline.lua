@@ -6,7 +6,7 @@ return {
   keys = {
     -- navigate tab tab(left)
     {
-      "<C-Left>",
+      "<Left>",
       function()
         require("bufferline").cycle(-1)
       end,
@@ -14,7 +14,7 @@ return {
     },
     -- navigate tab tab(right)
     {
-      "<C-Right>",
+      "<Right>",
       function()
         require("bufferline").cycle(1)
       end,

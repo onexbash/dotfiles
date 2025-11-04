@@ -2,7 +2,7 @@ return {
   "saghen/blink.cmp",
   lazy = true,
   event = { "InsertEnter", "CmdlineEnter" },
-  dependencies = { "rafamadriz/friendly-snippets", "neovim/nvim-lspconfig" },
+  dependencies = { "rafamadriz/friendly-snippets", "L3MON4D3/LuaSnip", "neovim/nvim-lspconfig" },
   version = "1.*",
   opts = {
     -- Keymaps
@@ -46,20 +46,23 @@ return {
         lsp = {
           enabled = true,
           min_keyword_length = 2,
-          score_offset = 0,
-        },
-        path = {
-          enabled = true,
-          min_keyword_length = 0,
+          score_offset = 100,
         },
         snippets = {
           enabled = true,
           min_keyword_length = 2,
+          score_offset = 50,
         },
         buffer = {
           enabled = true,
           min_keyword_length = 4,
           max_items = 5,
+          score_offset = 25,
+        },
+        path = {
+          enabled = true,
+          min_keyword_length = 0,
+          score_offset = 0,
         },
       },
     },
