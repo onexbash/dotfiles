@@ -11,7 +11,7 @@ export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
 export XDG_STATE_HOME="${XDG_STATE_HOME:-$HOME/.local/state}"
 
 # -- SHELL [zsh] -- #
-export ZDOTDIR="${XDG_CONFIG_HOME:-$HOME/.config}/shell/zsh"
+export ZDOTDIR="${XDG_CONFIG_HOME:-$HOME/.config}/shell"
 # -- macOS path_helper -- #
 # Only run if enabled and available
 if [[ "${TOGGLE_PATH_HELPER:-0}" -eq 1 && -x /usr/libexec/path_helper ]]; then
