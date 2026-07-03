@@ -71,7 +71,7 @@ function environment() {
   export XDG_STATE_HOME="${XDG_STATE_HOME:-$HOME/.local/state}"
 
   # SHELL [zsh]
-  export ZDOTDIR="${XDG_CONFIG_HOME:-$HOME/.config}/shell/zsh"
+  export ZDOTDIR="${XDG_CONFIG_HOME:-$HOME/.config}/shell"
 
   # Directory Shortcuts
   export ONEXCLOUD="/opt/onexcloud" && export XCLOUD="$ONEXCLOUD" # Network Storage (Personal Cloud)
