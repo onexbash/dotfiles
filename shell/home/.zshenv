@@ -83,6 +83,8 @@ function environment() {
   export TOGGLE_PATH_HELPER=0       # enable/disable MacOS path-helper utility
 
   # -- TOOLS ENVIRONMENT -- #
+  # Rust
+  export CARGO_HOME="${XDG_CONFIG_HOME}/cargo"
   # Starship
   export STARSHIP_CONFIG="${XDG_CONFIG_HOME}/starship/starship.toml"
   # Zoxide (smart cd)
