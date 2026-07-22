@@ -6,13 +6,13 @@
 # nvim
 alias nvim-onevim="NVIM_APPNAME='nvim_onevim' nvim"
 alias nvim-astro="NVIM_APPNAME='nvim_astro' nvim"
-alias nvim-lazy="NVIM_APPNAME='nvim_lazy' nvim"
-alias nvim-chad="NVIM_APPNAME='nvim_chad' nvim"
+# alias nvim-lazy="NVIM_APPNAME='nvim_lazy' nvim"
+# alias nvim-chad="NVIM_APPNAME='nvim_chad' nvim"
 
 alias nvone="nvim-onevim"
 alias nvastro="nvim-astro"
-alias nvlazy="nvim-lazy"
-alias nvchad="nvim-chad"
+# alias nvlazy="nvim-lazy"
+# alias nvchad="nvim-chad"
 
 
 alias nv="nvim"
