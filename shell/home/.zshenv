@@ -97,6 +97,10 @@ function environment() {
   export FUNCTIONS_CORE_TOOLS_TELEMETRY_OPTOUT=1 # opt-out of sending Azure Functions Core tools telematry to microsoft.
   export HOMEBREW_NO_ENV_HINTS=1                 # disable hints about homebrew environment variables.
 
+  # ASDF
+  export ASDF_DATA_DIR="${XDG_CONFIG_HOME}/asdf"
+  export ASDF_CONFIG_FILE="${XDG_CONFIG_HOME}/asdf/config.ini"
+
   # GoLang
   export GOPATH="${XDG_CONFIG_HOME}/go"
 
