@@ -85,6 +85,8 @@ function environment() {
   # -- TOOLS ENVIRONMENT -- #
   # Rust
   export CARGO_HOME="${XDG_CONFIG_HOME}/cargo"
+  export RUSTUP_HOME="${XDG_CONFIG_HOME}/rustup"
+  source "${CARGO_HOME}/env"
   # Starship
   export STARSHIP_CONFIG="${XDG_CONFIG_HOME}/starship/starship.toml"
   # Zoxide (smart cd)
@@ -92,18 +94,14 @@ function environment() {
   export _ZO_EXCLUDE_DIRS="$ONEXCLOUD/.secret/*:/tmp/secret" # exclude directories from the zoxide database
   export _ZO_FZF_OPTS=""                                     # fzf options during interactive selection (see: man fzf for the list of options)
   export _ZO_RESOLVE_SYMLINKS=0                              # whether to resolve symlinks before adding directories to the zoxide database
-
   # Homebrew
   export FUNCTIONS_CORE_TOOLS_TELEMETRY_OPTOUT=1 # opt-out of sending Azure Functions Core tools telematry to microsoft.
   export HOMEBREW_NO_ENV_HINTS=1                 # disable hints about homebrew environment variables.
-
   # ASDF
   export ASDF_DATA_DIR="${XDG_CONFIG_HOME}/asdf"
   export ASDF_CONFIG_FILE="${XDG_CONFIG_HOME}/asdf/config.ini"
-
   # GoLang
   export GOPATH="${XDG_CONFIG_HOME}/go"
-
   # Claude-Code
   export DISABLE_AUTOUPDATER=1 # disable Claude-Code Auto-Updater to be managed by homebrew
 }
