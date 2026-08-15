@@ -15,9 +15,7 @@ return {
       },
       term_colors = true, -- whether to use the Terminal Emulator or nvim colorscheme for Terminal Buffers inside of nvim
       dim_inactive = {
-        enabled = true, -- dims the background of inactive windows
-        shade = "dark",
-        percentage = 0.10,
+        enabled = false, -- dims the background of inactive windows
       },
       no_italic = false,
       no_bold = false,

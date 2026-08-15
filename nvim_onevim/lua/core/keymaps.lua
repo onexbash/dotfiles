@@ -9,3 +9,7 @@ keymap("n", "<ESC>", "<CMD>nohlsearch<CR>", { desc = "clear search highlight" })
 -- increase / decrease number
 keymap("n", "<C-+>", "<C-a>", { desc = "Increase number under cursor" })
 keymap("n", "<C-->", "<C-x>", { desc = "Decrease number under cursor" })
+
+-- | VIM MOTIONS | --
+-- override: paste
+keymap("v", "p", '"_dP', { desc = "Remap paste to prevent overwriting the clipboard" })
