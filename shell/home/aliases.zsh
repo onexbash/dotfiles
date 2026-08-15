@@ -9,14 +9,11 @@ alias nvim-astro="NVIM_APPNAME='nvim_astro' nvim"
 # alias nvim-lazy="NVIM_APPNAME='nvim_lazy' nvim"
 # alias nvim-chad="NVIM_APPNAME='nvim_chad' nvim"
 
+alias nv="nvim-onevim"
 alias nvone="nvim-onevim"
 alias nvastro="nvim-astro"
 # alias nvlazy="nvim-lazy"
 # alias nvchad="nvim-chad"
-
-
-alias nv="nvim"
-alias v="nvim-onevim"
 
 # utils
 alias gr="grep"
