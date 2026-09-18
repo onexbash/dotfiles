@@ -19,3 +19,9 @@ eval "$(atuin init bash)"
 export ASDF_DATA_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/asdf"
 export ASDF_CONFIG_FILE="${ASDF_DATA_DIR}/config.ini"
 . <(asdf completion bash) # initialize completions
+
+# Cargo
+. "$HOME/.cargo/env" # Initialize Cargo Environment
+
+# GoLang
+export PATH="$PATH:${GOPATH:-$HOME/go}/bin" # Add GoLang's bin directory to $PATH

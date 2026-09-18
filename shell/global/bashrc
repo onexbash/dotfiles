@@ -1,6 +1,9 @@
-# --   GLOBAL BASHRC   -- #
-# --    /etc/bashrc    -- #
-# -- -- -- -- -- -- -- -- #
+# -- -- -- -- -- -- -- -- -- -- -- #
+# --        GLOBAL BASHRC       -- #
+# -- -- -- -- -- -- -- -- -- -- -- #
+# --         /etc/bashrc        -- #
+# -- -- -- -- -- -- -- -- -- -- -- #
+
 if [[ -f "${HOME}/.bashrc" ]]; then
   source "${HOME}/.bashrc"
 fi

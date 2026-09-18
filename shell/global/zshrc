@@ -4,10 +4,6 @@
 # --        /etc/zshrc       -- #
 # -- -- -- -- -- -- -- -- -- -- #
 
-# -- -- -- -- -- -- #
-# -- ZSH OPTIONS -- #
-# -- -- -- -- -- -- #
-
 # Correctly display UTF-8 with combining characters.
 if [[ "$(local LC_CTYPE)" == "UTF-8" ]]; then
   setopt COMBINING_CHARS
