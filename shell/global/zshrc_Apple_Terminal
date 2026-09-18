@@ -139,7 +139,7 @@ if [ ${SHELL_SESSION_DID_INIT:-0} -eq 0 ] && [ -n "$TERM_SESSION_ID" ] && [ ${SH
 	fi
 	return 1
     }
-
+    
     if [ ${SHELL_SESSION_HISTORY:-1} -eq 1 ]; then
 	SHELL_SESSION_HISTFILE="$SHELL_SESSION_DIR/$TERM_SESSION_ID.history"
 	SHELL_SESSION_HISTFILE_NEW="$SHELL_SESSION_DIR/$TERM_SESSION_ID.historynew"
@@ -180,22 +180,22 @@ if [ ${SHELL_SESSION_DID_INIT:-0} -eq 0 ] && [ -n "$TERM_SESSION_ID" ] && [ ${SH
 
 	shell_session_save_history() {
 	    shell_session_history_enable
-
+	    
 	    # Save new history to an intermediate file so we can copy it.
 	    fc -AI
-
+	    
 	    # If the session history doesn't exist yet, copy the shared history.
 	    if [ -f "$SHELL_SESSION_HISTFILE_SHARED" ] && [ ! -s "$SHELL_SESSION_HISTFILE" ]; then
 		echo -ne '\n...copying shared history...' >&2
 		(umask 077; /bin/cp "$SHELL_SESSION_HISTFILE_SHARED" "$SHELL_SESSION_HISTFILE")
 	    fi
-
+	    
 	    # Save new history to the per-session and shared files.
 	    echo -ne '\n...saving history...' >&2
 	    (umask 077; /bin/cat "$SHELL_SESSION_HISTFILE_NEW" >> "$SHELL_SESSION_HISTFILE_SHARED")
 	    (umask 077; /bin/cat "$SHELL_SESSION_HISTFILE_NEW" >> "$SHELL_SESSION_HISTFILE")
 	    /bin/rm "$SHELL_SESSION_HISTFILE_NEW"
-
+	    
 	    # If there is a history file size limit, apply it to the files.
 	    if [ -n "$SAVEHIST" ]; then
 		echo -n 'truncating history files...' >&2
@@ -215,14 +215,14 @@ if [ ${SHELL_SESSION_DID_INIT:-0} -eq 0 ] && [ -n "$TERM_SESSION_ID" ] && [ ${SH
 	if [ -n "$SHELL_SESSION_FILE" ]; then
 	    echo -ne '\nSaving session...' >&2
 	    (umask 077; echo 'echo Restored session: "$(/bin/date -r '$(/bin/date +%s)')"' >| "$SHELL_SESSION_FILE")
-
+	    
 	    # Call user-supplied hook functions to let them save state.
 	    whence shell_session_save_user_state >/dev/null && shell_session_save_user_state "$SHELL_SESSION_FILE"
 	    local f
 	    for f in $shell_session_save_user_state_functions; do
 		$f "$SHELL_SESSION_FILE"
 	    done
-
+	    
 	    shell_session_history_allowed && shell_session_save_history
 	    echo 'completed.' >&2
 	fi
@@ -242,7 +242,7 @@ if [ ${SHELL_SESSION_DID_INIT:-0} -eq 0 ] && [ -n "$TERM_SESSION_ID" ] && [ ${SH
 	    fi
 	fi
     }
-
+    
     # Update saved session state when exiting.
     shell_session_update() {
 	shell_session_save && shell_session_delete_expired
@@ -250,3 +250,4 @@ if [ ${SHELL_SESSION_DID_INIT:-0} -eq 0 ] && [ -n "$TERM_SESSION_ID" ] && [ ${SH
     autoload -Uz add-zsh-hook
     add-zsh-hook zshexit shell_session_update
 fi
+
