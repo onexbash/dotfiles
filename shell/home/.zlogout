@@ -7,7 +7,7 @@
 
 # Source Files that extend ~/.zlogout
 function load_zlogout_files() {
-  local config_dir="${XDG_CONFIG_HOME:-$HOME/.config}/zsh"
+  local config_dir="${XDG_CONFIG_HOME:-$HOME/.config}/shell"
   local config_files=(
     "logout.zsh"
   )
