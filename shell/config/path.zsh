@@ -4,24 +4,37 @@
 
 # -- Path Handler -- #
 function construct_path() {
-  # Default Bin Directories
-  local system_paths=(  
+  # Deduplicate entries and tie scalar $PATH to array $path
+  typeset -U path PATH
+  
+  # Add paths from /etc/paths & /etc/paths.d/*
+  local system_paths=()
+
+  if [[ -f "/etc/paths" ]]; then
+    system_paths+=(${(f)"$(< /etc/paths)"})
+  fi 
+
+  if [[ -d "/etc/paths.d" ]]; then
+    for file in /etc/paths.d/*(N); do
+      [[ -f "$file" ]] && system_paths+=(${(f)"$(< "$file")"})
+    done
+  fi 
+
+  # Default Path Entries
+  local default_paths=(  
     "/usr/local/bin"
     "/usr/bin"
     "/bin"
     "/usr/sbin"
     "/sbin"
   )
-  # MacOS Special Bin Directories
-  local osx_paths=(
-    "/System/Cryptexes/App/usr/bin"
-    "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin"
-    "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin"
-    "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin"
-  )
+
   # Custom Path Entries
   local custom_paths=(
-    # GNU Tools
+    # Homebrew
+    "/opt/homebrew/bin"
+    "/opt/homebrew/sbin"
+    # GNU Utils
     "/opt/homebrew/opt/coreutils/libexec/gnubin"
     "/opt/homebrew/opt/grep/libexec/gnubin"
     # Rust / Cargo
@@ -32,24 +45,20 @@ function construct_path() {
     "${GOPATH:-$HOME/go}/bin"
   )
   
-  # Clear path
-  path=()
-
-  # Construct $PATH variable
-  typeset -U path
+  # Clear & construct PATH (high-to-low priority)
   path=(
-      $system_paths
-      $osx_paths
-      $custom_paths
+      "${custom_paths[@]}"
+      "${system_paths[@]}"
+      "${default_paths[@]}"
   )
   
-  # Export $PATH
+  # Export PATH
   export PATH
 
-
-  # ASDF (version manager)
-  fpath=(${ASDF_DATA_DIR:-$HOME/.asdf}/completions $fpath) # append completions to fpath
-  autoload -Uz compinit && compinit # initialize completions
+# ASDF Completions setup
+  if [[ -d "${ASDF_DATA_DIR:-$HOME/.asdf}/completions" ]]; then
+    fpath=("${ASDF_DATA_DIR:-$HOME/.asdf}/completions" $fpath)
+  fi
 }
 
 # Function Call
