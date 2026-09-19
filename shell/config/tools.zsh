@@ -1,7 +1,6 @@
-#!/usr/bin/env zsh
-# -- -- -- -- -- -- #
-# --    TOOLS    -- #
-# -- -- -- -- -- -- #
+# --            tools.zsh            -- #
+# --       sourced by: .zshrc        -- #
+# --                                 -- #
 
 # Zoxide (better cd)
 eval "$(zoxide init zsh --cmd cd --hook pwd)"
@@ -17,10 +16,6 @@ eval "$(fnm env --use-on-cd --shell zsh)"
 
 # Atuin (shell history)
 eval "$(atuin init zsh)"
-
-# ASDF (version manager)
-fpath=(${ASDF_DATA_DIR:-$HOME/.asdf}/completions $fpath) # append completions to fpath
-autoload -Uz compinit && compinit # initialize completions
 
 # Ghostty
 if [[ -n "$GHOSTTY_RESOURCES_DIR" ]]; then

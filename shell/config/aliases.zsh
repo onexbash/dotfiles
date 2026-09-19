@@ -1,7 +1,6 @@
-#!/usr/bin/env zsh
-# -- -- -- -- -- -- #
-# --   ALIASES   -- #
-# -- -- -- -- -- -- #
+# --         aliases.zsh        -- #
+# --     sourced by: .zshrc     -- #
+# --                            -- #
 
 # nvim
 alias nvim-onevim="NVIM_APPNAME='nvim_onevim' nvim"

@@ -1,3 +1,8 @@
+# --         functions.zsh         -- #
+# --       sourced by: .zshrc      -- #
+# --                               -- #
+
+# Print $PATH variable
 function print_path() {
   local I_PATH="${FG_BLACK}[${FG_GREEN} 󰗽 ${FG_BLACK}] ${S_RESET}"
   local tmp_path="$PATH"

@@ -1,3 +1,7 @@
+# --            env.zsh            -- #
+# --       sourced by: .zshenv     -- #
+# --                               -- #
+
 # Set TTY Style Variables (colors, prompts, ..)
 function tty_styles() {
   # -- TERMINAL COLORS -- #

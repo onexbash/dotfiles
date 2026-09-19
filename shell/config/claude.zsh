@@ -1,3 +1,7 @@
+# --          claude.zsh          -- #
+# --       sourced by: .zshrc     -- #
+# --                              -- #
+
 # -- Claude-Code -- #
 # Disable internal Claude Auto-Updater & handle via brew
 function claude_set_env() {

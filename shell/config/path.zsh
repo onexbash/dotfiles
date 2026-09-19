@@ -1,4 +1,7 @@
-#!/usr/bin/env zsh
+# --            path.zsh            -- #
+# --       sourced by: .zshenv      -- #
+# --                                -- #
+
 # -- Path Handler -- #
 function construct_path() {
   # Default Bin Directories
@@ -42,6 +45,11 @@ function construct_path() {
   
   # Export $PATH
   export PATH
+
+
+  # ASDF (version manager)
+  fpath=(${ASDF_DATA_DIR:-$HOME/.asdf}/completions $fpath) # append completions to fpath
+  autoload -Uz compinit && compinit # initialize completions
 }
 
 # Function Call
