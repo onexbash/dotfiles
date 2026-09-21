@@ -47,8 +47,8 @@ function environment() {
 
   # -- TOOLS ENVIRONMENT -- #
   # Rust
-  export CARGO_HOME="${XDG_CONFIG_HOME}/cargo"
-  export RUSTUP_HOME="${XDG_CONFIG_HOME}/rustup"
+  export CARGO_HOME="${XDG_CONFIG_HOME}/rust/cargo"
+  export RUSTUP_HOME="${XDG_CONFIG_HOME}/rust/rustup"
   source "${CARGO_HOME}/env" # load cargo environment
 
   # Starship
