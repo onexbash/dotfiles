@@ -31,7 +31,7 @@ function construct_path() {
   # Custom Path Entries
   # note: '(N-/)' drops the entry if no directory exists for a path entry
   local custom_paths=(
-    # Homebrew
+    # Homebrew TODO: check if it makes more sense to add them to /etc/paths.d/50-custom
     /opt/homebrew/bin(N-/)
     /opt/homebrew/sbin(N-/)
     # GNU Utils
@@ -55,7 +55,7 @@ function construct_path() {
   # Export PATH
   export PATH
 
-# ASDF Completions setup
+  # ASDF Completions setup
   if [[ -d "${ASDF_DATA_DIR:-$HOME/.asdf}/completions" ]]; then
     fpath=("${ASDF_DATA_DIR:-$HOME/.asdf}/completions" $fpath)
   fi
