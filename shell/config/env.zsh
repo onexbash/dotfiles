@@ -67,10 +67,7 @@ function environment() {
   # ASDF
   export ASDF_DATA_DIR="${XDG_CONFIG_HOME}/asdf"
   export ASDF_CONFIG_FILE="${XDG_CONFIG_HOME}/asdf/config.ini"
-  
-  # GoLang
-  export GOPATH="${XDG_CONFIG_HOME}/go"
-  
+   
   # Claude-Code
   export DISABLE_AUTOUPDATER=1 # disable Claude-Code Auto-Updater to be managed by homebrew
 }

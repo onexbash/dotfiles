@@ -23,6 +23,10 @@ fi
 # Initialize completions (PATH adding handled in path.zsh)
 autoload -Uz compinit && compinit
 
+# GoLang
+# Run the asdf-golang set-env Script to ensure GOROOT, GOPATH & GOBIN are set correctly
+source "${ASDF_DATA_DIR:-$HOME/.config/asdf}/plugins/golang/set-env.zsh"
+
 # EZA (better ls)
 function ls() {
   local eza_args=(
