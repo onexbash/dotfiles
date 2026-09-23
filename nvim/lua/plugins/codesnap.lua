@@ -1,47 +1,34 @@
-return {
-  'mistricky/codesnap.nvim',
-  event = { 'BufReadPost', 'BufNewFile' },
-  build = 'make build_generator',
-  keys = {
-    -- take screenshot & save
-    {
-      '<leader>cs',
-      '<cmd>CodeSnapSave<cr>',
-      mode = 'v',
-      desc = 'codesnap  take screenshot & save',
-    },
-    -- take screenshot & copy to clipboard
-    {
-      '<leader>cc',
-      function()
-        require('codesnap').copy_into_clipboard()
-      end,
-      mode = 'v',
-      desc = 'codesnap  take screenshot & copy to clipboard',
-    },
-    -- take ascii screenshot & copy to clipboard
-    {
-      '<leader>ca',
-      '<cmd>CodeSnapASCII<cr>',
-      mode = { 'v', 'n' },
-      desc = 'codesnap  take ascii screenshot & copy to clipboard',
-    },
-  },
-  opts = {
-    bg_padding = 0,
-    -- bg_x_padding = 122,
-    -- bg_y_padding = 82,
-    mac_window_bar = false,
-    title = 'CodeSnap.nvim',
-    code_font_family = 'Hurmit Nerd Font',
-    watermark_font_family = 'Pacifico',
-    watermark = '',
-    bg_theme = 'default',
-    breadcrumbs_separator = '/',
-    has_breadcrumbs = false,
-    has_line_number = true,
-    show_workspace = false,
-    min_width = 0,
-    save_path = vim.env.XCLOUD .. '/media/images/screenshots/codesnap',
-  },
-}
+require("codesnap").setup({
+	show_line_number = true,
+	highlight_color = "#1E1E2E",
+	show_workspace = true,
+	save_path = vim.env.HOME .. "Library/CloudStorage/ProtonDrive-fabian@schlegel.one-folder/Media/CodeSnap",
+	snapshot_config = {
+		code_config = {
+			font_family = "CaskaydiaCove Nerd Font",
+			theme = "candy",
+			window = {
+				mac_window_bar = false,
+				margin = {
+					x = 20,
+					y = 20,
+				},
+				border = {
+					width = 1,
+					color = "#b4befe",
+				},
+				title_config = {
+					color = "#b4befe",
+				},
+			},
+			breadcrumbs = {
+				enable = true,
+				seperator = "/",
+				color = "#b4befe", -- catppuccin "lavender"
+				font_family = "Caskaydia Nerd Font Mono",
+			},
+		},
+	},
+	watermark = "",
+	background = "#1E1E2E",
+})

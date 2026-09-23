@@ -1,81 +1,86 @@
-return {
-  "nvim-treesitter/nvim-treesitter",
-  branch = "master",
-  lazy = false,
-  build = ":TSUpdate",
-  event = { "BufReadPre", "BufNewFile" },
-  init = function()
-    vim.treesitter.language.register("bash", "dotenv") -- assign bash parser to dotenv files (.env.*)
-  end,
-  config = function()
-    local ts_config = require("nvim-treesitter.configs")
-    ts_config.setup({
-      sync_install = true,
-      highlight = {
-        enable = true,
-        additional_vim_regex_highlighting = true,
-      },
-      indent = {
-        enable = true,
-      },
-      ensure_installed = {
-        "awk",
-        "bash",
-        "c",
-        "c_sharp",
-        "cpp",
-        "css",
-        "csv",
-        "diff", -- git diff
-        "dockerfile",
-        "editorconfig",
-        "git_config",
-        "git_rebase",
-        "gitattributes",
-        "gitcommit",
-        "gitignore",
-        "go", -- golang
-        "gomod", -- golang module files
-        "gosum", -- golang checksum files
-        "gotmpl", -- golang template files
-        "gowork", -- golang workspace files
-        "gpg",
-        "graphql",
-        "html",
-        "ini", -- .ini config files
-        "java",
-        "javascript",
-        "jq",
-        "json",
-        "jsonc", -- json with comments
-        "llvm",
-        -- "latex", -- TODO: uncomment after fixing grammar.js
-        "lua",
-        "make",
-        "markdown",
-        "markdown_inline",
-        "pem", -- .pem certificate files
-        "php",
-        "powershell",
-        "prisma",
-        "properties",
-        "python",
-        "regex",
-        "requirements", -- python requirements.txt
-        "rust",
-        "scss",
-        "sql",
-        "ssh_config",
-        "svelte",
-        -- "swift", -- TODO: uncomment after fixing grammar.js
-        "terraform",
-        "tsx",
-        "typescript",
-        "vim", -- vimrc files
-        "vue", -- vue.js
-        "xml",
-        "yaml",
-      },
-    })
-  end,
+-- Parser List
+local parsers = {
+  "awk",
+  "bash",
+  "c",
+  "comment",
+  "cpp",
+  "css",
+  "csv",
+  "diff",
+  "dockerfile",
+  "editorconfig",
+  "git_config",
+  "git_rebase",
+  "gitattributes",
+  "gitcommit",
+  "gitignore",
+  "go",
+  "gomod",
+  "graphql",
+  "html",
+  "http",
+  "hyprlang",
+  "java",
+  "javascript",
+  "jinja",
+  "json",
+  "lua",
+  "markdown",
+  "markdown_inline",
+  "make",
+  "php",
+  "powershell",
+  "prisma",
+  "python",
+  "ruby",
+  "rust",
+  "scheme",
+  "scss",
+  "sql",
+  "ssh_config",
+  "svelte",
+  "swift",
+  "terraform",
+  "toml",
+  "typescript",
+  "tsx",
+  "vim",
+  "vimdoc",
+  "xml",
+  "yaml",
+  "zsh"
 }
+
+-- Configuration (setup)
+local treesitter = require("nvim-treesitter")
+treesitter.setup({
+	install_dir = vim.fn.stdpath("data") .. "/site",
+})
+
+-- Parser Installation
+local installed = require("nvim-treesitter.config").get_installed()
+treesitter.install(vim.iter(parsers)
+	:filter(function(parser)
+		return not vim.tbl_contains(installed, parser)
+	end)
+	:totable())
+
+-- Autocmd: Enable Indentation
+vim.api.nvim_create_autocmd("FileType", {
+	callback = function(args)
+		pcall(vim.treesitter.start, args.buf)
+		vim.bo[args.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+	end,
+})
+
+vim.api.nvim_create_autocmd("PackChanged", {
+	desc = "Update Tree-sitter parsers after plugin updates",
+	group = vim.api.nvim_create_augroup("nvim_treesitter_update", { clear = true }),
+	callback = function(ev)
+		local name, kind = ev.data.spec.name, ev.data.kind
+		if name == "nvim-treesitter" and (kind == "install" or kind == "update") then
+			vim.cmd("TSUpdate")
+		end
+	end,
+})

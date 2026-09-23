@@ -1,13 +1,16 @@
--- set leader key
-vim.g.mapleader = ' '
-vim.g.maplocalleader = '\\'
+-- Check if nvim version is 0.1
+if vim.fn.has("nvim-0.12") ~= 1 then
+	vim.fn.input("This config requires nvim v0.11+. Please Update neovim! Press Enter to exit...")
+	vim.cmd("cquit")
+end
 
--- LOAD MODULES --
+-- Map Leader Key (has to be set upfront)
+vim.g.mapleader = " "
+vim.g.maplocalleader = "\\"
 
--- lazy
-require('core.lazy')
-
--- core
-require('core.options')
-require('core.autocmd')
-require('core.keymaps')
+-- Load Modules
+require("core.keymaps")
+require("core.options")
+require("core.autocmd")
+-- Load plugins
+require("plugins")
