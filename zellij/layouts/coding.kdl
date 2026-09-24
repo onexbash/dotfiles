@@ -1,0 +1,15 @@
+layout {
+  pane split_direction="vertical" {
+    pane size="35%" split_direction="horizontal" {
+      pane name="GIT" size="40%" command="zsh" {
+        args "-ic" "if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then lazygit; else ls -a; fi; exec zsh"
+      }
+      pane name="CLI" size="60%" command="zsh" {
+        args "-ic" "fastfetch; exec zsh"
+      }
+    }
+    pane name="NEOVIM" size="65%" command="zsh" focus=true {
+      args "-ic" "nvim; exec zsh"
+    }
+  }
+}
