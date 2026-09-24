@@ -9,6 +9,7 @@
 function load_zshrc_files() {
   local config_dir="${XDG_CONFIG_HOME:-$HOME/.config}/shell"
   local config_files=(
+    "zellij.zsh"
     "functions.zsh"
     "aliases.zsh"
     "tools.zsh"

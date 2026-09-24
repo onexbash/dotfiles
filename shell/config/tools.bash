@@ -3,6 +3,20 @@
 # Homebrew
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
+# ZelliJ
+# Auto-Start ZelliJ if not inside a session already
+if [[ -z "$ZELLIJ" ]]; then 
+  if [[ "$ZELLIJ_AUTO_ATTACH" == "true" ]]; then 
+    zellij attach -c
+  else
+    zellij
+  fi 
+  if [[ "$ZELLIJ_AUTO_EXIT" == "true" ]]; then 
+    exit 
+  fi 
+fi
+# eval "$(zellij setup --generate-auto-start bash)"
+
 # Starship
 eval "$(starship init bash)"
 
