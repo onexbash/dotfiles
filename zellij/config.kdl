@@ -19,7 +19,6 @@ keybinds clear-defaults=true {
         bind "Alt l" { MoveFocusOrTab "right"; }
     }
     shared {
-        // bind "Alt z" { MessagePlugin "autolock" { payload "enable"; }; }
     }
     shared_except "locked" {
         // Enable autolock
@@ -303,8 +302,9 @@ plugins {
 
     autolock location="https://github.com/fresh2dev/zellij-autolock/releases/latest/download/zellij-autolock.wasm" {
         is_enabled true
-        triggers "nvim|vim|lazygit|sk|fzf"
+        triggers "nvim|vim|vi|lazygit|sk|fzf"
         reaction_seconds "0.3"
+        print_to_log true
     }
 }
 
@@ -364,14 +364,20 @@ show_release_notes false
 //   - true (default, enabled)
 //   - false
 // 
-// pane_frames false
+pane_frames true
  
 // Set the pane frame style when pane_frames is enabled
 // Options:
 //   - full
 //   - titles (default)
 // 
-// pane_frame_style "titles"
+pane_frame_style "full"
+
+ui {
+  pane_frames {
+    rounded_corners true
+  }
+}
  
 // When attaching to an existing session with other users,
 // should the session be mirrored (true)
