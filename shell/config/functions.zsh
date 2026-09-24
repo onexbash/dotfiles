@@ -81,6 +81,21 @@ function chinfo() {
   "$OS" 2>/dev/null
 }
 
+# Script picker: pick a script from $XSCRIPTS
+pick_script() {
+  local dir="$XSCRIPTS" script
+  script="$(cd "$dir" && find -L . -type f \( -name '*.sh' -o -name '*.bash' -o -name '*.zsh' -o -name '*.ps1' \) \
+    | sed 's|^\./||' | sort \
+    | gum filter --placeholder "Pick a script…" --header "  Scripts" \
+        --header.foreground "#cba6f7" --indicator.foreground "#cba6f7" --match.foreground "#cba6f7")" || return
+
+  case "$script" in
+    *.zsh) zsh "$dir/$script" "$@" ;;
+    *.ps1) pwsh -NoProfile -File "$dir/$script" "$@" ;;
+    *)     bash "$dir/$script" "$@" ;;
+  esac
+}
+
 function get_bundle_id() {
   local app_path && app_path="$1"
   # shellcheck disable=SC2329

@@ -36,10 +36,12 @@ function environment() {
   export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
   export XDG_STATE_HOME="${XDG_STATE_HOME:-$HOME/.local/state}"
 
-  # Directory Shortcuts
-  export ONEXCLOUD="/opt/onexcloud" && export XCLOUD="$ONEXCLOUD" # Network Storage (Personal Cloud)
-  export ONEXCORE="${HOME}/onexcore" && export XCORE="$ONEXCORE"  # Core Files
-  export ONEXDEV="${XCORE}/dev" && export XDEV="$ONEXDEV"
+  # Personal Directory Shortcuts
+  export XDEV="$HOME/dev"
+  export XREPOS="$XDEV/repos"
+  export XCLOUD="$HOME/Library/CloudStorage/ProtonDrive-fabian@schlegel.one-folder"
+  export XCONFIG="${XDG_CONFIG_HOME:-$HOME/.config}"
+  export XSCRIPTS="$XCONFIG/scripts"
 
   # Custom
   export TOGGLE_SCRIPT_DEBUG_MODE=0 # enable/disable debugging mode for scripts that load the onexbash helper-script
@@ -56,7 +58,7 @@ function environment() {
   
   # Zoxide (smart cd)
   export _ZO_ECHO=0                                          # whether to print the matched directory before navigating to it
-  export _ZO_EXCLUDE_DIRS="$ONEXCLOUD/.secret/*:/tmp/secret" # exclude directories from the zoxide database
+  export _ZO_EXCLUDE_DIRS="${XCLOUD}/Vault" # exclude directories from the zoxide database
   export _ZO_FZF_OPTS=""                                     # fzf options during interactive selection (see: man fzf for the list of options)
   export _ZO_RESOLVE_SYMLINKS=0                              # whether to resolve symlinks before adding directories to the zoxide database
   
