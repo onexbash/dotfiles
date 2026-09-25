@@ -6,8 +6,18 @@ require("mini.align").setup()
 -- auto pairs
 require("mini.pairs").setup()
 
--- access to surround keymaps sa,sd,sc etc
-require("mini.surround").setup()
+-- surround words with vim motions
+require("mini.surround").setup({
+	mappings = {
+		add = "sa", -- Add surrounding
+		delete = "sd", -- Delete surrounding
+		replace = "sr", -- Replace surrounding
+		find = "sf", -- Find Surrounding (right)
+		find_left = "sF", -- Find Surrounding (left)
+		highlight = "sh", -- Highlight Surrounding
+	},
+	highlight_duration = 1000,
+})
 
 -- icons
 require("mini.icons").setup()
@@ -30,3 +40,5 @@ require("mini.splitjoin").setup({
 		toggle = "<leader>m",
 	},
 })
+
+require("plugins.mini.statusline")

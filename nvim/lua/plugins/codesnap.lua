@@ -23,7 +23,7 @@ require("codesnap").setup({
 			},
 			breadcrumbs = {
 				enable = true,
-				seperator = "/",
+				separator = "/",
 				color = "#b4befe", -- catppuccin "lavender"
 				font_family = "Caskaydia Nerd Font Mono",
 			},

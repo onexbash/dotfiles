@@ -4,15 +4,15 @@ local usercmd = vim.api.nvim_create_user_command
 
 -- Highlight on yank
 autocmd("TextYankPost", {
-  group = augroup("highlight_yank", { clear = true }),
-  desc = "highlight selection on yank",
-  pattern = "*",
-  callback = function()
-    vim.highlight.on_yank({
-      higroup = "IncSearch",
-      timeout = 200,
-    })
-  end,
+	group = augroup("highlight_yank", { clear = true }),
+	desc = "highlight selection on yank",
+	pattern = "*",
+	callback = function()
+		vim.highlight.on_yank({
+			higroup = "IncSearch",
+			timeout = 200,
+		})
+	end,
 })
 
 -- Restore cursor to file position in previous editing session
@@ -67,3 +67,11 @@ usercmd("PackClean", function()
 	vim.pack.del(inactive)
 	vim.notify("Removed: " .. table.concat(inactive, ", "), vim.log.levels.INFO)
 end, { desc = "Remove plugins not in vim.pack.add() specs" })
+
+-- Auto-compile spell-file edits
+vim.api.nvim_create_autocmd("BufWritePost", {
+	pattern = "*/spell/*.add",
+	callback = function(args)
+		vim.cmd("silent mkspell! " .. vim.fn.fnameescape(args.file))
+	end,
+})

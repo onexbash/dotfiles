@@ -75,7 +75,8 @@ require("mason-lspconfig").setup({
 		-- Text
 		"marksman",
 		"markdown_oxide",
-		"harper_ls",
+		"typos_lsp",
+		-- "harper_ls",
 		-- Container
 		"dockerls",
 		"docker_language_server",
@@ -92,8 +93,27 @@ require("mason-lspconfig").setup({
 	},
 })
 
--- Installed outside Mason (toolchain/project-local)
+-- | LSP Configurations | --
+-- harper_ls
+-- vim.lsp.config("harper_ls", {
+-- 	filetypes = { "markdown", "gitcommit", "text" },
+-- 	settings = {
+-- 		["harper-ls"] = {
+-- 			userDictPath = vim.fn.stdpath("config") .. "/dict.txt",
+-- 		},
+-- 	},
+-- })
+-- typos_lsp
+vim.lsp.config("typos_lsp", {
+	init_options = {
+		diagnosticSeverity = "Hint",
+		config = vim.fn.stdpath("config") .. "/typos.toml",
+	},
+})
+
+-- | Enable LSPs | --
+-- | (installed outside of mason) | --
 vim.lsp.enable({
-	"rust_analyzer", -- Use 'rustup component add rust-analyzer' to install
-	"tsc", -- TypeScript 7 from the project's node_modules
+	"rust_analyzer", -- Installed by rustup
+	"tsc", -- Installed from package.json project-wide
 })

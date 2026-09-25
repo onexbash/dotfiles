@@ -1,0 +1,9 @@
+  {
+    "runtime.version": "LuaJIT",
+    "workspace.checkThirdParty": false,
+    "workspace.library": [
+      "$VIMRUNTIME",
+      "$XDG_DATA_HOME/nvim/site/pack/core/opt/snacks.nvim",
+      "$XDG_DATA_HOME/nvim/site/pack/core/opt/mini.nvim"
+    ]
+  }

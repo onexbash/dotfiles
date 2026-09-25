@@ -58,7 +58,15 @@ vim.opt.signcolumn = "yes" -- always show sign column
 vim.opt.splitbelow = true -- better splitting
 vim.opt.splitright = true -- better splitting
 
+-- spell-check
+vim.opt.encoding = "utf-8"
+vim.opt.spell = true
+vim.opt.spelllang = { "en_us", "de_de" }
+vim.opt.spellfile = {
+	vim.fn.stdpath("config") .. "/spell/en.utf-8.add",
+	vim.fn.stdpath("config") .. "/spell/de.utf-8.add",
+}
+
 -- other
 vim.opt.timeout = true
 vim.opt.timeoutlen = 1000
-vim.opt.spelllang = { "en" }
