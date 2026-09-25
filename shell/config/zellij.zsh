@@ -118,3 +118,8 @@ function zj_delete() {
 function zj_list() {
   zellij list-sessions 
 }
+
+# Call Session Picker
+function zj_pick() {
+  zj
+}
