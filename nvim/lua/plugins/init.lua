@@ -23,8 +23,6 @@ vim.pack.add({
 	-- Find & Replace
 	{ src = "https://github.com/MagicDuck/grug-far.nvim", version = "1.6.78" },
 	{ src = "https://github.com/BurntSushi/ripgrep", version = "15.2.0" },
-	-- Dashboard
-	{ src = "https://github.com/nvimdev/dashboard-nvim", version = "master" },
 	-- Diagnostics
 	{ src = "https://github.com/rachartier/tiny-inline-diagnostic.nvim", version = "main" },
 	-- Codesnap
@@ -44,7 +42,6 @@ require("plugins.mini")
 require("plugins.snacks")
 require("plugins.notify")
 require("plugins.find_replace")
-require("plugins.dashboard")
 require("plugins.diagnostics")
 require("plugins.codesnap")
 require("plugins.claude")

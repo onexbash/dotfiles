@@ -3,19 +3,13 @@ snacks.setup({
 	lazygit = {
 		enabled = true,
 	},
-	picker = {
-		enabled = true,
-		sources = {
-			explorer = {
-				layout = { layout = { position = "right" } },
-			},
-		},
-	},
+	picker = require("plugins.snacks.picker"),
 	explorer = {
 		enabled = true,
 		replace_netrw = true,
 		trash = true,
 	},
+	dashboard = require("plugins.snacks.dashboard"),
 })
 
 -- | LAZYGIT | --
@@ -28,6 +22,3 @@ end, { desc = "Snacks: Open Lazygit" })
 vim.keymap.set({ "n", "v" }, "<C-n>", function()
 	Snacks.explorer()
 end, { desc = "Snacks: Open File Explorer" })
-
--- | LOAD MODULES | --
-require("plugins.snacks.picker")
