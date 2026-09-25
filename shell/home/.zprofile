@@ -9,7 +9,7 @@
 function load_zprofile_files() {
   local config_dir="${XDG_CONFIG_HOME:-$HOME/.config}/shell"
   local config_files=(
-    "brew.zsh"
+    # "brew.zsh"
   )
 
   if [[ ! -d "$config_dir" ]]; then

@@ -2,6 +2,11 @@
 # --       sourced by: .zshenv      -- #
 # --                                -- #
 
+# Initialize Homebrew before constructing the PATH
+function init_homebrew() { 
+  eval $(/opt/homebrew/bin/brew shellenv)
+}
+
 # -- Path Handler -- #
 function construct_path() {
   # Deduplicate entries and tie scalar $PATH to array $path
@@ -31,18 +36,18 @@ function construct_path() {
   # Custom Path Entries
   # note: '(N-/)' drops the entry if no directory exists for a path entry
   local custom_paths=(
-    # Homebrew TODO: check if it makes more sense to add them to /etc/paths.d/50-custom
+    # ASDF
+    ${ASDF_DATA_DIR:-$HOME/.asdf}/shims(N-/)
+    # Rust / Cargo
+    ${CARGO_HOME:-$XDG_CONFIG_HOME/cargo}/bin(N-/)
+    # GoLang
+    ${GOPATH:-$HOME/go}/bin(N-/)
+    # Homebrew
     /opt/homebrew/bin(N-/)
     /opt/homebrew/sbin(N-/)
     # GNU Utils
     /opt/homebrew/opt/coreutils/libexec/gnubin(N-/)
     /opt/homebrew/opt/grep/libexec/gnubin(N-/)
-    # Rust / Cargo
-    ${CARGO_HOME:-$XDG_CONFIG_HOME/cargo}/bin(N-/)
-    # ASDF
-    ${ASDF_DATA_DIR:-$HOME/.asdf}/shims(N-/)
-    # GoLang
-    ${GOPATH:-$HOME/go}/bin(N-/)
   )
   
   # Clear & construct PATH (high-to-low priority)
@@ -61,5 +66,7 @@ function construct_path() {
   fi
 }
 
-# Function Call
+
+# Function Calls
+init_homebrew
 construct_path

@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
 
-# Homebrew
-eval "$(/opt/homebrew/bin/brew shellenv)"
-
 # ZelliJ
 # Auto-Start ZelliJ if not inside a session already
 if [[ -z "$ZELLIJ" ]]; then 

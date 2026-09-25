@@ -19,6 +19,7 @@ function main() {
   install_python
   install_lang golang "https://github.com/asdf-community/asdf-golang.git"
   install_lang ruby   "https://github.com/asdf-vm/asdf-ruby.git"
+  install_lang lua "https://github.com/Stratus3D/asdf-lua.git"
   install_lang neovim "https://github.com/richin13/asdf-neovim.git"
 
   info "For Go, add the following line to your shell config [zshrc/bashrc]:"
