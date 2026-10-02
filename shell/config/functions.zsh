@@ -19,6 +19,19 @@ function print_path() {
   done
 }
 
+# Stay awake to prevent "Away" status
+awake() {
+  local hours="${1:-8}"
+  pkill caffeinate 2>/dev/null
+  nohup caffeinate -d -i -t $((hours * 3600)) >/dev/null 2>&1 & disown
+  echo "Awake for ${hours}h"
+}
+
+# Let the Mac sleep again
+sleepy() {
+  pkill caffeinate && echo "Sleep allowed"
+}
+
 # Display File Permissions
 function chinfo() {
   local target_path && target_path="$1"

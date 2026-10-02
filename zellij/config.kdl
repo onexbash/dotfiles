@@ -11,8 +11,8 @@ keybinds clear-defaults=true {
         bind "Alt k" { MoveFocus "up"; }
         bind "Alt l" { MoveFocusOrTab "right"; }
         bind "Alt q" { CloseFocus; }
-        bind "Alt f" { ToggleFloatingPanes; }
-        bind "Alt x" { ToggleFocusFullscreen; }
+        bind "Alt x" { ToggleFloatingPanes; }
+        bind "Alt f" { ToggleFocusFullscreen; }
     }
     shared_except "locked" {
         bind "Ctrl g" { SwitchToMode "locked"; }
