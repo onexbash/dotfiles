@@ -75,3 +75,41 @@ vim.api.nvim_create_autocmd("BufWritePost", {
 		vim.cmd("silent mkspell! " .. vim.fn.fnameescape(args.file))
 	end,
 })
+
+-- Highlight references
+vim.o.updatetime = 250 -- CursorHold delay in ms (default 4000 is too slow)
+
+vim.api.nvim_create_autocmd("LspAttach", {
+	callback = function(args)
+		local client = vim.lsp.get_client_by_id(args.data.client_id)
+		if not client or not client:supports_method("textDocument/documentHighlight") then
+			return
+		end
+
+		local buf = args.buf
+		local group = vim.api.nvim_create_augroup("lsp_doc_highlight_" .. buf, { clear = true })
+
+		vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
+			group = group,
+			buffer = buf,
+			callback = vim.lsp.buf.document_highlight,
+		})
+		vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI", "BufLeave" }, {
+			group = group,
+			buffer = buf,
+			callback = vim.lsp.buf.clear_references,
+		})
+		vim.api.nvim_create_autocmd("LspDetach", {
+			group = group,
+			buffer = buf,
+			callback = function()
+				vim.lsp.buf.clear_references()
+				vim.api.nvim_del_augroup_by_id(group)
+			end,
+		})
+	end,
+})
+
+vim.api.nvim_set_hl(0, "LspReferenceText", { link = "Visual" })
+vim.api.nvim_set_hl(0, "LspReferenceRead", { link = "Visual" })
+vim.api.nvim_set_hl(0, "LspReferenceWrite", { link = "Visual", underline = true })
