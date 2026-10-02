@@ -68,7 +68,7 @@ outer.right = 10
 # -- PIN WINDOWS -- #
 # Workspace 1
 [[on-window-detected]]
-if = 'test %{app-name} ~= "^(Terminal|Kitty|Ghostty|WezTerm|Zed|Sublime Text)$"'
+if = 'test %{app-name} ~= "^(Terminal|Kitty|Ghostty|WezTerm|Zed|Sublime Text|VSCodium|IntelliJ IDEA OSS)$"'
 run = 'move-node-to-workspace 1'
 
 # Workspace 2 [FREE SPACE]
@@ -76,15 +76,27 @@ run = 'move-node-to-workspace 1'
 
 # Workspace 3
 [[on-window-detected]]
-if = 'test %{app-name} ~= "^(Firefox Developer Edition|Firefox|Brave)$"'
+if = 'test %{app-name} ~= "^(Firefox Developer Edition|Firefox|Brave|Claude)$"'
 run = 'move-node-to-workspace 3'
 
 # Workspace 4
 [[on-window-detected]]
-if = 'test %{app-name} ~= "^(Outlook|Microsoft Teams|Discord|Spotify)$"'
+if = 'test %{app-name} ~= "^(Outlook|Proton Mail|Microsoft Teams|Discord)$"'
 run = 'move-node-to-workspace 4'
 
 # Workspace 5
 [[on-window-detected]]
-if = 'test %{app-name} ~= "^(KeePassXC|Proton Pass)$"'
+if = 'test %{app-name} ~= "^(AppFlowy)$"'
 run = 'move-node-to-workspace 5'
+
+# Workspace 6
+[[on-window-detected]]
+if = 'test %{app-name} ~= "^(KeePassXC|Proton Pass|Spotify)$"'
+run = 'move-node-to-workspace 5'
+
+
+# -- RULES -- #
+# Use floating windows by default for apps that aren't pinned to workspaces
+[[on-window-detected]]
+if = 'true'
+run = 'layout floating'
