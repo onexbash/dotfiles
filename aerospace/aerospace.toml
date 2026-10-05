@@ -81,18 +81,18 @@ run = 'move-node-to-workspace 3'
 
 # Workspace 4
 [[on-window-detected]]
-if = 'test %{app-name} ~= "^(Outlook|Proton Mail|Microsoft Teams|Discord)$"'
+if = 'test %{app-name} ~= "^(Outlook|Proton Mail|Microsoft Teams|Microsoft Outlook|Discord)$"'
 run = 'move-node-to-workspace 4'
 
 # Workspace 5
 [[on-window-detected]]
-if = 'test %{app-name} ~= "^(AppFlowy)$"'
+if = 'test %{app-name} ~= "^(AppFlowy|Spotify)$"'
 run = 'move-node-to-workspace 5'
 
 # Workspace 6
 [[on-window-detected]]
-if = 'test %{app-name} ~= "^(KeePassXC|Proton Pass|Spotify)$"'
-run = 'move-node-to-workspace 5'
+if = 'test %{app-name} ~= "^(KeePassXC|Proton Pass)$"'
+run = 'move-node-to-workspace 6'
 
 
 # -- RULES -- #
