@@ -71,7 +71,7 @@ MiniStatusline.setup({
 for _, name in ipairs({ "StatusLine", "StatusLineNC", "MiniStatuslineFilename" }) do
 	local fg = vim.api.nvim_get_hl(0, { name = name }).fg
 
-	vim.api.nvim_set_hl(0, name, {
+	set_hl(0, name, {
 		fg = fg,
 		bg = "NONE",
 	})

@@ -10,7 +10,7 @@ claude.setup({
 
 -- | KEYMAPS | --
 local map = function(mode, lhs, rhs, desc)
-	vim.keymap.set(mode, lhs, rhs, { desc = "Claude: " .. desc })
+	keymap(mode, lhs, rhs, { desc = "Claude: " .. desc })
 end
 
 map("n", "<leader>cc", "<cmd>ClaudeCode<cr>", "Toggle")

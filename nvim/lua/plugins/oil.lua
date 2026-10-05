@@ -79,6 +79,6 @@
 -- })
 --
 -- -- | Keymaps | --
--- vim.keymap.set("n", "<C-n>", function()
+-- keymap("n", "<C-n>", function()
 -- 	require("oil").toggle_float()
 -- end, { desc = "oil: toggle float" })

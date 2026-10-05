@@ -1,5 +1,3 @@
-local keymap = vim.keymap.set
-
 -- Disable Space bar as it's used as the leader key
 keymap({ "n", "v" }, "<leader>", "<nop>", { desc = "Disable leader key default" })
 

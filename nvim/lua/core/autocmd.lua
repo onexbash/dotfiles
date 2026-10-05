@@ -1,7 +1,3 @@
-local augroup = vim.api.nvim_create_augroup
-local autocmd = vim.api.nvim_create_autocmd
-local usercmd = vim.api.nvim_create_user_command
-
 -- Highlight on yank
 autocmd("TextYankPost", {
 	group = augroup("highlight_yank", { clear = true }),
@@ -69,7 +65,7 @@ usercmd("PackClean", function()
 end, { desc = "Remove plugins not in vim.pack.add() specs" })
 
 -- Auto-compile spell-file edits
-vim.api.nvim_create_autocmd("BufWritePost", {
+autocmd("BufWritePost", {
 	pattern = "*/spell/*.add",
 	callback = function(args)
 		vim.cmd("silent mkspell! " .. vim.fn.fnameescape(args.file))
@@ -79,7 +75,7 @@ vim.api.nvim_create_autocmd("BufWritePost", {
 -- Highlight references
 vim.o.updatetime = 250 -- CursorHold delay in ms (default 4000 is too slow)
 
-vim.api.nvim_create_autocmd("LspAttach", {
+autocmd("LspAttach", {
 	callback = function(args)
 		local client = vim.lsp.get_client_by_id(args.data.client_id)
 		if not client or not client:supports_method("textDocument/documentHighlight") then
@@ -87,19 +83,19 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		end
 
 		local buf = args.buf
-		local group = vim.api.nvim_create_augroup("lsp_doc_highlight_" .. buf, { clear = true })
+		local group = augroup("lsp_doc_highlight_" .. buf, { clear = true })
 
-		vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
+		autocmd({ "CursorHold", "CursorHoldI" }, {
 			group = group,
 			buffer = buf,
 			callback = vim.lsp.buf.document_highlight,
 		})
-		vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI", "BufLeave" }, {
+		autocmd({ "CursorMoved", "CursorMovedI", "BufLeave" }, {
 			group = group,
 			buffer = buf,
 			callback = vim.lsp.buf.clear_references,
 		})
-		vim.api.nvim_create_autocmd("LspDetach", {
+		autocmd("LspDetach", {
 			group = group,
 			buffer = buf,
 			callback = function()
@@ -110,6 +106,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
 	end,
 })
 
-vim.api.nvim_set_hl(0, "LspReferenceText", { link = "Visual" })
-vim.api.nvim_set_hl(0, "LspReferenceRead", { link = "Visual" })
-vim.api.nvim_set_hl(0, "LspReferenceWrite", { link = "Visual", underline = true })
+set_hl(0, "LspReferenceText", { link = "Visual" })
+set_hl(0, "LspReferenceRead", { link = "Visual" })
+set_hl(0, "LspReferenceWrite", { link = "Visual", underline = true })

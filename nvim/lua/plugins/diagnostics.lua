@@ -16,7 +16,7 @@ vim.diagnostic.config({
 
 -- | Keymaps | --
 -- toggle buffer diagnostics in the location list
-vim.keymap.set("n", "<leader>xx", function()
+keymap("n", "<leader>xx", function()
 	if vim.fn.getloclist(0, { winid = 0 }).winid ~= 0 then
 		vim.cmd.lclose()
 	else

@@ -20,9 +20,11 @@ vim.pack.add({
 	-- Filetree
 	--{ src = "https://github.com/stevearc/oil.nvim", version = "v2.16.0" },
 	--{ src = "https://github.com/refractalize/oil-git-status.nvim", version = "main" },
+	-- Bufferline
+	{ src = "https://github.com/akinsho/bufferline.nvim", version = "v4.9.1" },
 	-- Find & Replace
-	{ src = "https://github.com/MagicDuck/grug-far.nvim", version = "1.6.78" },
 	{ src = "https://github.com/BurntSushi/ripgrep", version = "15.2.0" },
+	{ src = "https://github.com/MagicDuck/grug-far.nvim", version = "1.6.78" }, -- Dependencies: [BurntSushi/ripgrep | nvim-mini/mini.icons]
 	-- Diagnostics
 	{ src = "https://github.com/rachartier/tiny-inline-diagnostic.nvim", version = "main" },
 	-- Codesnap
@@ -41,6 +43,7 @@ require("plugins.format")
 require("plugins.mini")
 require("plugins.snacks")
 require("plugins.notify")
+require("plugins.bufferline")
 require("plugins.find_replace")
 require("plugins.diagnostics")
 require("plugins.codesnap")

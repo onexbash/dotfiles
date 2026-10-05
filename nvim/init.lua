@@ -12,6 +12,7 @@ vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
 
 -- Load Modules
+require("core.globals")
 require("core.keymaps")
 require("core.options")
 require("core.autocmd")

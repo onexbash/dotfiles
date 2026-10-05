@@ -1,33 +1,33 @@
 -- | KEYMAPS | --
 -- Keymap Function to avoid repetition
-local keymap = function(lhs, picker, desc)
-	vim.keymap.set("n", lhs, function()
+local map = function(lhs, picker, desc)
+	keymap("n", lhs, function()
 		Snacks.picker[picker]()
 	end, { desc = "Picker: " .. desc })
 end
 
 -- Find Files
-keymap("<leader>ff", "smart", "Find Files (smart)")
+map("<leader>ff", "smart", "Find Files (smart)")
 -- Grep Strings
-keymap("<leader>fg", "grep", "Grep")
+map("<leader>fg", "grep", "Grep")
 -- Command History
-keymap("<leader>fc", "command_history", "Command History")
+map("<leader>fc", "command_history", "Command History")
 -- Buffers
-keymap("<leader>fb", "buffers", "Buffers")
+map("<leader>fb", "buffers", "Buffers")
 -- Diagnostics
-keymap("<leader>fd", "diagnostics", "Diagnostics")
+map("<leader>fd", "diagnostics", "Diagnostics")
 -- Help
-keymap("<leader>fh", "help", "Help Pages")
+map("<leader>fh", "help", "Help Pages")
 -- Manpages
-keymap("<leader>fm", "man", "Manpages")
+map("<leader>fm", "man", "Manpages")
 -- LSP: Definition
-keymap("xd", "lsp_definitions", "Definition")
+map("xd", "lsp_definitions", "Definition")
 -- LSP: References
-keymap("xr", "lsp_references", "References")
+map("xr", "lsp_references", "References")
 -- LSP: Implementation
-keymap("xi", "lsp_implementations", "Implementation")
+map("xi", "lsp_implementations", "Implementation")
 -- LSP: Type Definition
-keymap("xt", "lsp_type_definitions", "Type Definition")
+map("xt", "lsp_type_definitions", "Type Definition")
 
 -- | CONFIGURATION | --
 return {

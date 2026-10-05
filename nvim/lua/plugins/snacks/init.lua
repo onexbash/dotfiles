@@ -14,11 +14,11 @@ snacks.setup({
 
 -- | LAZYGIT | --
 -- Open Lazygit
-vim.keymap.set("n", "<leader>lg", function()
+keymap("n", "<leader>lg", function()
 	Snacks.lazygit()
 end, { desc = "Snacks: Open Lazygit" })
 
 -- | EXPLORER | --
-vim.keymap.set({ "n", "v" }, "<C-n>", function()
+keymap({ "n", "v" }, "<C-n>", function()
 	Snacks.explorer()
 end, { desc = "Snacks: Open File Explorer" })
