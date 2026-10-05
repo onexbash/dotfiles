@@ -20,3 +20,5 @@
 .nvimlog
 log/
 *.log
+
+**/.claude/.cc-writes/
