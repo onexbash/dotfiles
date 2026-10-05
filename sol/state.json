@@ -1,0 +1,32 @@
+{
+  "clipboard": {
+    "saveHistory": true
+  },
+  "calendar": {
+    "selectedCalendarIds": [],
+    "hasInitializedSelection": false
+  },
+  "emoji": {
+    "frequentlyUsedEmojis": {}
+  },
+  "frequencies": {
+    "file:///Applications/Sol.app/": 1,
+    "file:///Applications/DeepL.app/": 3,
+    "settings": 2
+  },
+  "selectionTimestamps": {
+    "file:///Applications/Sol.app/": 1791189624872,
+    "file:///Applications/DeepL.app/": 1791191379438,
+    "settings": 1791191315083
+  },
+  "history": [
+    "sol",
+    "dee",
+    "sett",
+    "sett",
+    "dee",
+    "dee"
+  ],
+  "note": "",
+  "onboardingStep": "v1_completed"
+}
