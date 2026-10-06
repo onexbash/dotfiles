@@ -1,3 +1,9 @@
+# -- -- -- -- -- -- -- -- -- -- -- #
+# --         USER BASHRC        -- #
+# -- -- -- -- -- -- -- -- -- -- -- #
+# --          ~/.bashrc         -- #
+# -- -- -- -- -- -- -- -- -- -- -- #
+
 # Source global bash config
 if [ -f /etc/bashrc ]; then
     . /etc/bashrc

@@ -1,9 +1,13 @@
-#!/usr/bin/env zsh
 # -- -- -- -- -- -- -- -- -- -- #
 # --       HOME ZSHENV       -- #
 # -- -- -- -- -- -- -- -- -- -- #
 # --        ~/.zshenv        -- #
 # -- -- -- -- -- -- -- -- -- -- #
+
+# Load user shell-profile shared with all Shells (sh|bash|zsh)
+function load_sh_profile(){
+  [ -f "$HOME/.profile" ] && emulate sh -c '. "$HOME/.profile"'
+}
 
 # Source Files that extend ~/.zshenv
 function load_zshenv_files() {
@@ -28,5 +32,7 @@ function load_zshenv_files() {
   done
 }
 
+# Call & Undefine above Functions
+load_sh_profile
 load_zshenv_files
-unfunction load_zshenv_files
+unfunction load_sh_profile load_zshenv_files

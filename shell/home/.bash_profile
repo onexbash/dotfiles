@@ -1,9 +1,19 @@
+# -- -- -- -- -- -- -- -- -- -- -- -- -- #
+# --         USER BASH_PROFILE        -- #
+# -- -- -- -- -- -- -- -- -- -- -- -- -- #
+# --          ~/.bash_profile         -- #
+# -- -- -- -- -- -- -- -- -- -- -- -- -- #
+
+
 # Source global bash_profile
 if [ -f /etc/bash_profile ]; then
     . /etc/bash_profile
 fi
 
-# Function to load User BASH Config Files
+# Source user shell-profile shared with all Shells (sh|bash|zsh)
+[ -f "$HOME/.profile" ] && . "$HOME/.profile"
+
+# Source User BASH Config Files
 load_configs() {
     local config_dir file path
     config_dir="${XDG_CONFIG_HOME:-$HOME/.config}/shell"
