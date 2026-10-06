@@ -21,7 +21,7 @@ vim.pack.add({
 	--{ src = "https://github.com/stevearc/oil.nvim", version = "v2.16.0" },
 	--{ src = "https://github.com/refractalize/oil-git-status.nvim", version = "main" },
 	-- Bufferline
-	{ src = "https://github.com/akinsho/bufferline.nvim", version = "v4.9.1" },
+	-- { src = "https://github.com/akinsho/bufferline.nvim", version = "v4.9.1" },
 	-- Find & Replace
 	{ src = "https://github.com/BurntSushi/ripgrep", version = "15.2.0" },
 	{ src = "https://github.com/MagicDuck/grug-far.nvim", version = "1.6.78" }, -- Dependencies: [BurntSushi/ripgrep | nvim-mini/mini.icons]
@@ -43,7 +43,7 @@ require("plugins.format")
 require("plugins.mini")
 require("plugins.snacks")
 require("plugins.notify")
-require("plugins.bufferline")
+-- require("plugins.bufferline") -- TODO: find better solution for buffers than bufferline
 require("plugins.find_replace")
 require("plugins.diagnostics")
 require("plugins.codesnap")
