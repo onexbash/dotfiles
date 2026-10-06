@@ -1,9 +1,8 @@
-#!/usr/bin/env zsh
-# -- -- -- -- -- -- -- -- -- -- #
-# --      HOME ZPROFILE      -- #
-# -- -- -- -- -- -- -- -- -- -- #
-# --    $ZDOTDIR/.zprofile   -- #
-# -- -- -- -- -- -- -- -- -- -- #
+# -- -- -- -- -- -- -- -- -- -- -- #
+# --       HOME ZPROFILE        -- #
+# -- -- -- -- -- -- -- -- -- -- -- #
+# --        ~/.zprofile         -- #
+# -- -- -- -- -- -- -- -- -- -- -- #
 
 # Source Files that extend .zprofile
 function load_zprofile_files() {
