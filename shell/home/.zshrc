@@ -5,9 +5,20 @@
 # --          ~/.zshrc          -- #
 # -- -- -- -- -- -- -- -- -- -- -- #
 
-# Source Files that extend ~/.zshrc
-function load_zshrc_files() {
-  local config_dir="${XDG_CONFIG_HOME:-$HOME/.config}/shell"
+# Function to Source Shell Files
+function load_shell_files() {
+  local shell_dir="${XDG_CONFIG_HOME:-$HOME/.config}/shell"
+
+  if [[ ! -d "$shell_dir" ]]; then
+    mkdir -p "$shell_dir"
+  fi
+
+  # Source Utility Shell File & Call its functions
+  local util_file="${shell_dir}/util.sh"
+  source "$util_file"
+  tty_styles
+
+  # Load Config Shell Files that extend ~/.zshrc
   local config_files=(
     "zellij.zsh"
     "autoreload.zsh"
@@ -16,14 +27,9 @@ function load_zshrc_files() {
     "tools.zsh"
     # "claude.zsh"
   )
-
-  if [[ ! -d "$config_dir" ]]; then
-    mkdir -p "$config_dir"
-  fi
-
   local file
   for file in "${config_files[@]}"; do
-    local filepath="$config_dir/$file"
+    local filepath="$shell_dir/$file"
     if [[ -r "$filepath" ]]; then
       source "$filepath"
     else
@@ -32,5 +38,8 @@ function load_zshrc_files() {
   done
 }
 
-load_zshrc_files
-unfunction load_zshrc_files
+load_shell_files
+unfunction load_shell_files
+
+
+

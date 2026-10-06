@@ -35,6 +35,7 @@ sleepy() {
 # Display File Permissions
 function chinfo() {
   local target_path && target_path="$1"
+  local os && os="$(detect_os)"
   
   # Define OS-specific functions
   # shellcheck disable=SC2329 
@@ -81,7 +82,7 @@ function chinfo() {
   }
   # shellcheck disable=SC2329 
   unknown() {
-    echo -e "${I_ERR}Unsupported Platform Detected: ${FG_RED}unknown${S_RESET}"
+    echo -e "${I_ERR}Unsupported Platform Detected: ${FG_RED}${os}${S_RESET}"
     return 1
   }
    
@@ -90,8 +91,12 @@ function chinfo() {
     echo -e "${I_ERR}Path does not exist: ${FG_RED}$target_path${S_RESET}"
     return 1
   fi
-  # Call one of macos/linux/unknown function blocks above based on $OS variable
-  "$OS" 2>/dev/null
+  # Call one of macos/linux/unknown function blocks above based on detect_os (util.sh)
+  case "$os" in
+    osx)   macos ;;
+    linux) linux ;;
+    *)     unknown ;;
+  esac
 }
 
 # Script picker: pick a script from $XSCRIPTS
@@ -108,13 +113,3 @@ pick_script() {
     *)     bash "$dir/$script" "$@" ;;
   esac
 }
-
-function get_bundle_id() {
-  local app_path && app_path="$1"
-  # shellcheck disable=SC2329
-  macos() {
-    mdls -name kMDItemCFBundleIdentifier -r "$app_path"
-  }
-  "$OS" 2>/dev/null
-}
-
