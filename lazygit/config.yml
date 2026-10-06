@@ -34,8 +34,8 @@ gui:
       - "#f38ba8"
     defaultFgColor:
       - "#cdd6f4"
-  authorColors:
-    "*": "#b4befe"
+    authorColors:
+      "*": "#b4befe"
 # -- GIT -- #
 git:
   diffRenderers:
@@ -43,8 +43,7 @@ git:
       type: stdinFilter
       colorArg: always
       command: >-
-        delta --paging=never
-        --hyperlinks --hyperlinks-file-link-format="lazygit-edit://{path}:{line}"
+        delta --paging=never --hyperlinks --hyperlinks-file-link-format="lazygit-edit://{path}:{line}"
 # -- OS -- #
 os:
   editPreset: nvim
