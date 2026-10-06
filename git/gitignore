@@ -22,3 +22,5 @@ log/
 *.log
 
 **/.claude/.cc-writes/
+
+**/.claude/settings.local.json
