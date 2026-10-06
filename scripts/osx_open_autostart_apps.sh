@@ -1,16 +1,13 @@
+#!/usr/bin/env bash
+
 # --                            -- #
 # --     RUN AUTOSTART APPS     -- #
 # --                            -- #
 
 # Main Function (Constructor)
 function main() {
-  # Source Utility Script
+  # Source Utility Script & Call Functions
   source "$SHELL_UTIL_FILE"
-  # local script_dir="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd -P)"
-  # local util_script="${script_dir}/util.sh"
-  # source "$util_script"
-
-  # Call Utility Functions
   set_modes
   tty_styles
 
