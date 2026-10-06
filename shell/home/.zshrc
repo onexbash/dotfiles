@@ -13,10 +13,9 @@ function load_shell_files() {
     mkdir -p "$shell_dir"
   fi
 
-  # Source Utility Shell File & Call its functions
+  # Source Utility Shell File
   local util_file="${shell_dir}/util.sh"
   source "$util_file"
-  tty_styles
 
   # Load Config Shell Files that extend ~/.zshrc
   local config_files=(
@@ -40,6 +39,3 @@ function load_shell_files() {
 
 load_shell_files
 unfunction load_shell_files
-
-
-

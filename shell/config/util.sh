@@ -3,7 +3,12 @@
 # --    SOURCED BY ZSH & BASH   -- #
 # --                            -- #
 
-# [UTIL] Terminal Colors & Prompts
+# Main 'Constructor' that calls init functions (which should always be called)
+function main() {
+  tty_styles
+}
+
+# [INIT] Terminal Colors & Prompts
 function tty_styles() {
   # -- TERMINAL COLORS -- #
   export C_BLACK='\033[1;30m'
@@ -50,18 +55,41 @@ function set_modes() {
   fi
 }
 
-# [UTIL] Copy to clipboard
+# [UTIL] Copy stdin to clipboard
 function copy_to_clipboard() {
-  if command -v pbcopy &>/dev/null; then
-    pbcopy
-  elif command -v wl-copy &>/dev/null; then
-    wl-copy
-  elif command -v xclip &>/dev/null; then
-    xclip -selection clipboard 2>/dev/null
-  else
-    cat
-    echo -e "\n${I_WARN}No clipboard tool found — printed above instead." >&2
+  local os
+  os="$(detect_os)"
+  # MacOS (pbcopy/xclip)
+  if [[ "$os" == "osx" ]]; then
+    if command -v pbcopy &>/dev/null; then
+      pbcopy
+      return
+    fi
+    if command -v xclip &>/dev/null; then
+      xclip -selection clipboard 2>/dev/null
+      return
+    fi
+  # Linux (wl-copy/xclip/xsel)
+  elif [[ "$os" == "linux" ]]; then
+    if [[ -n "$WAYLAND_DISPLAY" ]] && command -v wl-copy &>/dev/null; then
+      wl-copy
+      return
+    fi
+    if [[ -n "$DISPLAY" ]]; then
+      if command -v xclip &>/dev/null; then
+        xclip -selection clipboard 2>/dev/null
+        return
+      fi
+      if command -v xsel &>/dev/null; then
+        xsel --clipboard --input
+        return
+      fi
+    fi
   fi
+
+  cat
+  echo -e "\n${I_WARN}No clipboard tool found on ${C_YELLOW}${os}${C_RESET} — printed above instead." >&2
+  return 1
 }
 
 # [UTIL] Linux PKG Installer
@@ -80,48 +108,66 @@ function install_linux_pkg() {
 
 # [UTIL] Get the bundle ID of MacOS apps
 function get_bundle_id() {
-  if [[ $# -eq 0 ]]; then
-    echo "Usage: get_bundle_id <App Name | /path/to/App.app> [...]" >&2
+  if [[ "$(detect_os)" != "osx" ]]; then
+    echo -e "${I_ERR}get_bundle_id only works on macOS" >&2
     return 1
   fi
 
-  local os app id rc=0
-  os=$(detect_os)
+  # Parse arguments: flags can be placed anywhere, the last mode flag wins
+  local mode="stdout" arg
+  local -a apps=() ids=()
+  for arg in "$@"; do
+    case "$arg" in
+    --stdout) mode="stdout" ;;
+    --copy) mode="copy" ;;
+    -*)
+      echo -e "${I_ERR}Unknown option: ${C_RED}${arg}${C_RESET}" >&2
+      return 1
+      ;;
+    *) apps+=("$arg") ;;
+    esac
+  done
+  if [[ ${#apps[@]} -eq 0 ]]; then
+    echo -e "${I_INFO}Usage: get_bundle_id [--stdout | --copy] <App Name | /path/to/App.app> [...]" >&2
+    return 1
+  fi
 
-  for app in "$@"; do
-    id=""
-    if [[ -f "$app/Contents/Info.plist" ]]; then
-      # Path to an .app bundle: read Info.plist directly
-      if [[ "$os" == "osx" ]]; then
-        id=$(/usr/libexec/PlistBuddy -c 'Print :CFBundleIdentifier' "$app/Contents/Info.plist" 2>/dev/null)
-      elif command -v python3 >/dev/null 2>&1; then
-        id=$(python3 -c 'import plistlib,sys; print(plistlib.load(open(sys.argv[1],"rb"))["CFBundleIdentifier"])' "$app/Contents/Info.plist" 2>/dev/null)
-      else
-        echo "get_bundle_id: python3 is required to read .app bundles on $os" >&2
-        rc=1
-        continue
-      fi
-    elif [[ "$os" == "osx" ]]; then
+  local app id rc=0
+  for app in "${apps[@]}"; do
+    if [[ "$app" == *.app ]]; then
+      # Path to an .app bundle: read its Info.plist
+      id=$(/usr/libexec/PlistBuddy -c 'Print :CFBundleIdentifier' "$app/Contents/Info.plist" 2>/dev/null)
+    else
       # App name: resolve it like `open -a` does
       id=$(osascript -e 'on run argv' -e 'return id of application (item 1 of argv)' -e 'end run' "$app" 2>/dev/null)
-    else
-      echo "get_bundle_id: lookup by app name only works on macOS ($os); pass a path to an .app bundle instead" >&2
-      rc=1
-      continue
     fi
 
     if [[ -z "$id" ]]; then
-      echo "get_bundle_id: '$app' not found" >&2
+      echo -e "${I_ERR}App not found: ${C_RED}${app}${C_RESET}" >&2
       rc=1
-      continue
-    fi
-
-    if [[ $# -eq 1 ]]; then
+    elif [[ "$mode" == "copy" ]]; then
+      ids+=("$id")
+    elif [[ ${#apps[@]} -eq 1 ]]; then
       echo "$id"
     else
-      printf '%s: %s\n' "$app" "$id"
+      echo -e "${I_OK}${C_WHITE}${app}${C_RESET}: ${C_CYAN}${id}${C_RESET}"
     fi
   done
 
+  # Copy all found IDs at once (one per line, no trailing newline)
+  if [[ "$mode" == "copy" && ${#ids[@]} -gt 0 ]]; then
+    if (
+      IFS=$'\n'
+      printf '%s' "${ids[*]}"
+    ) | copy_to_clipboard; then
+      echo -e "${I_OK}Copied to clipboard: ${C_CYAN}${ids[*]}${C_RESET}"
+    else
+      rc=1
+    fi
+  fi
+
   return $rc
 }
+
+# Call main Function with Args
+main "$@"
