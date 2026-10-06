@@ -68,7 +68,7 @@ outer.right = 10
 # -- PIN WINDOWS -- #
 # Workspace 1
 [[on-window-detected]]
-if = 'test %{app-name} ~= "^(Terminal|Kitty|Ghostty|WezTerm|Zed|Sublime Text|VSCodium|IntelliJ IDEA OSS)$"'
+if = 'test %{app-name} ~= "^(Terminal|Kitty|Ghostty|WezTerm|Zed|Sublime Text|Lite XL|VSCodium|IntelliJ IDEA OSS)$"'
 run = 'move-node-to-workspace 1'
 
 # Workspace 2 [FREE SPACE]
