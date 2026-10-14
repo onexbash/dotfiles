@@ -1,0 +1,33 @@
+[core]
+output = table
+collect_telemetry = false
+only_show_errors = false
+login_experience_v2 = off
+first_run = true
+disable_confirm_prompt = true
+no_color = false
+
+[cloud]
+name = AzureCloud
+
+
+[output]
+show_survey_message = false
+
+[auto-upgrade]
+enable = false
+
+[logging]
+enable_log_file = true
+
+[defaults]
+location = germanywestcentral
+
+[batch]
+account = "batch-fabian"
+auth_mode = aad
+
+[extension]
+use_dynamic_install = yes_without_prompt
+run_after_dynamic_install = true
+# dynamic_install_allow_preview = false
