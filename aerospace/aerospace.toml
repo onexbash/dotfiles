@@ -1,6 +1,6 @@
 # -- OPTIONS -- #
 # start-up
-start-at-login = true
+start-at-login = false # handled by onesetup via LaunchAgent
 after-startup-command = []
 # normalization
 enable-normalization-flatten-containers = true
