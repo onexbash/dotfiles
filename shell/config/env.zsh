@@ -45,6 +45,7 @@ export ASDF_DATA_DIR="${XDG_CONFIG_HOME}/asdf"
 export ASDF_CONFIG_FILE="${XDG_CONFIG_HOME}/asdf/config.ini"
  
 # Claude-Code
+export CLAUDE_CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/claude"
 export DISABLE_AUTOUPDATER=1 # disable Claude-Code Auto-Updater to be managed by homebrew
 
 # Azure CLI
