@@ -1,0 +1,5 @@
+# Repos below ~/dev/repos/cratos/ → GitHub account cratos-fabian
+[url "git@github-cratos:"]
+  insteadOf = git@github.com:
+[user]
+  email = "fabian.schlegel-eck@cratos.de"
