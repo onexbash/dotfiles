@@ -1,5 +1,6 @@
 # Repos below ~/dev/repos/onexbash/ → GitHub account onexbash
 [url "git@github-onexbash:"]
   insteadOf = git@github.com:
+  insteadOf = https://github.com/
 [user]
   email = "fabian@schlegel.one"
