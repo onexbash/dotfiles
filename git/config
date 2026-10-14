@@ -41,4 +41,12 @@
   helper =
   helper = /usr/local/share/gcm-core/git-credential-manager
 [credential "https://dev.azure.com"]
-  useHttpPath = true
+useHttpPath = true
+
+# -- ACCOUNTS -- #
+# GitHub: onexbash
+[includeIf "gitdir:~/dev/repos/onexbash/"]
+path = onexbash.gitconfig
+# GitHub: cratos-fabian
+[includeIf "gitdir:~/dev/repos/cratos/"]
+  path = cratos.gitconfig
