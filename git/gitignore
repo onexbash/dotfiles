@@ -3,24 +3,50 @@
 # --     .gitignore    -- #
 # -- -- -- -- -- -- -- -- #
 
-# --  [ MacOS ]  -- #
+# --  [ Secrets & Local Environments ]  -- #
+.env
+.env.local
+.venv/
+venv/
+.direnv/
+.devenv/
+
+# --  [ OS Files ]  -- #
+# MacOS
 .DS_Store
-# --  [ Linux ]  -- #
-# --  [ Windows ]  -- #
-
-# --  [ IDEs ]  -- #
-.idea/
-.vscode/
-.zed/
-
-# --  [ Swap Files ]  -- #
+.AppleDouble
+.LSOverride
+._*
+# Linux
 *~
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# --  [ Swap & Temporary Files ]  -- #
+*.tmp
+*.bak
 
 # --  [ Log Files ]  -- #
 .nvimlog
 log/
 *.log
 
-**/.claude/.cc-writes/
+# --  [ IDEs ]  -- #
+.idea/
+.vscode/
+.zed/
+.fleet/
+*.swp
+*.swo
+*.sublime-workspace
 
-**/.claude/settings.local.json
+# --  [ AI Tools & Code Agents ]  -- #
+.claude/
+.cursor/
+.copilot/
+.cline/
+.roo/
