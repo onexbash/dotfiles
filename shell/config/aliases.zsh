@@ -23,6 +23,7 @@ alias dk="docker"
 alias gping='gping --color="#a6e3a1" --clear --horizontal-margin="20" --vertical-margin="20"'
 alias ping="ping -c 2"
 alias code="codium"
+alias gcm="git-credential-manager"
 
 # ssh-keygen
 alias ssh-keygen="x_ssh_keygen"
