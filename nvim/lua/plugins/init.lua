@@ -1,4 +1,6 @@
 vim.pack.add({
+	-- Utilities / Dependencies
+	{ src = "https://github.com/nvim-lua/plenary.nvim", version = "master" },
 	-- Colorscheme
 	{ src = "https://github.com/catppuccin/nvim", name = "catppuccin", version = "main" },
 	-- Tree-sitter
@@ -31,6 +33,8 @@ vim.pack.add({
 	{ src = "https://github.com/mistricky/codesnap.nvim", version = "v2.1.1" },
 	-- Claude Code
 	{ src = "https://github.com/coder/claudecode.nvim", version = "v0.3.0" },
+	-- Obsidian
+	{ src = "https://github.com/epwalsh/obsidian.nvim", version = "v3.9.0" },
 })
 
 require("plugins.colorscheme")
@@ -48,3 +52,4 @@ require("plugins.find_replace")
 require("plugins.diagnostics")
 require("plugins.codesnap")
 require("plugins.claude")
+-- require("plugins.obsidian")
