@@ -17,6 +17,17 @@ require("mason").setup({
 	},
 })
 
+-- Install Mason packages without a valid mason-lspconfig mapping
+local registry = require("mason-registry")
+registry.refresh(function()
+	for _, name in ipairs({ "stylelint-language-server" }) do
+		local pkg = registry.get_package(name)
+		if not pkg:is_installed() then
+			pkg:install()
+		end
+	end
+end)
+
 -- mason-lspconfig.nvim
 require("mason-lspconfig").setup({
 	automatic_enable = {
@@ -54,7 +65,6 @@ require("mason-lspconfig").setup({
 		"somesass_ls",
 		"css_variables",
 		"cssmodules_ls",
-		"stylelint_lsp",
 		"tailwindcss",
 		-- Other languages
 		"jdtls",
@@ -74,9 +84,7 @@ require("mason-lspconfig").setup({
 		"sqruff",
 		-- Text
 		"marksman",
-		"markdown_oxide",
 		"typos_lsp",
-		-- "harper_ls",
 		-- Container
 		"dockerls",
 		"docker_language_server",
@@ -116,4 +124,5 @@ vim.lsp.config("typos_lsp", {
 vim.lsp.enable({
 	"rust_analyzer", -- Installed by rustup
 	"tsc", -- Installed from package.json project-wide
+	"stylelint_lsp",
 })

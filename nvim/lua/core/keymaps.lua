@@ -20,3 +20,9 @@ keymap("n", "<S-h>", ":bprevious<CR>", { silent = true, desc = "Previous buffer"
 -- | VIM MOTIONS | --
 -- override: paste
 keymap("v", "p", '"_dP', { desc = "Remap paste to prevent overwriting the clipboard" })
+
+-- | TERMINAL WINDOWS | --
+-- Switch Focus
+for _, key in ipairs({ "h", "j", "k", "l" }) do
+	keymap("t", "<C-w>" .. key, "<C-\\><C-n><C-w>" .. key, { desc = "Go to window " .. key })
+end

@@ -70,3 +70,7 @@ vim.opt.spellfile = {
 -- other
 vim.opt.timeout = true
 vim.opt.timeoutlen = 1000
+
+-- notifications
+vim.o.cmdheight = 0
+require("vim._core.ui2").enable({})

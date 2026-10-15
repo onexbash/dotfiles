@@ -5,8 +5,8 @@ snacks.setup({
 	},
 	picker = require("plugins.snacks.picker"),
 	explorer = {
-		enabled = true,
-		replace_netrw = true,
+		enabled = false,
+		replace_netrw = false,
 		trash = true,
 	},
 	dashboard = require("plugins.snacks.dashboard"),
@@ -19,6 +19,6 @@ keymap("n", "<leader>lg", function()
 end, { desc = "Snacks: Open Lazygit" })
 
 -- | EXPLORER | --
-keymap({ "n", "v" }, "<C-n>", function()
-	Snacks.explorer()
-end, { desc = "Snacks: Open File Explorer" })
+-- keymap({ "n", "v", "t" }, "<C-n>", function()
+-- 	Snacks.explorer()
+-- end, { desc = "Snacks: Open File Explorer" })
