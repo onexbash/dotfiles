@@ -15,12 +15,15 @@ vim.pack.add({
 	{ src = "https://github.com/nvim-mini/mini.nvim", version = "main" },
 	-- Snacks (Utility Collection)
 	{ src = "https://github.com/folke/snacks.nvim", version = "v2.31.0" },
-	-- Auto-Complete
+	-- Blink (Auto-Complete, Indent-Guides, Auto-Pairs)
+	{ src = "https://github.com/saghen/blink.lib", version = "main" },
 	{ src = "https://github.com/saghen/blink.cmp", version = "v1.10.2" },
+	{ src = "https://github.com/saghen/blink.indent", version = "v2.3.0" },
+	{ src = "https://github.com/saghen/blink.pairs", version = "v0.7.1" },
 	-- Formatter
 	{ src = "https://github.com/stevearc/conform.nvim", version = "master" },
 	-- Filetree
-	--{ src = "https://github.com/stevearc/oil.nvim", version = "v2.16.0" },
+	{ src = "https://github.com/stevearc/oil.nvim", version = "v2.16.0" },
 	--{ src = "https://github.com/refractalize/oil-git-status.nvim", version = "main" },
 	-- Bufferline
 	-- { src = "https://github.com/akinsho/bufferline.nvim", version = "v4.9.1" },
@@ -33,6 +36,8 @@ vim.pack.add({
 	{ src = "https://github.com/mistricky/codesnap.nvim", version = "v2.1.1" },
 	-- Claude Code
 	{ src = "https://github.com/coder/claudecode.nvim", version = "v0.3.0" },
+	-- Render Markdown
+	{ src = "https://github.com/meanderingprogrammer/render-markdown.nvim", version = "v8.14.0" },
 	-- Obsidian
 	{ src = "https://github.com/epwalsh/obsidian.nvim", version = "v3.9.0" },
 })
@@ -41,15 +46,17 @@ require("plugins.colorscheme")
 require("plugins.treesitter")
 require("plugins.lsp")
 -- require("plugins.snippets")
+require("plugins.blink")
 require("plugins.autocmp")
 require("plugins.format")
--- require("plugins.oil")
+require("plugins.oil")
 require("plugins.mini")
 require("plugins.snacks")
-require("plugins.notify")
+-- require("plugins.notify")
 -- require("plugins.bufferline") -- TODO: find better solution for buffers than bufferline
 require("plugins.find_replace")
 require("plugins.diagnostics")
 require("plugins.codesnap")
 require("plugins.claude")
+require("plugins.markdown")
 -- require("plugins.obsidian")

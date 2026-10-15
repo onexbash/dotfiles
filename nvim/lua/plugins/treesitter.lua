@@ -19,6 +19,7 @@ local parsers = {
 	"gomod",
 	"graphql",
 	"html",
+	"latex",
 	"http",
 	"hyprlang",
 	"java",

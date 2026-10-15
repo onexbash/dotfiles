@@ -1,7 +1,7 @@
 local blink = require("blink.cmp")
 blink.setup({
 	enabled = function()
-		return not vim.tbl_contains({ "markdown" }, vim.bo.filetype) -- Disable autocmp for specific filetypes
+		return not vim.tbl_contains({ "text" }, vim.bo.filetype) -- Disable autocmp for specific filetypes
 	end,
 	-- Keymaps
 	keymap = {
@@ -40,7 +40,9 @@ blink.setup({
 	},
 	sources = {
 		default = { "lsp", "buffer", "snippets", "path" },
-
+		per_filetype = {
+			markdown = { "lsp", "path" },
+		},
 		providers = {
 			cmdline = {
 				-- Disable autocmp in only-shell command mode
