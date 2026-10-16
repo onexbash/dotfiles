@@ -1,0 +1,174 @@
+{
+  "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json",
+  "logo": {
+    "type": "file",
+    "source": "~/.config/fastfetch/logo.txt",
+    // Catppuccin Colors (Mocha)
+    "color": {
+      "1": "#cba6f7", // mauve
+      "2": "#f5c2e7", // pink
+      "3": "#a6e3a1", // green
+      "4": "#94e2d5", // teal
+      "5": "#89dceb", // sky
+      "6": "#74c7ec", // sapphire
+      "7": "#89b4fa", // blue
+      "8": "#b4befe", // lavender
+      "9": "#cdd6f4" // text
+    },
+    "padding": {
+      "top": 2,
+      "bottom": 2,
+      "left": 2,
+      "right": 2
+    }
+  },
+  "display": {
+    "separator": "  ",
+    "color": {
+      "keys": "#b4befe",
+      "output": "#cdd6f4",
+      "separator": "#cdd6f4"
+    },
+    "size": {
+      "binaryPrefix": "si", // GB (decimal, like Finder) instead of GiB
+      "maxPrefix": "GB", // never switch to TB, so free space is always in GB
+      "ndigits": 1
+    }
+  },
+  // Color tags in formats: {##b4befe} starts a color, {#output} switches back
+  // to the output color (#cdd6f4). Plain {#} would reset to the terminal default.
+  "modules": [
+    // ---------- System & user ----------
+    {
+      "type": "custom",
+      "format": "── {#bold_#f5c2e7}System{#reset_output} ──────────────────────"
+    },
+    {
+      "type": "command",
+      "key": "Hostname",
+      "keyColor": "#cba6f7",
+      "text": "hostname -s"
+    },
+    {
+      // On macOS, members of the "admin" group have sudo rights by default
+      "type": "command",
+      "key": "User",
+      "keyColor": "#cba6f7",
+      "text": "u=$(id -un); if id -Gn | tr ' ' '\\n' | grep -qx admin; then echo \"$u [admin]\"; else echo \"$u [no-admin]\"; fi"
+    },
+    {
+      "type": "command",
+      "key": "Group",
+      "keyColor": "#cba6f7",
+      "text": "id -gn"
+    },
+    "break",
+    // ---------- CPU ----------
+    {
+      "type": "custom",
+      "format": "── {#bold_#f5c2e7}CPU{#reset_output} ──────────────────────"
+    },
+    {
+      "type": "cpu",
+      "key": "Name",
+      "keyColor": "#cba6f7",
+      "format": "{name}"
+    },
+    {
+      "type": "kernel",
+      "key": "Arch",
+      "keyColor": "#cba6f7",
+      "format": "{arch}"
+    },
+    {
+      "type": "cpu",
+      "key": "Cores",
+      "keyColor": "#cba6f7",
+      "format": "{##b4befe}{cores-physical}{#output} physical / {##b4befe}{cores-logical}{#output} virtual"
+    },
+    "break",
+    // ---------- GPU ----------
+    {
+      "type": "custom",
+      "format": "── {#bold_#f5c2e7}GPU{#reset_output} ──────────────────────"
+    },
+    {
+      // Apple Silicon has unified memory: it is reported as shared memory
+      "type": "gpu",
+      "key": "GPU",
+      "keyColor": "#cba6f7",
+      "format": "{name}{?dedicated-total} - {##b4befe}{dedicated-total}{#output} dedicated{?}{?shared-total} - {##b4befe}{shared-total}{#output} shared{?}"
+    },
+    "break",
+    // ---------- RAM ----------
+    {
+      "type": "custom",
+      "format": "── {#bold_#f5c2e7}RAM{#reset_output} ──────────────────────"
+    },
+    {
+      "type": "physicalmemory",
+      "key": "Module",
+      "keyColor": "#cba6f7",
+      "format": "{vendor} {type}"
+    },
+    {
+      "type": "memory",
+      "key": "Memory",
+      "keyColor": "#cba6f7",
+      "percent": {
+        "type": [
+          "num"
+        ]
+      },
+      "format": "{##b4befe}{used}{#output} / {##b4befe}{total}{#output} ({##94e2d5}{percentage}{#output})"
+    },
+    "break",
+    // ---------- Disks ----------
+    {
+      "type": "custom",
+      "format": "── {#bold_#f5c2e7}Disks{#reset_output} ──────────────────────"
+    },
+    {
+      "type": "disk",
+      "key": "Disk ({mountpoint})",
+      "keyColor": "#cba6f7",
+      "showExternal": true,
+      "percent": {
+        "type": [
+          "num"
+        ]
+      },
+      "format": "{name} - {##b4befe}{size-total}{#output}  [{##94e2d5}{size-percentage}{#output} used | {size-free} free]"
+    },
+    "break",
+    // ---------- Startup items ----------
+    // ~/Library/LaunchAgents/com.onesetup.autostart.aerospace.plist -> "aerospace"
+    // One module per line, 3 items each (line 1, 2, 3, 4 = up to 12 items).
+    // Empty lines are hidden automatically. For more items, copy the last
+    // block and change "==4" to "==5".
+    {
+      "type": "custom",
+      "format": "── {#bold_#f5c2e7}Startup Items{#reset_output} ──────────────────────"
+    },
+    {
+      "type": "command",
+      "key": " ",
+      "text": "out=$(for f in \"$HOME\"/Library/LaunchAgents/*.plist; do [ -e \"$f\" ] || continue; n=${f##*/}; n=${n%.plist}; echo \"${n##*.}\"; done | sort -u | awk 'int((NR-1)/3)+1==1' | paste -sd, - | sed 's/,/, /g'); echo \"${out:-none}\""
+    },
+    {
+      "type": "command",
+      "key": " ",
+      "text": "for f in \"$HOME\"/Library/LaunchAgents/*.plist; do [ -e \"$f\" ] || continue; n=${f##*/}; n=${n%.plist}; echo \"${n##*.}\"; done | sort -u | awk 'int((NR-1)/3)+1==2' | paste -sd, - | sed 's/,/, /g'"
+    },
+    {
+      "type": "command",
+      "key": " ",
+      "text": "for f in \"$HOME\"/Library/LaunchAgents/*.plist; do [ -e \"$f\" ] || continue; n=${f##*/}; n=${n%.plist}; echo \"${n##*.}\"; done | sort -u | awk 'int((NR-1)/3)+1==3' | paste -sd, - | sed 's/,/, /g'"
+    },
+    {
+      "type": "command",
+      "key": " ",
+      "text": "for f in \"$HOME\"/Library/LaunchAgents/*.plist; do [ -e \"$f\" ] || continue; n=${f##*/}; n=${n%.plist}; echo \"${n##*.}\"; done | sort -u | awk 'int((NR-1)/3)+1==4' | paste -sd, - | sed 's/,/, /g'"
+    }
+  ]
+}
