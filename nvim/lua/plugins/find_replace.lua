@@ -1,13 +1,17 @@
 -- | -- | FIND & REPLACE (grug-far) | -- | --
+local grug_far = require("grug-far")
 
 -- | OPTIONS | --
 vim.opt.inccommand = "split"
 vim.opt.grepprg = "rg --vimgrep --smart-case"
 vim.opt.grepformat = "%f:%l:%c:%m"
 
--- | CONFIGURATION | --
-local grug_far = require("grug-far")
-grug_far.setup({})
+-- | SETUP FUNCTION | --
+grug_far.setup({
+	prefills = {
+		flags = "--fixed-strings", -- fix strings with special characters
+	},
+})
 
 -- | EDITORCOMMAND | --
 -- Set "FindReplace" as Editorcommand for grug-far
