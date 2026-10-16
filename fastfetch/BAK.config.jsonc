@@ -1,0 +1,149 @@
+{
+  "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json",
+  "logo": {
+    "type": "file",
+    "source": "~/.config/fastfetch/logo.txt",
+    // Catppuccin Colors (Mocha)
+    "color": {
+      "1": "#cba6f7", // mauve
+      "2": "#f5c2e7", // pink
+      "3": "#a6e3a1", // green
+      "4": "#94e2d5", // teal
+      "5": "#89dceb", // sky
+      "6": "#74c7ec", // sapphire
+      "7": "#89b4fa", // blue
+      "8": "#b4befe", // lavender
+      "9": "#cdd6f4" // text
+    },
+    "padding": {
+      "top": 2,
+      "bottom": 2,
+      "left": 2,
+      "right": 2
+    }
+  },
+  "display": {
+    "separator": "  ",
+    "color": {
+      "keys": "#b4befe",
+      "output": "#cdd6f4",
+      "separator": "#cdd6f4"
+    },
+    "size": {
+      "binaryPrefix": "si", // GB (decimal, like Finder) instead of GiB
+      "maxPrefix": "GB", // never switch to TB, so free space is always in GB
+      "ndigits": 1
+    }
+  },
+  "modules": [
+    // ---------- System & user ----------
+    {
+      "type": "custom",
+      "format": "── System ──────────────────────"
+    },
+    {
+      "type": "command",
+      "key": "Hostname",
+      "text": "hostname -s"
+    },
+    {
+      "type": "command",
+      "key": "User",
+      "text": "id -un"
+    },
+    {
+      // On MacOS, members of the "admin" group have sudo rights by default
+      "type": "command",
+      "key": "Sudo",
+      "text": "if id -Gn | tr ' ' '\\n' | grep -qx admin; then echo 'yes (admin group)'; else echo 'no'; fi"
+    },
+    {
+      "type": "command",
+      "key": "Group",
+      "text": "id -gn"
+    },
+    "break",
+    // ---------- CPU ----------
+    {
+      "type": "custom",
+      "format": "── CPU ─────────────────────────"
+    },
+    {
+      "type": "cpu",
+      "key": "Name",
+      "format": "{name}"
+    },
+    {
+      "type": "kernel",
+      "key": "Arch",
+      "format": "{arch}"
+    },
+    {
+      "type": "cpu",
+      "key": "Cores",
+      "format": "{cores-physical} physical / {cores-logical} virtual"
+    },
+    "break",
+    // ---------- GPU ----------
+    {
+      "type": "custom",
+      "format": "── GPU ─────────────────────────"
+    },
+    {
+      // Apple Silicon has unified memory: it is reported as shared memory
+      "type": "gpu",
+      "key": "GPU",
+      "format": "{name}{?dedicated-total} - {dedicated-total} dedicated{?}{?shared-total} - {shared-total} shared{?}"
+    },
+    "break",
+    // ---------- RAM ----------
+    {
+      "type": "custom",
+      "format": "── RAM ─────────────────────────"
+    },
+    {
+      "type": "physicalmemory",
+      "key": "Module",
+      "format": "{vendor} {type}"
+    },
+    {
+      "type": "memory",
+      "key": "Memory",
+      "percent": {
+        "type": [
+          "num"
+        ]
+      },
+      "format": "{used} / {total} ({##94e2d5}{percentage}{#})"
+    },
+    "break",
+    // ---------- Disks ----------
+    {
+      "type": "custom",
+      "format": "── Disks ───────────────────────"
+    },
+    {
+      "type": "disk",
+      "key": "Disk ({mountpoint})",
+      "showExternal": true,
+      "percent": {
+        "type": [
+          "num"
+        ]
+      },
+      "format": "{name} - {size-total}  [{##94e2d5}{size-percentage}{#} used | {size-free} free]"
+    },
+    "break",
+    // ---------- Startup items ----------
+    {
+      "type": "custom",
+      "format": "── Startup items ───────────────"
+    },
+    {
+      // ~/Library/LaunchAgents/com.onesetup.autostart.aerospace.plist -> "aerospace"
+      "type": "command",
+      "key": "LaunchAgents",
+      "text": "out=$(for f in \"$HOME\"/Library/LaunchAgents/*.plist; do [ -e \"$f\" ] || continue; n=${f##*/}; n=${n%.plist}; echo \"${n##*.}\"; done | sort -u | paste -sd, - | sed 's/,/, /g'); echo \"${out:-none}\""
+    }
+  ]
+}
