@@ -38,5 +38,23 @@ return {
 		explorer = {
 			layout = { layout = { position = "right" } },
 		},
+		diagnostics = {
+			actions = {
+				-- Function to yank diagnostic messages
+				yank_message = function(picker)
+					local msgs = vim.tbl_map(function(it)
+						return it.item and it.item.message or it.text
+					end, picker:selected({ fallback = true }))
+					vim.fn.setreg("+", table.concat(msgs, "\n\n"))
+					Snacks.notify("Copied " .. #msgs .. " diagnostic(s)")
+				end,
+			},
+			win = {
+				-- Yank diagnostic message (ctrl + y)
+				input = { keys = { ["<c-y>"] = { "yank_message", mode = { "n", "i" } } } },
+				-- Yank from diagnostics list (y)
+				list = { keys = { ["y"] = "yank_message" } },
+			},
+		},
 	},
 }
