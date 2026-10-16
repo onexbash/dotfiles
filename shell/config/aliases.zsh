@@ -24,6 +24,7 @@ alias gping='gping --color="#a6e3a1" --clear --horizontal-margin="20" --vertical
 alias ping="ping -c 2"
 alias code="codium"
 alias gcm="git-credential-manager"
+alias ff="fastfetch"
 
 # ssh-keygen
 alias ssh-keygen="x_ssh_keygen"
