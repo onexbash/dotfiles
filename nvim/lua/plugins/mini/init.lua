@@ -38,4 +38,6 @@ require("mini.splitjoin").setup({
 	},
 })
 
+-- Load mini plugin config files
 require("plugins.mini.statusline")
+require("plugins.mini.clue")
