@@ -20,7 +20,7 @@ require("mason").setup({
 -- Install Mason packages without a valid mason-lspconfig mapping
 local registry = require("mason-registry")
 registry.refresh(function()
-	for _, name in ipairs({ "stylelint-language-server" }) do
+	for _, name in ipairs({ "stylelint-language-server", "ansible-lint" }) do
 		local pkg = registry.get_package(name)
 		if not pkg:is_installed() then
 			pkg:install()
