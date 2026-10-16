@@ -33,6 +33,8 @@ map("xt", "lsp_type_definitions", "Type Definition")
 return {
 	enabled = true,
 	sources = {
+		files = { hidden = true },
+		grep = { hidden = true },
 		explorer = {
 			layout = { layout = { position = "right" } },
 		},
