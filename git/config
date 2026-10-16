@@ -50,3 +50,5 @@
 # GitHub: cratos-fabian
 [includeIf "gitdir:~/dev/repos/cratos/"]
   path = cratos.gitconfig
+[credential "azrepos:org/cratosde"]
+	azureAuthority = https://login.microsoftonline.com/63f98c75-61b7-4c1c-b937-da7324147db9
