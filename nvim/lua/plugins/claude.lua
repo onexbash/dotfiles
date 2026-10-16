@@ -3,7 +3,7 @@ local claude = require("claudecode")
 claude.setup({
 	terminal = {
 		split_side = "right",
-		split_width_percentage = 0.40,
+		split_width_percentage = 0.50,
 		provider = "snacks",
 	},
 })

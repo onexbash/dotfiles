@@ -20,10 +20,17 @@ require("catppuccin").setup({
 		},
 		blink_indent = true,
 		blink_pairs = true,
-		telescope = {
+		grug_far = true,
+		mason = true,
+		mini = true,
+		noice = true,
+		treesitter_context = true,
+		render_markdown = true,
+		snacks = {
 			enabled = true,
-			style = "nvchad",
+			indent_scope_color = "mauve", -- catppuccin color (e.g: 'lavender')
 		},
+		lsp_trouble = true,
 		treesitter = true,
 		markdown = true,
 	},
