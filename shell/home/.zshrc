@@ -14,7 +14,7 @@ function load_shell_files() {
 
   # Source Utility Shell File
   local util_file="${shell_dir}/util.sh"
-  source "$util_file" && echo -e "${I_OK}Utility Shell File sourced: ~/.config/shell/util.sh" || echo -e "${I_ERR}Failed to source Utility Shell File! Make sure it exists with correct permissions: $shell_dir/util.sh"
+  source "$util_file" || echo -e "${I_ERR}Failed to source Utility Shell File! Make sure it exists with correct permissions: $shell_dir/util.sh"
 
   # Load Config Shell Files that extend ~/.zshrc
   local config_files=(
