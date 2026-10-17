@@ -16,6 +16,14 @@ map("<leader>fc", "command_history", "Command History")
 map("<leader>fb", "buffers", "Buffers")
 -- Diagnostics
 map("<leader>fd", "diagnostics", "Diagnostics")
+-- Workspace Diagnostics
+-- keymap("n", "<leader>fD", function()
+-- 	vim.lsp.buf.workspace_diagnostics()
+-- 	-- the request is async: give the servers a moment before opening the picker
+-- 	vim.defer_fn(function()
+-- 		Snacks.picker.diagnostics()
+-- 	end, 300)
+-- end, { desc = "Picker: Workspace Diagnostics" })
 -- Help
 map("<leader>fh", "help", "Help Pages")
 -- Manpages

@@ -300,3 +300,6 @@ ctrl
 excalidraw
 Podman
 podman
+async
+Symlinks
+yamllint
