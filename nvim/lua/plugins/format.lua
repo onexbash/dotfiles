@@ -5,7 +5,7 @@ local fmt_sql = { "sql_formatter", "sqlfmt", stop_after_first = true }
 
 conform.setup({
 	format_on_save = {
-		timeout_ms = 5000,
+		timeout_ms = 10000,
 		lsp_format = "fallback",
 	},
 	formatters_by_ft = {
@@ -22,6 +22,7 @@ conform.setup({
 		css = fmt_web,
 		html = fmt_web,
 		rust = { "rustfmt", lsp_format = "fallback" },
+		["yaml.ansible"] = { "ansible-lint" },
 	},
 	formatters = {
 		biome = { require_cwd = true },
