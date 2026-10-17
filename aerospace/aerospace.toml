@@ -1,6 +1,6 @@
 # -- OPTIONS -- #
 # start-up
-start-at-login = false # handled by onesetup via LaunchAgent
+start-at-login = false     # handled by onesetup via LaunchAgent
 after-startup-command = []
 # normalization
 enable-normalization-flatten-containers = true
@@ -71,8 +71,10 @@ outer.right = 10
 if = 'test %{app-name} ~= "^(Terminal|Kitty|Ghostty|WezTerm|Zed|Sublime Text|Lite XL|VSCodium|IntelliJ IDEA OSS)$"'
 run = 'move-node-to-workspace 1'
 
-# Workspace 2 [FREE SPACE]
-
+# Workspace 2
+[[on-window-detected]]
+if = 'test %{app-name} ~= "^(AppFlowy|Obsidian)$"'
+run = 'move-node-to-workspace 2'
 
 # Workspace 3
 [[on-window-detected]]
@@ -86,7 +88,7 @@ run = 'move-node-to-workspace 4'
 
 # Workspace 5
 [[on-window-detected]]
-if = 'test %{app-name} ~= "^(AppFlowy|Spotify)$"'
+if = 'test %{app-name} ~= "^(Spotify)$"'
 run = 'move-node-to-workspace 5'
 
 # Workspace 6

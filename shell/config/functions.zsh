@@ -383,4 +383,11 @@ function azlogin() {
   return 0
 }
 
+# -- PODMAN -- #
+function pd-rm() {
+  podman rmi --all --force
+}
 
+function pd-prune(){
+  podman system prune --all --force
+}
