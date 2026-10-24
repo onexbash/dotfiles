@@ -1,4 +1,4 @@
--- mason.nvim
+-- | mason.nvim | --
 require("mason").setup({
 	firewall = {
 		enabled = true, -- enables the socket.dev firewall for mason pkg downloads
@@ -28,7 +28,7 @@ registry.refresh(function()
 	end
 end)
 
--- mason-lspconfig.nvim
+-- | mason-lspconfig.nvim | --
 require("mason-lspconfig").setup({
 	automatic_enable = {
 		exclude = { "jdtls" }, -- started by nvim-jdtls (ftplugin/java.lua)
@@ -102,16 +102,20 @@ require("mason-lspconfig").setup({
 })
 
 -- | LSP Configurations | --
--- harper_ls
--- vim.lsp.config("harper_ls", {
--- 	filetypes = { "markdown", "gitcommit", "text" },
--- 	settings = {
--- 		["harper-ls"] = {
--- 			userDictPath = vim.fn.stdpath("config") .. "/dict.txt",
--- 		},
--- 	},
--- })
--- typos_lsp
+-- [FUNCTION] populate workspace diagnostics
+local function workspace_diagnostics(client, bufnr)
+	-- some clients support workspace diagnostics natively
+	if client:supports_method("workspace/diagnostic", bufnr) then
+		vim.lsp.buf.workspace_diagnostics({ client_id = client.id })
+	else
+		require("workspace-diagnostics").populate_workspace_diagnostics(client, bufnr)
+	end
+end
+
+-- LSP: default (*)
+vim.lsp.config("*", { on_attach = workspace_diagnostics })
+
+-- LSP: typos_lsp
 vim.lsp.config("typos_lsp", {
 	init_options = {
 		diagnosticSeverity = "Hint",
@@ -119,10 +123,45 @@ vim.lsp.config("typos_lsp", {
 	},
 })
 
+-- LSP: ts_ls
+vim.lsp.config("ts_ls", {
+	before_init = function(params, config)
+		local root = config.root_dir
+		if not root then
+			return
+		end
+		-- add "typescript-svelte-plugin" if installed.
+		local plugin_dir = vim.fs.joinpath(root, "node_modules", "typescript-svelte-plugin")
+		if not vim.uv.fs_stat(plugin_dir) then
+			return -- not a Svelte project (or plugin not installed): start ts_ls without it
+		end
+
+		params.initializationOptions = params.initializationOptions or {}
+		params.initializationOptions.plugins = params.initializationOptions.plugins or {}
+		table.insert(params.initializationOptions.plugins, {
+			name = "typescript-svelte-plugin",
+			location = root, -- tsserver resolves `name` from here via node_modules
+		})
+	end,
+})
+
 -- | Enable LSPs | --
 -- | (installed outside of mason) | --
 vim.lsp.enable({
 	"rust_analyzer", -- Installed by rustup
-	"tsc", -- Installed from package.json project-wide
 	"stylelint_lsp",
 })
+
+-- | Merge custom on_attach functions with workspace_diagnostics | --
+for _, name in ipairs({ "ts_ls", "svelte", "eslint" }) do
+	local cfg = vim.lsp.config[name]
+	local original = cfg and cfg.on_attach
+	if original and original ~= workspace_diagnostics then
+		vim.lsp.config(name, {
+			on_attach = function(client, bufnr)
+				original(client, bufnr)
+				workspace_diagnostics(client, bufnr)
+			end,
+		})
+	end
+end

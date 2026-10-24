@@ -79,6 +79,7 @@ require("oil").setup({
 })
 
 -- | Keymaps | --
+-- Toggle Filetree
 keymap({ "n", "v", "t" }, "<C-n>", function()
-	require("oil").toggle_float(vim.fn.getcwd())
-end, { desc = "oil: toggle float" })
+	require("oil").toggle_float()
+end, { desc = "oil: toggle float (buffer dir)" })
