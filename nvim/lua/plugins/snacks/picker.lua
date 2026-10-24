@@ -1,48 +1,68 @@
 -- | KEYMAPS | --
--- Keymap Function to avoid repetition
-local map = function(lhs, picker, desc)
-	keymap("n", lhs, function()
-		Snacks.picker[picker]()
-	end, { desc = "Picker: " .. desc })
-end
-
 -- Find Files
-map("<leader>ff", "smart", "Find Files (smart)")
+keymap("n", "<leader>ff", function()
+	Snacks.picker.smart()
+end, { desc = "Picker: Find Files (smart)" })
 -- Grep Strings
-map("<leader>fg", "grep", "Grep")
+keymap("n", "<leader>fg", function()
+	Snacks.picker.grep()
+end, { desc = "Picker: Grep Strings" })
 -- Command History
-map("<leader>fc", "command_history", "Command History")
+keymap("n", "<leader>fc", function()
+	Snacks.picker.command_history()
+end, { desc = "Picker: Command History" })
 -- Buffers
-map("<leader>fb", "buffers", "Buffers")
--- Diagnostics
-map("<leader>fd", "diagnostics", "Diagnostics")
--- Workspace Diagnostics
--- keymap("n", "<leader>fD", function()
--- 	vim.lsp.buf.workspace_diagnostics()
--- 	-- the request is async: give the servers a moment before opening the picker
--- 	vim.defer_fn(function()
--- 		Snacks.picker.diagnostics()
--- 	end, 300)
--- end, { desc = "Picker: Workspace Diagnostics" })
+keymap("n", "<leader>fb", function()
+	Snacks.picker.buffers()
+end, { desc = "Picker: Buffers" })
 -- Help
-map("<leader>fh", "help", "Help Pages")
+keymap("n", "<leader>fh", function()
+	Snacks.picker.help()
+end, { desc = "Picker: Help Pages" })
 -- Manpages
-map("<leader>fm", "man", "Manpages")
+keymap("n", "<leader>fm", function()
+	Snacks.picker.man()
+end, { desc = "Picker: Manpages" })
+-- LSP: Diagnostics
+keymap("n", "<leader>xx", function()
+	Snacks.picker.diagnostics()
+end, { desc = "Toggle Diagnostics Window" })
+-- LSP: Buffer Diagnostics
+keymap("n", "<leader>xX", function()
+	Snacks.picker.diagnostics_buffer()
+end, { desc = "Toggle Buffer Diagnostics Window" })
 -- LSP: Definition
-map("xd", "lsp_definitions", "Definition")
--- LSP: References
-map("xr", "lsp_references", "References")
+keymap("n", "<leader>xd", function()
+	Snacks.picker.lsp_definitions()
+end, { desc = "Go to Definition" })
+-- LSP: Reference
+keymap("n", "<leader>xr", function()
+	Snacks.picker.lsp_references()
+end, { desc = "Go to Reference" })
 -- LSP: Implementation
-map("xi", "lsp_implementations", "Implementation")
+keymap("n", "<leader>xi", function()
+	Snacks.picker.lsp_implementations()
+end, { desc = "Go to Implementation" })
 -- LSP: Type Definition
-map("xt", "lsp_type_definitions", "Type Definition")
+keymap("n", "<leader>xt", function()
+	Snacks.picker.lsp_type_definitions()
+end, { desc = "Go to Type Definition" })
+-- Jump back (like <C-o>)
+keymap("n", "<leader><BS>", "<C-o>", { desc = "Jump back" })
 
 -- | CONFIGURATION | --
 return {
 	enabled = true,
 	sources = {
 		files = { hidden = true },
-		grep = { hidden = true },
+		grep = {
+			hidden = true,
+			regex = false,
+			win = {
+				-- toggle regex
+				input = { keys = { ["<c-r>"] = { "toggle_regex", mode = { "i", "n" } } } },
+			},
+		},
 		explorer = {
 			layout = { layout = { position = "right" } },
 		},

@@ -53,7 +53,8 @@ local parsers = {
 	"zsh",
 }
 
--- Configuration (setup)
+-- | nvim-treesitter.nvim | --
+-- Setup Function
 local treesitter = require("nvim-treesitter")
 treesitter.setup({
 	install_dir = vim.fn.stdpath("data") .. "/site",
@@ -84,4 +85,19 @@ autocmd("PackChanged", {
 			vim.cmd("TSUpdate")
 		end
 	end,
+})
+
+-- | nvim-ts-autotag.nvim | --
+local ts_autotag = require("nvim-ts-autotag")
+ts_autotag.setup({
+	opts = {
+		enable_close = true, -- Auto close tags
+		enable_rename = true, -- Auto rename pairs of tags
+		enable_close_on_slash = true, -- Auto close on trailing </
+	},
+	per_filetype = {
+		["html"] = {
+			enable_close = true,
+		},
+	},
 })

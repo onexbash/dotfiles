@@ -1,4 +1,4 @@
--- | Configuration | --
+-- | CONFIG | --
 vim.diagnostic.config({
 	underline = true,
 	virtual_text = false, -- Disabled & handled by tiny-inline-diagnostic
@@ -14,18 +14,11 @@ vim.diagnostic.config({
 	},
 })
 
--- | Keymaps | --
--- toggle buffer diagnostics in the location list
-keymap("n", "<leader>xx", function()
-	if vim.fn.getloclist(0, { winid = 0 }).winid ~= 0 then
-		vim.cmd.lclose()
-	else
-		vim.diagnostic.setloclist({ title = "Buffer Diagnostics" })
-	end
-end, { desc = "diagnostics: buffer (loclist)" })
+-- | KEYMAPS | --
 
--- | tiny-inline-diagnostic.nvim | --
-require("tiny-inline-diagnostic").setup({
+-- | [PLUGIN] tiny-inline-diagnostic.nvim | --
+local inline_diagnostic = require("tiny-inline-diagnostic")
+inline_diagnostic.setup({
 	preset = "modern", -- modern/classic/minimal/powerline/ghost/simple
 	transparent_bg = false,
 	transparent_cursorline = true,
@@ -40,6 +33,7 @@ require("tiny-inline-diagnostic").setup({
 		mixing_color = "Normal", -- Color to blend background with (or "None")
 	},
 	options = {
+		override_open_float = true,
 		show_source = {
 			enabled = true,
 		},
