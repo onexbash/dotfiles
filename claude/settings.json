@@ -1,3 +1,14 @@
 {
-  "theme": "dark-ansi"
+  "extraKnownMarketplaces": {
+    "svelte": {
+      "source": {
+        "source": "git",
+        "url": "https://github.com/sveltejs/ai-tools.git"
+      }
+    }
+  },
+  "theme": "dark-ansi",
+  "enabledPlugins": {
+    "svelte@svelte": true
+  }
 }
