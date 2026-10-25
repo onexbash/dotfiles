@@ -1,14 +1,21 @@
 {
+  "enabledPlugins": {
+    "svelte@svelte": true,
+    "ponytail@ponytail": true
+  },
   "extraKnownMarketplaces": {
     "svelte": {
       "source": {
         "source": "git",
         "url": "https://github.com/sveltejs/ai-tools.git"
       }
+    },
+    "ponytail": {
+      "source": {
+        "source": "git",
+        "url": "https://github.com/dietrichgebert/ponytail.git"
+      }
     }
   },
-  "theme": "dark-ansi",
-  "enabledPlugins": {
-    "svelte@svelte": true
-  }
+  "theme": "dark-ansi"
 }
