@@ -38,8 +38,7 @@
 
 # -- CREDENTIALS -- #
 [credential]
-  helper =
-  helper = /usr/local/share/gcm-core/git-credential-manager
+	helper = keepassxc --config /Users/onexbash/.config/gck/config.json --git-groups
 [credential "https://dev.azure.com"]
   useHttpPath = true
 
