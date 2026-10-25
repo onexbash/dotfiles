@@ -97,9 +97,9 @@ zj() {
 }
 
 # Call zj function if not already inside a session
-if [[ -z "$ZELLIJ" && -o interactive ]]; then
-  zj && [[ "$ZELLIJ_AUTO_EXIT" == "true" ]] && exit
-fi
+# if [[ -z "$ZELLIJ" && -o interactive ]]; then
+#   zj && [[ "$ZELLIJ_AUTO_EXIT" == "true" ]] && exit
+# fi
 
 # Delete zellij sessions: Tab to mark, Enter to delete
 function zj_delete() {
