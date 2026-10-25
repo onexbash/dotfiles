@@ -1,2 +1,4 @@
 system:
   username: "onexbash"
+remote:
+  ssh_key: "~/.ssh/id_github_onexbash"
