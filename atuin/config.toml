@@ -5,3 +5,6 @@ show_preview = true
 show_help = false
 [theme]
 name = "catppuccin-mocha"
+
+[logs]
+dir = "/Users/onexbash/.local/state/logs"
