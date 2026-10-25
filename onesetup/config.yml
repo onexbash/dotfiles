@@ -2,3 +2,4 @@ system:
   username: "onexbash"
 remote:
   ssh_key: "~/.ssh/id_github_onexbash"
+  ssh_pass: 'TE{L5:G9Mufl*LPG'
