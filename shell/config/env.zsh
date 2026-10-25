@@ -2,7 +2,6 @@
 # --       sourced by: .zshenv     -- #
 # --                               -- #
 
-
 # -- ENVIRONMENT VARIABLES   -- #
 # XDG base dirs
 export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
@@ -11,11 +10,14 @@ export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
 export XDG_STATE_HOME="${XDG_STATE_HOME:-$HOME/.local/state}"
 
 # Personal Directory Shortcuts
-export XDEV="$HOME/dev"
-export XREPOS="$XDEV/repos"
-export XCLOUD="$HOME/Library/CloudStorage/ProtonDrive-fabian@schlegel.one-folder"
-export XCONFIG="${XDG_CONFIG_HOME:-$HOME/.config}"
-export XSCRIPTS="$XCONFIG/scripts"
+export XDEV="$HOME/dev" # Dev Directory
+export XREPOS="$XDEV/repos" # Repos Directory
+
+export XCLOUD="$HOME/Library/CloudStorage/ProtonDrive-fabian@schlegel.one-folder" # Cloud Directory
+export XCONFIG="${XDG_CONFIG_HOME:-$HOME/.config}" # Config Directory
+export XSCRIPTS="$XCONFIG/scripts" # Scripts Directory
+export XLOGS="${XDG_STATE_HOME}/logs" # Logs Directory
+export XTEMP="/tmp" # Temp Directory
 
 # Custom
 export TOGGLE_SCRIPT_DEBUG_MODE=0 # enable/disable debugging mode for scripts that load the onexbash helper-script
