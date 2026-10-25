@@ -2,7 +2,8 @@
 theme = catppuccin-mocha.conf
 
 # -- Font -- #
-font-family = ShureTech Nerd Font Mono
+font-family = "ShureTech Nerd Font"
+# font-family = "Hurmit Nerd Font"
 font-size = 18
 
 # -- Cursor -- #
