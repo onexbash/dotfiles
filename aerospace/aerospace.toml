@@ -1,7 +1,10 @@
 # -- OPTIONS -- #
 # start-up
-start-at-login = false     # handled by onesetup via LaunchAgent
-after-startup-command = []
+start-at-login = false # handled by onesetup via LaunchAgent
+after-startup-command = [
+  # Launch JankyBorders (~/.config/borders/bordersrc)
+  'exec-and-forget ~/.config/borders/bordersrc',
+]
 # normalization
 enable-normalization-flatten-containers = true
 enable-normalization-opposite-orientation-for-nested-containers = true
@@ -68,7 +71,7 @@ outer.right = 10
 # -- PIN WINDOWS -- #
 # Workspace 1
 [[on-window-detected]]
-if = 'test %{app-name} ~= "^(Terminal|Kitty|Ghostty|WezTerm|Zed|Sublime Text|Lite XL|VSCodium|IntelliJ IDEA OSS)$"'
+if = 'test %{app-name} ~= "^(Terminal|kitty|Ghostty|WezTerm|Zed|Sublime Text|Lite XL|VSCodium|IntelliJ IDEA OSS)$"'
 run = 'move-node-to-workspace 1'
 
 # Workspace 2
