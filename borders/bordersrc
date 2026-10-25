@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+# --         JankyBorders Config          -- #
+# --  github.com/FelixKratz/JankyBorders  -- #
+# --                                      -- #
+
+options=(
+  style=round # round/square
+  width=4.0
+  hidpi=off
+  ax_focus=off
+  active_color=0xffcba6f7
+  inactive_color=0xff585b70   # 0xff1e1e2e
+#  blacklist="kitty"
+)
+
+borders "${options[@]}"
