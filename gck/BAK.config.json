@@ -1,0 +1,31 @@
+{
+  "databases": [
+    {
+      "id": "gck_onexmac-personal",
+      "key": "RYGojsAPwfxUgyuwgGkCK0M1U3NtW9joCZ5qKFLeIZ4=",
+      "pkey": "K3EMdP9P5rYjbK19Fl6gYbGM6ymCP1IK8Mw5M1Kk5zI=",
+      "group": "Git",
+      "group_uuid": "ccf1525ec3ee4cb9a63a70683f38f049"
+    }
+  ],
+  "callers": [
+    {
+      "path": "/opt/homebrew/bin/zsh",
+      "uid": 501,
+      "gid": 20,
+      "canonicalize": false
+    },
+    {
+      "path": "/opt/homebrew/bin/git",
+      "uid": 501,
+      "gid": 20,
+      "canonicalize": false
+    },
+    {
+      "path": "/opt/homebrew/bin/zsh",
+      "uid": 501,
+      "gid": 20,
+      "canonicalize": false
+    }
+  ]
+}

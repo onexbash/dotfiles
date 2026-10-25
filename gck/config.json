@@ -1,0 +1,49 @@
+{
+  "databases": [
+    {
+      "id": "gck_onexmac-cratos",
+      "key": "aYUqpVQ5AtM5l0oODcgIrZ8DSbjbAZPJg13ou4wwPbQ=",
+      "pkey": "LyvASO0EXhWm4huZzdn8xvT5OFLnmvVcetyt7Ce9TmI=",
+      "group": "git",
+      "group_uuid": "8e7b986d78154bb2ad354631fce128ab"
+    }
+  ],
+  "callers": [
+    {
+      "path": "/opt/homebrew/bin/zsh",
+      "uid": 501,
+      "gid": 20,
+      "canonicalize": false
+    },
+    {
+      "path": "/opt/homebrew/bin/git",
+      "uid": 501,
+      "gid": 20,
+      "canonicalize": false
+    },
+    {
+      "path": "/opt/homebrew/bin/bash",
+      "uid": 501,
+      "gid": 20,
+      "canonicalize": false
+    },
+    {
+      "path": "/bin/sh",
+      "uid": 501,
+      "gid": 20,
+      "canonicalize": false
+    },
+    {
+      "path": "/opt/homebrew/bin/keepassxc-cli",
+      "uid": 501,
+      "gid": 20,
+      "canonicalize": false
+    },
+    {
+      "path": "/opt/homebrew/opt/git/libexec/git-core/git",
+      "uid": 501,
+      "gid": 20,
+      "canonicalize": false
+    }
+  ]
+}
