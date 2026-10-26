@@ -2,7 +2,7 @@
 # start-up
 start-at-login = false # handled by onesetup via LaunchAgent
 after-startup-command = [
-  # Launch JankyBorders (~/.config/borders/bordersrc)
+  # Launch JankyBorders
   'exec-and-forget ~/.config/borders/bordersrc',
 ]
 # normalization
