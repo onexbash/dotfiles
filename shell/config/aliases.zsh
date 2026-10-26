@@ -25,6 +25,7 @@ alias ping="ping -c 2"
 alias code="codium"
 alias gcm="git-credential-manager"
 alias ff="fastfetch"
+alias xzip="ouch"
 
 # ssh-keygen
 alias ssh-keygen="x_ssh_keygen"
