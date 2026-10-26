@@ -2,6 +2,7 @@ local conform = require("conform")
 
 local fmt_web = { "biome", "prettierd", "prettier", stop_after_first = true }
 local fmt_sql = { "sql_formatter", "sqlfmt", stop_after_first = true }
+local fmt_yaml = { "prettierd", "prettier", stop_after_first = true }
 
 conform.setup({
 	format_on_save = {
@@ -22,7 +23,8 @@ conform.setup({
 		css = fmt_web,
 		html = fmt_web,
 		rust = { "rustfmt", lsp_format = "fallback" },
-		["yaml.ansible"] = { "ansible-lint" },
+		yaml = fmt_yaml,
+		["yaml.ansible"] = fmt_yaml, -- fast on save; ansible-lint only via :AnsibleLintFix
 	},
 	formatters = {
 		biome = { require_cwd = true },
@@ -32,3 +34,18 @@ conform.setup({
 		},
 	},
 })
+
+-- Run ansible-lint's fixer manually, in the background so the editor doesn't freeze
+vim.api.nvim_create_user_command("AnsibleLintFix", function()
+	conform.format({
+		formatters = { "ansible-lint" },
+		timeout_ms = 120000,
+		async = true,
+	}, function(err)
+		if err then
+			vim.notify("ansible-lint: " .. err, vim.log.levels.WARN)
+		else
+			vim.notify("ansible-lint: done")
+		end
+	end)
+end, { desc = "Format the current buffer with ansible-lint" })
