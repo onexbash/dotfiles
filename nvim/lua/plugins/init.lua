@@ -115,6 +115,7 @@ pack_add({
 -- | PLUGIN CONFIGS | --
 require("plugins.colorscheme")
 require("plugins.treesitter")
+require("plugins.mason")
 require("plugins.lsp")
 -- require("plugins.snippets")
 require("plugins.blink")

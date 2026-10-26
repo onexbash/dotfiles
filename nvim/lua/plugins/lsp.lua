@@ -1,33 +1,3 @@
--- | mason.nvim | --
-require("mason").setup({
-	firewall = {
-		enabled = true, -- enables the socket.dev firewall for mason pkg downloads
-		auto_managed = true, -- if this is set to false, the sfw binary is required in $PATH
-	},
-	ui = {
-		border = "single", -- single/double/rounded/solid/shadow/none
-		backdrop = 60, -- transparency
-		width = 0.8,
-		height = 0.9,
-		icons = {
-			package_installed = "✓",
-			package_pending = "➜",
-			package_uninstalled = "✗",
-		},
-	},
-})
-
--- Install Mason packages without a valid mason-lspconfig mapping
-local registry = require("mason-registry")
-registry.refresh(function()
-	for _, name in ipairs({ "stylelint-language-server", "ansible-lint" }) do
-		local pkg = registry.get_package(name)
-		if not pkg:is_installed() then
-			pkg:install()
-		end
-	end
-end)
-
 -- | mason-lspconfig.nvim | --
 require("mason-lspconfig").setup({
 	automatic_enable = {
@@ -107,7 +77,9 @@ local function workspace_diagnostics(client, bufnr)
 	-- some clients support workspace diagnostics natively
 	if client:supports_method("workspace/diagnostic", bufnr) then
 		vim.lsp.buf.workspace_diagnostics({ client_id = client.id })
-	else
+	elseif client.config.filetypes then
+		-- workspace-diagnostics.nvim needs filetypes to know which files to load;
+		-- skip clients without them (e.g. typos_lsp, which runs in every buffer)
 		require("workspace-diagnostics").populate_workspace_diagnostics(client, bufnr)
 	end
 end
