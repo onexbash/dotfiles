@@ -3,6 +3,8 @@ require("mini.ai").setup()
 
 require("mini.align").setup()
 
+-- require('mini.base16').setup()
+
 -- surround words with vim motions
 require("mini.surround").setup({
 	mappings = {
