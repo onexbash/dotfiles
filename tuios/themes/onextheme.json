@@ -1,0 +1,41 @@
+{
+  "id": "onextheme",
+  "fg": "#cdd6f4",
+  "bg": "#1e1e2e",
+  "selection_bg": "#94e2d5",
+  "cursor": "#a6e3a1",
+  "black": "#11111b",
+  "red": "#f38ba8",
+  "green": "#a6e3a1",
+  "yellow": "#f9e2af",
+  "blue": "#89b4fa",
+  "purple": "#cba6f7",
+  "cyan": "#94e2d5",
+  "white": "#cdd6f4",
+  "bright_black": "#585b70",
+  "bright_red": "#f38ba8",
+  "bright_green": "#a6e3a1",
+  "bright_yellow": "#f9e2af",
+  "bright_blue": "#89b4fa",
+  "bright_purple": "#f5c2e7",
+  "bright_cyan": "#94e2d5",
+  "bright_white": "#a6adc8",
+  "chrome": {
+    "accent": "#cba6f7",
+    "accent_bright": "#f5c2e7",
+    "success": "#a6e3a1",
+    "warning": "#f9e2af",
+    "error": "#f38ba8",
+    "info": "#94e2d5",
+    "surface": "#11111b",
+    "border": {
+      "copy": "#94e2d5",
+      "multifocus": "#74c7ec"
+    },
+    "dots": {
+      "close": "#f38ba8",
+      "minimize": "#f9e2af",
+      "zoom": "#a6e3a1"
+    }
+  }
+}
