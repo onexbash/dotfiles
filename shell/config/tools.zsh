@@ -2,32 +2,33 @@
 # --       sourced by: .zshrc        -- #
 # --                                 -- #
 
-# Zoxide (better cd)
+# -- Zoxide -- #
 eval "$(zoxide init zsh --cmd cd --hook pwd)"
 
-# Starship
+# -- Starship -- #
 eval "$(starship init zsh)"
 
-# fnm (node version manager)
+# -- fnm -- #
 eval "$(fnm env --use-on-cd --shell zsh)"
 
-# Atuin (shell history)
+# -- Atuin -- #
 eval "$(atuin init zsh)"
 
-# Ghostty
+# -- Ghostty -- #
+# Enable shell-integration
 if [[ -n "$GHOSTTY_RESOURCES_DIR" ]]; then
-  source "${GHOSTTY_RESOURCES_DIR}/shell-integration/zsh/ghostty-integration" # enable shell-integration
+  source "${GHOSTTY_RESOURCES_DIR}/shell-integration/zsh/ghostty-integration"
 fi
 
-# ASDF
+# -- ASDF -- #
 # Initialize completions (PATH adding handled in path.zsh)
 autoload -Uz compinit && compinit
 
-# GoLang
+# -- GoLang -- #
 # Run the asdf-golang set-env Script to ensure GOROOT, GOPATH & GOBIN are set correctly
 source "${ASDF_DATA_DIR:-$HOME/.config/asdf}/plugins/golang/set-env.zsh"
 
-# EZA (better ls)
+# -- EZA -- #
 function ls() {
   local eza_args=(
     --long
