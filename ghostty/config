@@ -1,40 +1,51 @@
 # -- Theme -- #
 theme = catppuccin-mocha.conf
+custom-shader = shaders/space.glsl
 
 # -- Font -- #
 font-family = "ShureTech Nerd Font"
-# font-family = "Hurmit Nerd Font"
 font-size = 18
 
 # -- Cursor -- #
 cursor-style = block
 cursor-style-blink = false
 mouse-hide-while-typing = true
-cursor-click-to-move = true
+
+# -- Scroll -- #
 mouse-scroll-multiplier = 2
+scrollbar = never
 
 # -- Window -- #
-window-decoration = none
-macos-titlebar-style = hidden
+window-decoration = auto
 window-padding-color = extend
-window-padding-x = 5
-window-padding-y = 5
+window-padding-x = 0
+window-padding-y = 0
 window-padding-balance = true
 window-inherit-working-directory = true
 
-# -- Shell -- #
-shell-integration = detect
-shell-integration-features = no-cursor,sudo,no-title
-
 # -- Background -- #
-background-opacity = 0.8
-background-blur = 20
+background-image = wallpaper/cpc_sailormoon-square.jpg
+background-image-opacity = 0.2
+background-image-position = center
+background-image-fit = contain
 
 # -- Options -- #
 confirm-close-surface = false
-copy-on-select = clipboard
 
-keybind=ctrl+option+r=reload_config
+# -- Shell -- #
+initial-command = $SHELL -lic "exec tuios"
 
-# -- Quick Terminal -- #
-quick-terminal-size = 20%
+# -- MacOS -- #
+macos-option-as-alt = left
+macos-titlebar-style = hidden
+
+# -- Keybinds -- #
+# Default MacOS Keybinds
+keybind = alt+digit_5=text:[
+keybind = alt+digit_6=text:]
+keybind = alt+digit_7=text:|
+keybind = alt+shift+digit_7=text:\\
+keybind = alt+digit_8=text:{
+keybind = alt+digit_9=text:}
+keybind = alt+key_n=text:~
+keybind = alt+shift+key_l=text:@
