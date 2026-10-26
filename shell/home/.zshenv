@@ -15,6 +15,7 @@ function load_zshenv_files() {
   local config_files=(
     "env.zsh"
     "path.zsh"
+    "secrets.sh"
   )
 
   if [[ ! -d "$config_dir" ]]; then
