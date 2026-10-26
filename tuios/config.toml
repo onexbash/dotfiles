@@ -1,0 +1,43 @@
+[startup]
+tiled = true
+daemon = true
+
+[appearance]
+theme = "onextheme"
+glyphs = "default" # default | unicode | heavy | ascii | <custom set>
+confirm_quit = true
+border_style = "glyphs" # rounded | normal | thick | double | block | outer-half-block | inner-half-block | ascii | hidden | glyphs
+gap = 0
+zoom_size = 100
+
+# -- Borders -- #
+shared_borders = false
+border_focused_color = "#cba6f7"
+border_unfocused_color = "#45475a"
+session_border = false # session-color as border-color
+session_colors = true # border-color per session
+
+# -- Keybindings -- #
+[keybindings.global]
+toggle_zoom  = ["alt+f"]
+close_window = ["alt+q"]
+
+[keybindings.layout]
+toggle_tiling = ["t"]
+# Alt+h/j/k/l are preselect keys by default; move them so focus can use them
+preselect_left  = ["alt+shift+h"]
+preselect_down  = ["alt+shift+j"]
+preselect_up    = ["alt+shift+k"]
+preselect_right = ["alt+shift+l"]
+
+[keybindings.terminal_mode]
+terminal_focus_left  = ["alt+left", "alt+h"]
+terminal_focus_down  = ["alt+down", "alt+j"]
+terminal_focus_up    = ["alt+up", "alt+k"]
+terminal_focus_right = ["alt+right", "alt+l"]
+
+[[keybindings.command]]
+key = "alt+x"
+type = "popup"
+command = 'exec "${SHELL:-/bin/sh}"'
+description = "Floating shell"

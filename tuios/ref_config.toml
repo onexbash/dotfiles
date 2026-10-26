@@ -1,0 +1,158 @@
+[appearance]
+# -- Theme -- #
+# theme = "onextheme"
+# glyphs = "default" # default | unicode | heavy | ascii | <custom set>
+
+# -- Borders -- #
+shared_borders = false
+border_focused_color = "#cba6f7"
+border_unfocused_color = "#45475a"
+# border_focused_color_window = ""
+# border_focused_color_terminal = ""
+session_border = false # session-color as border-color
+session_colors = true # border-color per session
+# border_style = "glyphs" # rounded | normal | thick | double | block | outer-half-block | inner-half-block | ascii | hidden | glyphs
+
+# -- Backgrounds -- #
+# background = "off"             # default for every surface below
+# pane_background = ""           # "" = follow `background`
+# desktop_background = ""        # gaps, empty workspace
+# window_chrome_background = ""  # borders and title bars
+# dock_background = ""
+#   (rail background: [appearance.sidebar] background, section 13)
+
+# -- Overlays -- #
+
+# dim_unfocused = 0              # 0–90 %: fade panes you are not in
+# dim_multifocus = false         # also dim panes in the multifocus set
+# zen_mode = "disabled"          # disabled, always, mouse: hide borders
+# motion = "full"                # none, basic, full
+# modal_dim = 30                 # 0–90 %: dim screen behind a dialog
+# panel_padding = 2              # 1–6 columns inside overlay panels
+# max_fps = 0                    # 0 = 60; or 10–120
+# wrap_lists = true              # moving past a list's end wraps around
+# animation_speed = ?
+# dim_foreground = ?
+# drop_preview = ?               # drop a pane on an edge to split
+# drop_preview_delay = ?
+
+
+# -- Windows -- #
+# window_title_position = "top"  # top, bottom, hidden
+# window_title_format = ""       # placeholders: {title} {index} {cwd}
+# window_button_style = "dots"   # dots, pill
+# window_button_position = "left"   # left, right
+# hide_window_buttons = false
+# window_button_zoom = true      # zoom button on tiled panes
+# hide_scrollbar = false
+# gap = 0
+
+# -- Shell -- #
+# preferred_shell = ""           # "" = platform default
+# new_window_inherit_cwd = true  # new window starts in focused pane's dir
+# confirm_quit = false           # always confirm, not only with running processes
+
+# -- Which-Key -- #
+
+# whichkey_enabled = true
+# whichkey_position = "bottom-right"  # bottom-right, bottom-left, top-right,
+#                                     # top-left, center
+# prefix_repeat_time = 500       # ms the prefix stays armed; 0 = off
+
+# -- Mouse -- #
+
+# click_to_type = "double"       # double, single, off
+# auto_enter_terminal_on_focus = "off"  # off, targeted, all
+# focus_follows_mouse = false
+# alt_drag = true                # Alt+left-drag moves a pane
+# right_click_opens_menu = false
+# copy_on_select = true
+# word_characters = "@-./_~?&=%+#"   # punctuation counted as part of a word
+# links = "all"                  # all, marked, off
+# kitty_placeholders = "auto"    # auto, on, off
+# nvim_navigation = false        # for the tuios-nvim-navigator plugin
+
+# -- Scrolling -- #
+ 
+# scrollback_lines = 10000       # 100–1000000; read when a pane is created
+# scroll_lines = 3               # 1–50 lines per wheel notch
+# scroll_column_width = 55       # 20–100 % for a new column
+# scroll_column_max = 90         # 20–100 % widest a column may be
+# niri_scroll_cells = 8          # 1–200 cells per wheel event
+# niri_reverse_scroll = false
+# niri_click_reveals = true
+# niri_hover_reveals = true
+
+
+# -- Zoom -- #
+# zoom_size = 95                 # 50–100 % of the screen; 100 = fullscreen
+# zoom_max_width = 0             # cells; 0 = no cap
+# zoom_borderless = false        # whole pane region, no border/title
+# zoom_animation = true
+# zoom_follows_focus = true
+
+# -- Dock -- #
+# dockbar_position = "top"       # top, bottom, hidden
+# dock_workspace_tabs = true
+# dock_workspace_tab_format = "" # {index} {name}; "" = {name}
+# dock_workspace_tooltip = true
+# dock_pill_caps = false         # docs table says false; a later change made it true
+# show_clock = false
+# clock_format = "15:04:05"      # Go time layout, e.g. "15:04", "Mon 3:04PM"
+# show_cpu = false
+# show_ram = false
+
+# -- Session -- #
+# global_session = true          # rail session holding panes from several machines
+# git_dirty = true               # count changed files in the rail's git section
+
+# -- Sidebar -- # 
+[appearance.sidebar]
+# enabled = true
+# position = "right"             # right, left, hidden
+# width = 24
+# background = ""                # off, theme, #RRGGBB; "" = follow appearance.background
+# sections = "sessions:25,terminals,files:25,agents:34" # sessions, terminals, files, agents, git, spacer
+# agent_rest_fold = "1h"         # duration, or "off"
+# show_glyphs = true
+# show_counts = true
+# marquee = true
+# tooltips = true
+# file_icons = true
+# file_icon_colors = true
+# folder_click = "navigate"      # navigate, cd, both
+# file_actions = true
+# file_delete = "trash"          # trash, permanent
+
+# -- Sidebar agent -- #
+[appearance.sidebar.agent_row]
+# tokens = ["session", "need", "harness", "name", "elapsed", "context", "meta", "now", "message"] # state, host, prompt, "$<key>"
+[[appearance.sidebar.agent_row.elapsed.rule]]
+# gt = 30                        # one test: equals, contains, starts_with, gt, lt
+# fg = "warning"
+
+# -- Scrollbar -- #
+[appearance.scrollbar]
+# style = "track"                # track, thin
+# thumb = ""                     # one-cell glyph; "" = style's own
+# track = ""                     # one-cell glyph, or "none"
+# tint = "quiet"                 # quiet, border, muted, or #RRGGBB
+
+# -- Selection -- #
+[appearance.selection]
+# bg = "#45475A"                 # selected text
+# fg = ""                        # "" = keep the text's own colour
+# bold = false
+# search_bg = "#8A6D2F"          # every search match
+# search_fg = "#F5E7C8"
+# match_bg = "#E5A93D"           # match under the cursor
+# match_fg = "#1C1B19"
+# cursor_bg = "#39C5CF"          # copy-mode cursor
+# cursor_fg = "#08222B"
+# flash = true                   # sweep of light over copied text
+# flash_color = ""
+# flash_ms = 420                 # 80–3000
+# flash_style = "diagonal"       # diagonal, diagonal-reverse, horizontal, vertical
+# multi_format = "plain"         # multi copy mode: plain, markdown, json
+# copy_command = ""              # pipe every yank through a command (default assumed "")
+ 
