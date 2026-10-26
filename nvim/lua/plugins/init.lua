@@ -65,6 +65,8 @@ local plugins = {
 	claudecode = { src = "https://github.com/coder/claudecode.nvim", version = "v0.3.0" },
 	-- [markdown]
 	render_markdown = { src = "https://github.com/meanderingprogrammer/render-markdown.nvim", version = "v8.14.0" },
+	-- [tuios]
+	tuios_navigator = { src = "https://github.com/Tim4c/tuios-nvim-navigator", version = "main" },
 }
 
 -- fail loudly on typos like `plugins.masn`
@@ -110,6 +112,8 @@ pack_add({
 	{ plugins.claudecode, dependencies = { plugins.snacks } },
 	-- render-markdown.nvim
 	{ plugins.render_markdown, dependencies = { plugins.nvim_treesitter, plugins.mini } },
+	-- tuios-nvim-navigator
+	plugins.tuios_navigator,
 })
 
 -- | PLUGIN CONFIGS | --
@@ -130,3 +134,4 @@ require("plugins.diagnostics")
 require("plugins.codesnap")
 require("plugins.claude")
 require("plugins.markdown")
+require("plugins.tuios")
