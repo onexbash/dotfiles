@@ -5,52 +5,49 @@
 # Configs defined here are overridden if a project-wide mise.toml exists
 # Usage: `mise install` & `mise doctor`
 
-# -- TOOLS -- #
+# -- |   TOOLS   |-- #
 [tools]
 ansible = "latest"
-ansible-core = "latest"
-# aqua = "latest"
-ast-grep = "latest"
-atuin = "latest"
-aws-cli = "latest"
-azure = "latest"
 azure-functions-core-tools = "latest"
-bat = "latest"
-biome = "latest"
-# black = "latest"
 bun = "latest"
-caddy = "latest"
 clang = "latest"
-claude = "latest"
 cmake = "latest"
-# codex = "latest"
-direnv = "latest"
 dotnet = "latest"
-eza = "latest"
-fd = "latest"
-github-cli = "latest"
 gitleaks = "latest"
 go = "latest"
-
-yazi = "latest"
-podman = "latest"
+java = "latest"
+julia = "latest"
+lua = "latest"
+maven = "latest"
+mysql = "latest"
+node = "lts"
+npm = "latest"
+"npm:typescript" = "latest"
+opentofu = "latest"
+osv-scanner = "latest"
+perl = "latest"
+php = "latest"
 pipx = "latest"
 playwright = "latest"
-gum = "latest"
-java = "latest"
-
-
-node = "lts"
 pnpm = "latest"
+postgres = "latest"
+powershell = "latest"
 python = { version = "latest", postinstall = "python -m pip install --upgrade playwright && python -m playwright install chromium" }
-ruff = "latest"
-ripgrep = "latest"
-neovim = "latest"
-lua = "latest"
+redis = "latest"
 ruby = "latest"
+rust = "latest"
+semgrep = "latest"
+supabase = "latest"
 svgo = "latest"
+swift = "latest"
+terraform = "latest"
+tree-sitter = "latest"
+trivy = "latest"
+uv = "latest"
+yarn = "latest"
+zig = "latest"
 
-# -- SETTINGS -- #
+# -- |   SETTINGS   | -- #
 [settings]
 activate_aggressive = true # Keep mise tools ahead of PATH entries
 activate_shims = true # Add mise shims directories to PATH
@@ -59,29 +56,33 @@ idiomatic_version_file_enable_tools = ["node", "python"] # Additionally read oth
 minimum_release_age = "3d" # Ignore brand new tool releases (Supply-chain protection).
 disable_backends = ["asdf", "spinel", "ubi"] # Disable Backends
 jobs = 4 # Max Parallel install jobs
-trusted_config_paths = ["~/dev/repos/onexbash", "~/dev/repos/cratos"] # Auto-trust configs
 experimental = false # Experimental Features
+# Auto-trust configs
+trusted_config_paths = ["~/dev/repos/onexbash", "~/dev/repos/cratos", "~/.local/share/dotfiles"]
 
-# -- SETTINGS - self_update -- #
+# -- SETTINGS: self_update -- #
 [settings.self_update]
 auto = true # Enable/Disable Auto-Updates
 check_duration = "4h" # frequency
 minimum_release_age = "3d" # minimum age
 
-# -- SETTINGS - tool_update -- #
+# -- SETTINGS: tool_update -- #
 [settings.tool_update]
 global_auto = true
 check_duration = "4h"
 
+# -- SETTINGS: npm -- #
+[settings.npm]
+package_manager = "pnpm"
 
-# -- SETTINGS - go -- #
+# -- SETTINGS: go -- #
 [settings.go]
 set_gobin = false # go install → $GOPATH/bin
 
-# -- SETTINGS - node -- #
+# -- SETTINGS: node -- #
 # [settings.node]
 # cflags="" # CFLAGS for compiling node.js
 
-# -- ENV -- #
+# -- |   ENV   | -- #
 [env]
 GOPATH = "{{env.HOME}}/go"
