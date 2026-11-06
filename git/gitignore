@@ -1,5 +1,5 @@
 # -- -- -- -- -- -- -- -- #
-# --    USER-GLOBAL    -- #
+# --       GLOBAL      -- #
 # --     .gitignore    -- #
 # -- -- -- -- -- -- -- -- #
 
@@ -45,8 +45,11 @@ log/
 *.sublime-workspace
 
 # --  [ AI Tools & Code Agents ]  -- #
-.claude/
-.cursor/
-.copilot/
-.cline/
-.roo/
+**/.worktrees/ # Worktree Directory for AI Agents
+# Claude
+**/.claude/settings.local.json
+**/.claude/worktrees/
+**/.claude/agent-memory-local/
+**/CLAUDE.local.md
+
+**/.claude/.cc-writes/
