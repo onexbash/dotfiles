@@ -49,7 +49,7 @@ return {
 		header = table.concat(header, "\n"),
 	},
 	sections = {
-		{ section = "header" },
+		-- { section = "header" },
 		-- {
 		-- 	pane = 2,
 		-- 	section = "terminal",

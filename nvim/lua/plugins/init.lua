@@ -40,6 +40,7 @@ local plugins = {
 	nvim_lspconfig = { src = "https://github.com/neovim/nvim-lspconfig", version = "v2.12.0" },
 	mason = { src = "https://github.com/mason-org/mason.nvim", version = "v2.3.1" },
 	mason_lspconfig = { src = "https://github.com/mason-org/mason-lspconfig.nvim", version = "v2.3.0" },
+	otter = { src = "https://github.com/jmbuhr/otter.nvim", version = "v2.14.8" },
 	-- [UTILS]
 	mini = { src = "https://github.com/nvim-mini/mini.nvim", version = "main" },
 	snacks = { src = "https://github.com/folke/snacks.nvim", version = "v2.31.0" },
@@ -69,7 +70,7 @@ local plugins = {
 	tuios_navigator = { src = "https://github.com/Tim4c/tuios-nvim-navigator", version = "main" },
 }
 
--- fail loudly on typos like `plugins.masn`
+-- fail loudly on typos like `plugins.mason`
 setmetatable(plugins, {
 	__index = function(_, name)
 		error("pack_add: unknown plugin '" .. name .. "'", 2)
