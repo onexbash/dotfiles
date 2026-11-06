@@ -5,6 +5,8 @@ require("mason-lspconfig").setup({
 	},
 	ensure_installed = {
 		-- Shell
+		"shellcheck",
+		"shfmt",
 		"bashls",
 		"hyprls",
 		"powershell_es",
@@ -15,9 +17,11 @@ require("mason-lspconfig").setup({
 		-- C/C++
 		"clangd",
 		"neocmake", -- or "cmake"
+		"sharp_ls", -- Required for dotnet
 		-- Go
 		"gopls",
 		"golangci_lint_ls",
+		"gofumpt",
 		"templ",
 		-- TS/JS + Frameworks
 		"ts_ls",
@@ -28,7 +32,6 @@ require("mason-lspconfig").setup({
 		"prismals",
 		-- HTML/CSS
 		"html",
-		"superhtml",
 		"emmet_language_server",
 		"htmx",
 		"cssls",
@@ -48,21 +51,21 @@ require("mason-lspconfig").setup({
 		"jsonls",
 		"yamlls",
 		"taplo",
+		"tree-sitter-cli",
 		-- SQL
 		"postgres_lsp",
-		"sqls",
+		-- "sqls", -- Overlaps with 'postgres_lsp'
 		"sqruff",
 		-- Text
 		"marksman",
 		"typos_lsp",
 		-- Container
-		"dockerls",
 		"docker_language_server",
+		"docker_compose_language_service",
 		"ansiblels",
 		-- IaC
 		"terraformls",
 		"tflint",
-		"ms_terraform_lsp",
 		-- CI/CD
 		"gh_actions_ls",
 		"gitlab_ci_ls",
