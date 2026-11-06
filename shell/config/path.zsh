@@ -1,72 +1,64 @@
 # --            path.zsh            -- #
 # --       sourced by: .zshenv      -- #
 # --                                -- #
+#
+# PATH layers (high -> low priority):
+#   1. User paths     - depend on $HOME or env vars, defined in this file
+#   2. System paths   - /etc/paths + /etc/paths.d/* (managed by onesetup / Ansible, see group_vars/all/shell.yml -> system_paths)
+#   3. Fallback paths - MacOS defaults, only matter if /etc/paths.d is missing
+#   4. Inherited      - entries added by the parent process, kept last
 
-# Initialize Homebrew before constructing the PATH
-function init_homebrew() { 
-  eval $(/opt/homebrew/bin/brew shellenv)
+# -- Homebrew environment -- #
+# Sets HOMEBREW_PREFIX, MANPATH, INFOPATH, ...
+# Its PATH entries come from /etc/paths.d/1-homebrew
+function init_homebrew() {
+  [[ -x /opt/homebrew/bin/brew ]] || return 0
+  eval "$(/opt/homebrew/bin/brew shellenv)"
 }
 
 # -- Path Handler -- #
 function construct_path() {
-  # Deduplicate entries and tie scalar $PATH to array $path
+  # Deduplicate entries (keeps first occurrence) and tie $PATH to $path
   typeset -gU path PATH
-  
-  # Add paths from /etc/paths & /etc/paths.d/*
-  local system_paths=()
 
-  if [[ -f "/etc/paths" ]]; then
-    system_paths+=(${(f)"$(< /etc/paths)"})
-  fi 
- 
-  local file
-  for file in /etc/paths.d/*(N.); do
-     system_paths+=(${(f)"$(< "$file")"})
+  # 1. User paths
+  local user_paths=(
+    # Mise - shims
+    $MISE_DATA_DIR/shims(N-/)
+    # Rust
+    ${CARGO_HOME:-$XDG_CONFIG_HOME/rust/cargo}/bin(N-/)
+    # Go
+    ${GOBIN:-${GOPATH:-$XDG_CONFIG_HOME/go}/bin}(N-/)
+  )
+
+  # 2. System paths (files are read in filename order -> priority prefix)
+  local system_paths=() file
+  for file in /etc/paths /etc/paths.d/*(N.); do
+    [[ -r $file ]] && system_paths+=(${(f)"$(< $file)"})
   done
+  system_paths=(${^system_paths}(N-/))
 
-  # Default Path Entries
-  local default_paths=(  
-    "/usr/local/bin"
-    "/usr/bin"
-    "/bin"
-    "/usr/sbin"
-    "/sbin"
+  # 3. Fallback paths
+  local fallback_paths=(
+    /usr/local/bin
+    /usr/bin
+    /bin
+    /usr/sbin
+    /sbin
   )
 
-  # Custom Path Entries
-  # note: '(N-/)' drops the entry if no directory exists for a path entry
-  local custom_paths=(
-    # ASDF
-    ${ASDF_DATA_DIR:-$HOME/.asdf}/shims(N-/)
-    # Rust / Cargo
-    ${CARGO_HOME:-$XDG_CONFIG_HOME/cargo}/bin(N-/)
-    # GoLang
-    ${GOPATH:-$HOME/go}/bin(N-/)
-    # Homebrew
-    /opt/homebrew/bin(N-/)
-    /opt/homebrew/sbin(N-/)
-    # GNU Utils
-    /opt/homebrew/opt/coreutils/libexec/gnubin(N-/)
-    /opt/homebrew/opt/grep/libexec/gnubin(N-/)
-  )
-  
-  # Clear & construct PATH (high-to-low priority)
+  # Construct PATH (high -> low priority)
   path=(
-      "${custom_paths[@]}"
-      "${system_paths[@]}"
-      "${default_paths[@]}"
+    "${user_paths[@]}"
+    "${system_paths[@]}"
+    "${fallback_paths[@]}"
+    "${path[@]}"
   )
-  
-  # Export PATH
-  export PATH
 
-  # ASDF Completions setup
-  if [[ -d "${ASDF_DATA_DIR:-$HOME/.asdf}/completions" ]]; then
-    fpath=("${ASDF_DATA_DIR:-$HOME/.asdf}/completions" $fpath)
-  fi
+  export PATH
 }
 
-
-# Function Calls
+# -- Function Calls -- #
 init_homebrew
 construct_path
+unfunction init_homebrew construct_path

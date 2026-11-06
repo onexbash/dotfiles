@@ -19,8 +19,9 @@ function print_path() {
   done
 }
 
+# -- INACTIVITY -- #
 # Stay awake to prevent "Away" status
-awake() {
+xawake() {
   local hours="${1:-8}"
   pkill caffeinate 2>/dev/null
   nohup caffeinate -d -i -t $((hours * 3600)) >/dev/null 2>&1 & disown
@@ -28,10 +29,20 @@ awake() {
 }
 
 # Let the Mac sleep again
-sleepy() {
+xsleep() {
   pkill caffeinate && echo "Sleep allowed"
 }
 
+# Prevent inactivity via mouse-input
+xactive() { 
+  while true
+  do
+    cliclick m:+20,+20 m:-20,-20
+    sleep 5
+  done
+}
+
+# -- PERMISSIONS -- #
 # Display File Permissions
 function chinfo() {
   local target_path="${1:-.}"

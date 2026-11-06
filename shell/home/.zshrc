@@ -18,12 +18,10 @@ function load_shell_files() {
 
   # Load Config Shell Files that extend ~/.zshrc
   local config_files=(
-    "zellij.zsh"
     "autoreload.zsh"
     "functions.zsh"
     "aliases.zsh"
     "tools.zsh"
-    # "claude.zsh"
   )
   local file
   for file in "${config_files[@]}"; do

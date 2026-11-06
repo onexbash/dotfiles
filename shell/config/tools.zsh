@@ -8,9 +8,6 @@ eval "$(zoxide init zsh --cmd cd --hook pwd)"
 # -- Starship -- #
 eval "$(starship init zsh)"
 
-# -- fnm -- #
-eval "$(fnm env --use-on-cd --shell zsh)"
-
 # -- Atuin -- #
 eval "$(atuin init zsh)"
 
@@ -20,13 +17,9 @@ if [[ -n "$GHOSTTY_RESOURCES_DIR" ]]; then
   source "${GHOSTTY_RESOURCES_DIR}/shell-integration/zsh/ghostty-integration"
 fi
 
-# -- ASDF -- #
-# Initialize completions (PATH adding handled in path.zsh)
-autoload -Uz compinit && compinit
-
-# -- GoLang -- #
-# Run the asdf-golang set-env Script to ensure GOROOT, GOPATH & GOBIN are set correctly
-source "${ASDF_DATA_DIR:-$HOME/.config/asdf}/plugins/golang/set-env.zsh"
+# -- MISE -- #
+# Enable shell-integration
+eval "$(mise activate zsh)" 
 
 # -- EZA -- #
 function ls() {

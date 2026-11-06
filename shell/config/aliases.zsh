@@ -26,6 +26,7 @@ alias code="codium"
 alias gcm="git-credential-manager"
 alias ff="fastfetch"
 alias xzip="ouch"
+alias xcopy="copy_to_clipboard"
 
 # ssh-keygen
 alias ssh-keygen="x_ssh_keygen"

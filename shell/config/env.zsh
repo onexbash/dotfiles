@@ -12,7 +12,6 @@ export XDG_STATE_HOME="${XDG_STATE_HOME:-$HOME/.local/state}"
 # Personal Directory Shortcuts
 export XDEV="$HOME/dev" # Dev Directory
 export XREPOS="$XDEV/repos" # Repos Directory
-
 export XCLOUD="$HOME/Library/CloudStorage/ProtonDrive-fabian@schlegel.one-folder" # Cloud Directory
 export XCONFIG="${XDG_CONFIG_HOME:-$HOME/.config}" # Config Directory
 export XSCRIPTS="$XCONFIG/scripts" # Scripts Directory
@@ -24,10 +23,25 @@ export TOGGLE_SCRIPT_DEBUG_MODE=0 # enable/disable debugging mode for scripts th
 export TOGGLE_PATH_HELPER=0       # enable/disable MacOS path-helper utility
 
 # -- TOOLS ENVIRONMENT -- #
+# ZSH
+export ZDOTDIR="${ZDOTDIR:-$HOME}"
+
+# Mise
+export MISE_CONFIG_DIR="${XDG_CONFIG_HOME}/mise"
+export MISE_STATE_DIR="${XDG_STATE_HOME}/mise"
+export MISE_CACHE_DIR="${XDG_CACHE_HOME}/mise"
+export MISE_DATA_DIR="${XDG_DATA_HOME}/mise"
+
 # Rust
 export CARGO_HOME="${XDG_CONFIG_HOME}/rust/cargo"
 export RUSTUP_HOME="${XDG_CONFIG_HOME}/rust/rustup"
 source "${CARGO_HOME}/env" # load cargo environment
+
+# GoLang
+export GOPATH="${XDG_CONFIG_HOME}/go"
+export GOBIN="${GOPATH}/bin"
+export GOENV="${GOPATH}/env"
+export GOCACHE="${GOPATH}/cache"
 
 # Starship
 export STARSHIP_CONFIG="${XDG_CONFIG_HOME}/starship/starship.toml"
@@ -42,15 +56,10 @@ export _ZO_RESOLVE_SYMLINKS=0                              # whether to resolve 
 export FUNCTIONS_CORE_TOOLS_TELEMETRY_OPTOUT=1 # opt-out of sending Azure Functions Core tools telematry to microsoft.
 export HOMEBREW_NO_ENV_HINTS=1                 # disable hints about homebrew environment variables.
 
-# ASDF
-export ASDF_DATA_DIR="${XDG_CONFIG_HOME}/asdf"
-export ASDF_CONFIG_FILE="${XDG_CONFIG_HOME}/asdf/config.ini"
- 
 # Claude-Code
 export CLAUDE_CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/claude"
 export ANTHROPIC_CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/anthropic"
 export DISABLE_AUTOUPDATER=1 # disable Claude-Code Auto-Updater to be managed by homebrew
-
 
 # Azure CLI
 export AZURE_CONFIG_DIR="${XDG_CONFIG_HOME}/azure"
