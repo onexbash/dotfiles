@@ -1,0 +1,36 @@
+{
+  "name": "coding",
+  "created_at": "2026-10-26T14:19:18.821035+01:00",
+  "version": 2,
+  "auto_tiling": true,
+  "tiling_scheme": "spiral",
+  "master_ratio": 0.5,
+  "windows": [
+    {
+      "x": 0,
+      "y": 2,
+      "width": 62,
+      "height": 31,
+      "title": "~",
+      "working_dir": "/Users/onexbash"
+    },
+    {
+      "x": 62,
+      "y": 2,
+      "width": 144,
+      "height": 53,
+      "title": "~",
+      "working_dir": "/Users/onexbash"
+    },
+    {
+      "x": 0,
+      "y": 33,
+      "width": 62,
+      "height": 22,
+      "title": "~",
+      "working_dir": "/Users/onexbash"
+    }
+  ],
+  "screen_width": 230,
+  "screen_height": 55
+}
