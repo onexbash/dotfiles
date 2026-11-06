@@ -17,10 +17,6 @@ scrollbar = never
 
 # -- Window -- #
 window-decoration = auto
-window-padding-color = extend
-window-padding-x = 0
-window-padding-y = 0
-window-padding-balance = true
 window-inherit-working-directory = true
 
 # -- Background -- #
@@ -33,7 +29,9 @@ background-image-fit = contain
 confirm-close-surface = false
 
 # -- Shell -- #
-initial-command = $SHELL -lic "exec tuios"
+shell-integration = none
+shell-integration-features = no-cursor,sudo,no-title
+# initial-command = $SHELL -lic "exec tuios"
 
 # -- MacOS -- #
 macos-option-as-alt = left
@@ -49,3 +47,6 @@ keybind = alt+digit_8=text:{
 keybind = alt+digit_9=text:}
 keybind = alt+key_n=text:~
 keybind = alt+shift+key_l=text:@
+# Tuios
+keybind = alt+left=unbind
+keybind = alt+right=unbind
