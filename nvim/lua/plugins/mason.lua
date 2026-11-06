@@ -23,7 +23,6 @@ local registry = require("mason-registry")
 local packages = {
 	"stylelint-language-server",
 	"ansible-lint",
-	"prettier",
 	"prettierd",
 	"biome",
 }
