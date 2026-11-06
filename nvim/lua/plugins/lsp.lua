@@ -137,3 +137,13 @@ for _, name in ipairs({ "ts_ls", "svelte", "eslint" }) do
 		})
 	end
 end
+
+-- | otter.nvim | --
+-- LSP Integration: mise-en-place
+autocmd({ "FileType" }, {
+	pattern = { "toml" },
+	group = augroup("EmbedToml", {}),
+	callback = function()
+		require("otter").activate()
+	end,
+})

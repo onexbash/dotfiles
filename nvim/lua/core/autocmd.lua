@@ -1,3 +1,6 @@
+-- |   AUTOCOMMANDS   | --
+-- This File is used for autocmds that only depend on built-in functions
+
 -- Highlight on yank
 autocmd("TextYankPost", {
 	group = augroup("highlight_yank", { clear = true }),

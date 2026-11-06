@@ -101,3 +101,10 @@ ts_autotag.setup({
 		},
 	},
 })
+
+-- | mise-en-place | --
+local is_mise_file = require("utils.mise").is_mise_file
+
+vim.treesitter.query.add_predicate("is-mise?", function(_, _, bufnr, _)
+	return is_mise_file(vim.api.nvim_buf_get_name(tonumber(bufnr) or 0))
+end, { force = true })
