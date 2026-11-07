@@ -25,6 +25,9 @@ local packages = {
 	"ansible-lint",
 	"prettierd",
 	"biome",
+	"shellcheck",
+	"shfmt",
+	"tree-sitter-cli",
 }
 -- Auto-install mason packages
 registry.refresh(function()
