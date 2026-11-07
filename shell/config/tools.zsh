@@ -20,6 +20,10 @@ fi
 # -- MISE -- #
 # Enable shell-integration
 eval "$(mise activate zsh)" 
+# Inform Mise about pkg-config dependencies installed via homebrew
+# pc_dirs=(/opt/homebrew/opt/*/{lib,share}/pkgconfig(N/))
+# export PKG_CONFIG_PATH="${(j/:/)pc_dirs}${PKG_CONFIG_PATH:+:$PKG_CONFIG_PATH}"
+# unset pc_dirs
 
 # -- EZA -- #
 function ls() {
