@@ -16,6 +16,7 @@ function load_zshenv_files() {
     "env.zsh"
     "path.zsh"
     "secrets.sh"
+    "mise.sh"
   )
 
   if [[ ! -d "$config_dir" ]]; then
