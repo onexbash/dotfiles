@@ -17,27 +17,6 @@ if [[ -n "$GHOSTTY_RESOURCES_DIR" ]]; then
   source "${GHOSTTY_RESOURCES_DIR}/shell-integration/zsh/ghostty-integration"
 fi
 
-# -- HOMEBREW -- #
-# Auto Update
-brew_autoupdate() {
-  local -a opts=(4h --upgrade --cleanup --immediate --sudo)
-  (( $+commands[brew] )) || return 0
-
-  if ! brew autoupdate status 2>/dev/null | grep -qi "running"; then
-    echo -e "${I_INFO}Brew Autoupdate is not active, starting it.."
-    brew autoupdate start "${opts[@]}"
-  fi
-}
-brew_autoupdate
-
-# -- MISE -- #
-# Enable shell-integration
-eval "$(mise activate zsh)" 
-# Inform Mise about pkg-config dependencies installed via homebrew
-# pc_dirs=(/opt/homebrew/opt/*/{lib,share}/pkgconfig(N/))
-# export PKG_CONFIG_PATH="${(j/:/)pc_dirs}${PKG_CONFIG_PATH:+:$PKG_CONFIG_PATH}"
-# unset pc_dirs
-
 # -- EZA -- #
 function ls() {
   local eza_args=(
@@ -138,7 +117,3 @@ gck_add_caller() {
     return 1
   fi
 }
-
-# -- GitHub -- #
-# [ENV] Export GitHub Personal Access Token from KeepassXC
-export GITHUB_PAT_PUBLIC_READ="$(printf 'protocol=https\nhost=api.github.com\n\n' | git-credential-keepassxc get 2>/dev/null | sed -n 's/^password=//p')"
