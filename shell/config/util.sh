@@ -8,30 +8,33 @@ function main() {
   tty_styles
 }
 
-# [INIT] Terminal Colors & Prompts
 function tty_styles() {
-  # -- TERMINAL COLORS -- #
-  export C_BLACK=$'\033[1;30m'
-  export C_RED=$'\033[1;31m'
-  export C_GREEN=$'\033[1;32m'
-  export C_YELLOW=$'\033[1;33m'
-  export C_BLUE=$'\033[1;34m'
-  export C_PURPLE=$'\033[1;35m'
-  export C_CYAN=$'\033[1;36m'
-  export C_WHITE=$'\033[1;37m'
-  export C_GRAY=$'\033[0;90m'
-  export C_RESET=$'\033[0m'
+  # Disable colors when output isn't a terminal or NO_COLOR is set
+  if [[ -t 1 && -z ${NO_COLOR-} ]]; then
+    C_RED=$'\033[1;31m' C_GREEN=$'\033[1;32m' C_YELLOW=$'\033[1;33m'
+    C_BLUE=$'\033[1;34m' C_PURPLE=$'\033[1;35m' C_CYAN=$'\033[1;36m'
+    C_WHITE=$'\033[1;37m' C_GRAY=$'\033[0;90m' C_RESET=$'\033[0m'
+  else
+    C_RED="" C_GREEN="" C_YELLOW="" C_BLUE="" C_PURPLE="" C_CYAN="" C_WHITE="" C_GRAY="" C_RESET=""
+  fi
 
-  # -- INFO PROMPTS -- #
-  export I_SKIP="${C_BLACK}[${C_CYAN} SKIPPING ${C_BLACK}] ${C_RESET}"   # skipping
-  export I_WARN="${C_BLACK}[${C_YELLOW} WARNING ${C_BLACK}] ${C_RESET}"  # warning
-  export I_OK="${C_BLACK}[${C_GREEN}  OK  ${C_BLACK}] ${C_RESET}"        # ok
-  export I_INFO="${C_BLACK}[${C_PURPLE} INFO ${C_BLACK}] ${C_RESET}"     # info
-  export I_ERR="${C_BLACK}[${C_RED} ERROR ${C_BLACK}] ${C_RESET}"        # error
-  export I_YN="${C_BLACK}[${C_BLUE} y/n ${C_BLACK}] ${C_RESET}"          # ask user for yes/no
-  export I_ASK="${C_BLACK}[${C_BLUE} ? ${C_BLACK}] ${C_RESET}"           # ask user for anything
-  export I_LOAD="${C_BLACK}[${C_BLUE} LOADING .. ${C_BLACK}] ${C_RESET}" # loading / in progress
+  # Fixed-width labels so messages line up
+  I_SKIP="${C_GRAY}[${C_CYAN}SKIPPING${C_GRAY}]${C_RESET} "
+  I_WARN="${C_GRAY}[${C_YELLOW}WARNING ${C_GRAY}]${C_RESET} "
+  I_OK="${C_GRAY}[${C_GREEN}   OK   ${C_GRAY}]${C_RESET} "
+  I_INFO="${C_GRAY}[${C_PURPLE}  INFO  ${C_GRAY}]${C_RESET} "
+  I_ERR="${C_GRAY}[${C_RED} ERROR  ${C_GRAY}]${C_RESET} "
+  I_ASK="${C_GRAY}[${C_BLUE}   ?    ${C_GRAY}]${C_RESET} "
+  I_ASK_YN="${C_GRAY}[${C_BLUE}  y/n   ${C_GRAY}]${C_RESET} "
 }
+
+log_ok() { printf '%s%s\n' "$I_OK" "$*"; }
+log_info() { printf '%s%s\n' "$I_INFO" "$*"; }
+log_warn() { printf '%s%s\n' "$I_WARN" "$*" >&2; }
+log_err() { printf '%s%s\n' "$I_ERR" "$*" >&2; }
+log_skip() { printf '%s%s\n' "$I_SKIP" "$*"; }
+log_ask() { printf '%s%s\n' "$I_ASK" "$*"; }
+log_ask_yn() { printf '%s%s\n' "$I_ASK_YN" "$*"; }
 
 # [UTIL] Detect Operating System
 function detect_os() {
