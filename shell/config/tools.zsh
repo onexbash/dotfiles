@@ -17,6 +17,19 @@ if [[ -n "$GHOSTTY_RESOURCES_DIR" ]]; then
   source "${GHOSTTY_RESOURCES_DIR}/shell-integration/zsh/ghostty-integration"
 fi
 
+# -- HOMEBREW -- #
+# Auto Update
+brew_autoupdate() {
+  local -a opts=(4h --upgrade --cleanup --immediate --sudo)
+  (( $+commands[brew] )) || return 0
+
+  if ! brew autoupdate status 2>/dev/null | grep -qi "running"; then
+    echo -e "${I_INFO}Brew Autoupdate is not active, starting it.."
+    brew autoupdate start "${opts[@]}"
+  fi
+}
+brew_autoupdate
+
 # -- MISE -- #
 # Enable shell-integration
 eval "$(mise activate zsh)" 

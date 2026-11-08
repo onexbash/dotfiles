@@ -8,7 +8,7 @@ export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
 export XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"
 export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
 export XDG_STATE_HOME="${XDG_STATE_HOME:-$HOME/.local/state}"
-
+#
 # Personal Directory Shortcuts
 export XDEV="$HOME/dev" # Dev Directory
 export XREPOS="$XDEV/repos" # Repos Directory
@@ -31,11 +31,6 @@ export MISE_CONFIG_DIR="${XDG_CONFIG_HOME}/mise"
 export MISE_STATE_DIR="${XDG_STATE_HOME}/mise"
 export MISE_CACHE_DIR="${XDG_CACHE_HOME}/mise"
 export MISE_DATA_DIR="${XDG_DATA_HOME}/mise"
-
-# Proton Pass
-# Use Proton Pass as SSH Agent
-# TODO: Migrate from KeePassXC to proton and set this env-var
-# export SSH_AUTH_SOCK="/Users/onexbash/.ssh/proton-pass-ssh-agent.sock"
 
 # Rust
 export CARGO_HOME="${XDG_CONFIG_HOME}/rust/cargo"
