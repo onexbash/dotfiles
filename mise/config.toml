@@ -52,18 +52,25 @@ zig = "latest"
 activate_aggressive = true # Keep mise tools ahead of PATH entries
 activate_shims = true # Add mise shims directories to PATH
 auto_install = true # Auto Install missing tools
-idiomatic_version_file_enable_tools = ["node", "python"] # Additionally read other config-files if a project has no mise.toml
+idiomatic_version_file_enable_tools = [
+  "node",
+  "python",
+] # Additionally read other config-files if a project has no mise.toml
 minimum_release_age = "3d" # Ignore brand new tool releases (Supply-chain protection).
 disable_backends = ["asdf", "spinel", "ubi"] # Disable Backends
 jobs = 4 # Max Parallel install jobs
 experimental = false # Experimental Features
 # Auto-trust configs
-trusted_config_paths = ["~/dev/repos/onexbash", "~/dev/repos/cratos", "~/.local/share/dotfiles"]
+trusted_config_paths = [
+  "~/dev/repos/onexbash",
+  "~/dev/repos/cratos",
+  "~/.local/share/dotfiles",
+]
 
 # -- SETTINGS: self_update -- #
 [settings.self_update]
-auto = true # Enable/Disable Auto-Updates
-check_duration = "4h" # frequency
+auto = true                # Enable/Disable Auto-Updates
+check_duration = "4h"      # frequency
 minimum_release_age = "3d" # minimum age
 
 # -- SETTINGS: tool_update -- #
