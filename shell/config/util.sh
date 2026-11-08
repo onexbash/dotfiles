@@ -19,13 +19,13 @@ function tty_styles() {
   fi
 
   # Fixed-width labels so messages line up
-  I_SKIP="${C_GRAY}[${C_CYAN}SKIPPING${C_GRAY}]${C_RESET} "
-  I_WARN="${C_GRAY}[${C_YELLOW}WARNING ${C_GRAY}]${C_RESET} "
-  I_OK="${C_GRAY}[${C_GREEN}   OK   ${C_GRAY}]${C_RESET} "
-  I_INFO="${C_GRAY}[${C_PURPLE}  INFO  ${C_GRAY}]${C_RESET} "
-  I_ERR="${C_GRAY}[${C_RED} ERROR  ${C_GRAY}]${C_RESET} "
-  I_ASK="${C_GRAY}[${C_BLUE}   ?    ${C_GRAY}]${C_RESET} "
-  I_ASK_YN="${C_GRAY}[${C_BLUE}  y/n   ${C_GRAY}]${C_RESET} "
+  I_SKIP="${C_GRAY}[${C_CYAN} SKIP ${C_GRAY}]${C_RESET} "
+  I_WARN="${C_GRAY}[${C_YELLOW} WARN ${C_GRAY}]${C_RESET} "
+  I_OK="${C_GRAY}[${C_GREEN} OK ${C_GRAY}]${C_RESET} "
+  I_INFO="${C_GRAY}[${C_PURPLE} INFO ${C_GRAY}]${C_RESET} "
+  I_ERR="${C_GRAY}[${C_RED} ERROR ${C_GRAY}]${C_RESET} "
+  I_ASK="${C_GRAY}[${C_BLUE} ? ${C_GRAY}]${C_RESET} "
+  I_ASK_YN="${C_GRAY}[${C_BLUE} y/n ${C_GRAY}]${C_RESET} "
 }
 
 log_ok() { printf '%s%s\n' "$I_OK" "$*"; }
@@ -56,6 +56,25 @@ function set_modes() {
     set -x
     echo -e "${I_OK}Running Script in Debug Mode"
   fi
+}
+
+# [UTIL] Read .env File
+function read_env() {
+  local file=${1/#\~/$HOME} line key value
+
+  [[ -r $file ]] || {
+    echo "read_env: cannot read '$file'" >&2
+    return 1
+  }
+
+  while IFS= read -r line || [[ -n $line ]]; do
+    [[ $line =~ ^[[:space:]]*(#|$) ]] && continue # skip comments & blank lines
+    key=${line%%=*}
+    value=${line#*=}
+    value=${value#[\"\']} # strip surrounding quotes
+    value=${value%[\"\']}
+    export "$key=$value"
+  done <"$file"
 }
 
 # [UTIL] Copy stdin to clipboard

@@ -19,6 +19,77 @@ function print_path() {
   done
 }
 
+# -- SECRETS -- #
+# Ensure Proton Pass CLI is authenticated
+pass_auth() {
+  [[ -n ${I_OK-} ]] || tty_styles
+  if ! command -v pass-cli >/dev/null 2>&1; then
+    log_err "pass-cli not found in PATH. Install it from https://proton.me/pass/download"
+    return 127
+  fi
+  # `pass-cli info` exits non-zero when there is no valid session
+  if pass-cli info >/dev/null 2>&1; then
+    log_ok "Proton Pass CLI is authenticated."
+    return 0
+  fi
+  log_warn "Proton Pass CLI is not authenticated."
+  log_info "Running: pass-cli login${*:+ $*}"
+  if ! pass-cli login "$@"; then
+    log_err "pass-cli login failed."
+    return 1
+  fi
+  # Verify the new session actually works
+  if pass-cli info >/dev/null 2>&1; then
+    log_ok "Logged in to Proton Pass."
+  else
+    log_err "Login finished, but the session could not be verified (pass-cli info still fails)."
+    return 1
+  fi
+}
+# Read Secrets from Proton Pass & Export as Environment Variables (defined in secrets.env)
+export_secrets() {
+  local file="$HOME/.config/shell/secrets.env" key ref value failed=0
+
+  pass_auth || return
+  read_env "$file" || return
+
+  # Variable names defined in the file (one per line)
+  while IFS= read -r key; do
+    ref=$(printenv "$key")
+    [[ $ref == pass://* ]] || continue # only resolve Proton Pass references
+
+    if value=$(pass-cli item view "$ref") && [[ -n $value ]]; then
+      export "$key=$value"
+    else
+      unset "$key" # don't leave the reference behind as the "secret"
+      log_err "Could not read $key from Proton Pass ($ref)"
+      failed=1
+    fi
+  done < <(sed -n 's/^\([A-Za-z_][A-Za-z0-9_]*\)=.*/\1/p' "$file")
+
+  ((failed)) && return 1
+  log_ok "Secrets exported."
+}
+# Import SSH Keys from Proton Pass to the ssh-agent
+load_ssh() {
+  local vault=${1:-"SSH Keys"}
+
+  pass_auth || return
+
+  # ssh-add -l exits with 2 if no agent is reachable (0 = has keys, 1 = no keys)
+  ssh-add -l >/dev/null 2>&1
+  if (($? == 2)); then
+    log_err "Cannot connect to the ssh-agent (SSH_AUTH_SOCK='${SSH_AUTH_SOCK-}')."
+    return 1
+  fi
+
+  pass-cli ssh-agent load --vault-name "$vault" || {
+    log_err "Loading SSH keys from vault '$vault' failed."
+    return 1
+  }
+}
+
+
 # -- INACTIVITY -- #
 # Stay awake to prevent "Away" status
 xawake() {
