@@ -1,0 +1,67 @@
+#!/usr/bin/env bash
+# crewx setup: prepare a project and open (or reuse) its tuios session.
+# Usage: ~/.config/scripts/crewx/setup [project-dir]
+set -euo pipefail
+
+CREWX="$HOME/.config/scripts/crewx"
+SETTINGS="$CREWX/settings.json"
+
+dir="${1:-$PWD}"
+[ -d "$dir" ] || { echo "crewx: project directory not found: $dir" >&2; exit 1; }
+dir="$(cd "$dir" && pwd -P)"
+session="crewx-$(basename "$dir")"
+command -v tuios >/dev/null || { echo "crewx: tuios is not on PATH" >&2; exit 1; }
+
+# Project files: create only what is missing, never overwrite.
+mkdir -p "$dir/docs" "$dir/.crewx"
+for f in PLAN CHANGELOG DECISIONS HANDOFF; do
+  [ -e "$dir/docs/$f.md" ] || cp "$CREWX/templates/$f.md" "$dir/docs/$f.md"
+done
+[ -e "$dir/.crewx/activity.log" ] || : > "$dir/.crewx/activity.log"
+
+# Session: reuse it if it exists.
+fresh=0
+if ! tuios ls --json | jq -e --arg s "$session" 'any(.[]; .name == $s)' >/dev/null; then
+  tuios new "$session" --detach --cwd "$dir" >/dev/null
+  fresh=1
+fi
+
+win_id() { # id of the window named $1, empty if none
+  tuios list-windows -s "$session" --json \
+    | jq -r --arg n "$1" '.windows[] | select(.display_name == $n) | .window_id' | head -n1
+}
+
+tuios set-workspace-name -s "$session" 1 Jarvis >/dev/null
+tuios set-workspace-name -s "$session" 2 Logs >/dev/null
+
+# Workspace 1: the Jarvis pane (a shell, so it survives when claude exits).
+jarvis="$(win_id Jarvis)"
+if [ -z "$jarvis" ]; then
+  if [ "$fresh" = 1 ]; then # the new session's first window becomes Jarvis
+    jarvis="$(tuios list-windows -s "$session" --json | jq -r '.windows[0].window_id')"
+    tuios set-window -s "$session" -w "$jarvis" --name Jarvis >/dev/null
+  else
+    jarvis="$(tuios new-window Jarvis -s "$session" --workspace 1 --cwd "$dir" --no-focus --print-id)"
+  fi
+fi
+tty="$(tuios list-windows -s "$session" --json | jq -r --arg id "$jarvis" '.windows[] | select(.window_id == $id) | .tty')"
+procs="$(ps -t "${tty#/dev/}" -o command= 2>/dev/null || true)" # not piped into grep -q: pipefail + SIGPIPE
+if [[ "$procs" == *"claude --agent jarvis"* ]]; then
+  echo "crewx: Jarvis is already running in $session"
+else
+  tuios send-text -s "$session" -w "$jarvis" "cd $(printf %q "$dir") && tuios tmux-shim -- env CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1 claude --agent jarvis --settings $(printf %q "$SETTINGS")
+" >/dev/null
+fi
+
+# Workspace 2: activity log (left) and PLAN.md (right); tiling places them side by side.
+[ -n "$(win_id Activity)" ] || tuios new-window Activity -s "$session" --workspace 2 --cwd "$dir" --no-focus -- "$CREWX/logs-activity.sh" "$dir" >/dev/null
+[ -n "$(win_id Plan)" ]     || tuios new-window Plan     -s "$session" --workspace 2 --cwd "$dir" --no-focus -- "$CREWX/logs-plan.sh" "$dir" >/dev/null
+
+tuios select-workspace -s "$session" 1 >/dev/null
+tuios focus-window -s "$session" "$jarvis" >/dev/null || true
+
+if [ -n "${TUIOS_SESSION:-}" ]; then
+  exec tuios switch-session "$session"
+else
+  exec tuios attach "$session"
+fi

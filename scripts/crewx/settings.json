@@ -1,0 +1,26 @@
+{
+  "teammateMode": "tmux",
+  "env": {
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
+  },
+  "permissions": {
+    "allow": [
+      "Edit(./**)",
+      "Bash(git status*)", "Bash(git diff*)", "Bash(git log*)", "Bash(git show*)", "Bash(git ls-files*)",
+      "Bash(ls*)", "Bash(rg *)", "Bash(grep *)", "Bash(find *)", "Bash(wc *)",
+      "Bash(npm *)", "Bash(pnpm *)", "Bash(pytest*)", "Bash(go test*)", "Bash(make *)"
+    ],
+    "deny": ["Bash(git push*)", "Bash(git commit*)", "Bash(git switch*)", "Bash(git checkout*)", "Bash(git reset*)", "Bash(rm -rf*)"]
+  },
+  "hooks": {
+    "TaskCreated": [
+      { "hooks": [{ "type": "command", "command": "$HOME/.config/scripts/crewx/log-event.sh", "timeout": 5 }] }
+    ],
+    "TaskCompleted": [
+      { "hooks": [{ "type": "command", "command": "$HOME/.config/scripts/crewx/log-event.sh", "timeout": 5 }] }
+    ],
+    "TeammateIdle": [
+      { "hooks": [{ "type": "command", "command": "$HOME/.config/scripts/crewx/log-event.sh", "timeout": 5 }] }
+    ]
+  }
+}
