@@ -1,4 +1,45 @@
 {
+  "theme": "custom:catppuccin-mocha",
+  "env": {
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
+  },
+  "teammateMode": "tmux",
+  "permissions": {
+    "additionalDirectories": ["~/"],
+    "allow": [
+      "Read(~/**)",
+      "Edit(~/dev/repos/cratos/**)",
+      "Edit(~/dev/repos/onexbash/**)",
+      "Edit(~/.config/**)",
+      "Bash(tuios:*)",
+      "Bash(git status *)",
+      "Bash(git diff *)",
+      "Bash(git log *)",
+      "Bash(git show *)",
+      "Bash(git worktree list *)",
+      "Bash(git branch --show-current)",
+      "Bash(git -C * status *)",
+      "Bash(git -C * diff *)",
+      "Bash(git -C * log *)",
+      "Bash(wt list *)"
+    ],
+    "deny": [
+      "Read(~/.ssh/**)",
+      "Read(~/.aws/**)",
+      "Read(~/.gnupg/**)",
+      "Read(~/.config/gpg/**)",
+      "Read(~/.config/gh/**)",
+      "Edit(~/.config/gh/**)",
+      "Bash(git push *)",
+      "Bash(git * push *)",
+      "Bash(wt merge *)",
+      "Bash(wt step push *)",
+      "Bash(tuios ship *)"
+    ]
+  },
+  "sandbox": {
+    "enabled": false
+  },
   "hooks": {
     "SessionStart": [
       {
@@ -7,6 +48,15 @@
             "type": "command",
             "command": "tuios agent-hook claude-code --integration 3",
             "timeout": 5
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/.config/scripts/crewx/hooks/session-start.sh",
+            "timeout": 10
           }
         ]
       }
@@ -29,6 +79,16 @@
             "type": "command",
             "command": "tuios agent-hook claude-code --integration 3",
             "timeout": 5
+          }
+        ]
+      },
+      {
+        "matcher": "Bash|Edit|Write|MultiEdit|NotebookEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/.config/scripts/crewx/hooks/pre-tool-use.sh",
+            "timeout": 10
           }
         ]
       }
@@ -153,6 +213,17 @@
           }
         ]
       }
+    ],
+    "TaskCompleted": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/.config/scripts/crewx/hooks/task-completed.sh",
+            "timeout": 900
+          }
+        ]
+      }
     ]
   },
   "statusLine": {
@@ -162,7 +233,8 @@
   "enabledPlugins": {
     "svelte@svelte": true,
     "ponytail@ponytail": true,
-    "impeccable@impeccable": true
+    "impeccable@impeccable": true,
+    "worktrunk@worktrunk": true
   },
   "extraKnownMarketplaces": {
     "svelte": {
@@ -182,7 +254,9 @@
         "source": "git",
         "url": "https://github.com/pbakaus/impeccable.git"
       }
+    },
+    "worktrunk": {
+      "source": { "source": "github", "repo": "max-sixty/worktrunk" }
     }
-  },
-  "theme": "dark-ansi"
+  }
 }
