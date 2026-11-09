@@ -33,8 +33,7 @@
       "Bash(git push *)",
       "Bash(git * push *)",
       "Bash(wt merge *)",
-      "Bash(wt step push *)",
-      "Bash(tuios ship *)"
+      "Bash(wt step push *)"
     ]
   },
   "sandbox": {
@@ -48,15 +47,6 @@
             "type": "command",
             "command": "tuios agent-hook claude-code --integration 3",
             "timeout": 5
-          }
-        ]
-      },
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "$HOME/.config/scripts/crewx/hooks/session-start.sh",
-            "timeout": 10
           }
         ]
       }
@@ -79,16 +69,6 @@
             "type": "command",
             "command": "tuios agent-hook claude-code --integration 3",
             "timeout": 5
-          }
-        ]
-      },
-      {
-        "matcher": "Bash|Edit|Write|MultiEdit|NotebookEdit",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "$HOME/.config/scripts/crewx/hooks/pre-tool-use.sh",
-            "timeout": 10
           }
         ]
       }
@@ -210,17 +190,6 @@
             "type": "command",
             "command": "tuios agent-hook claude-code --integration 3",
             "timeout": 5
-          }
-        ]
-      }
-    ],
-    "TaskCompleted": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "$HOME/.config/scripts/crewx/hooks/task-completed.sh",
-            "timeout": 900
           }
         ]
       }
