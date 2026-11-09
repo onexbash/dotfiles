@@ -1,9 +1,5 @@
 {
   "theme": "custom:catppuccin-mocha",
-  "env": {
-    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
-  },
-  "teammateMode": "tmux",
   "permissions": {
     "additionalDirectories": ["~/"],
     "allow": [
