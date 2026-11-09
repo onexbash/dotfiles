@@ -1,0 +1,5 @@
+[projects."ssh.dev.azure.com/v3/cratosde/CRATOS%20-%20Internal%20Services/Clearance"]
+approved-commands = [
+    "wt step copy-ignored --to {{ branch }}",
+    "pnpm install --frozen-lockfile --prefer-offline",
+]
