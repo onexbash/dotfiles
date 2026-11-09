@@ -87,3 +87,6 @@ key = "alt+c"
 type = "shell"
 command = "~/.config/tuios/scripts/layout_coding.sh"
 description = "Load Layout: coding"
+
+[plugins]
+enabled = ["worktrunk"]
