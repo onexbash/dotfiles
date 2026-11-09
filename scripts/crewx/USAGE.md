@@ -5,7 +5,7 @@ A Claude Code agent team (Agent Teams) that runs in tuios. Jarvis leads; Hinata 
 | Agent | Model | Role |
 |---|---|---|
 | Jarvis | opus | Team lead: plans, decides, delegates. The only one you need to talk to. |
-| Hinata | sonnet | Plan, reviews, changelog, decision log, question queue, status, handoff. Edits only `docs/`. |
+| Hinata | sonnet | Branch guard, plan, reviews, merges worker branches, changelog, decision log, question queue, status, handoff. Edits only `docs/`. |
 | Asta | haiku | Simple, fully specified packages. |
 | Yuno | sonnet | Medium packages. |
 | Yami | opus | Heavy packages; may propose improvements. |
@@ -28,14 +28,29 @@ Running `setup` again is safe: it reuses the session, restarts Jarvis only if he
 - Talk to Jarvis in his pane. He reads `docs/HANDOFF.md`, `PLAN.md` and `DECISIONS.md` first, then spawns Hinata.
 - Ask Hinata for a status digest any time (in her pane, or through Jarvis).
 - Jarvis asks you directly only for critical decisions (breaking changes, new dependencies, data migrations, security, high cost) or blockers. Other questions are batched by Hinata.
-- Agents don't commit or push. Review `git diff` and commit yourself.
-- To end: tell Jarvis you are done. Hinata writes `docs/HANDOFF.md`, Jarvis shuts the team down. The next `setup` resumes from the handoff.
+- To end: tell Jarvis you are done. Hinata removes merged worker worktrees and writes `docs/HANDOFF.md`, Jarvis shuts the team down. The next `setup` resumes from the handoff.
+
+## Git and worktrees
+```
+main worktree (project dir)   F = feat-<name>   you, Jarvis, Hinata
+└─ .worktrees/<F>-asta        branch <F>-asta   Asta
+└─ .worktrees/<F>-yuno        branch <F>-yuno   Yuno
+└─ .worktrees/<F>-yami        branch <F>-yami   Yami
+```
+- **Branch guard:** Hinata checks the main worktree's branch at start and before every review, merge and sync. If it isn't `feat-*`, the agents pause and Jarvis asks you: proceed on that branch, or create `feat-<name>` from the current state (your uncommitted changes come along).
+- **Workers** get their worktree on demand (`worktree up <worker>`, via worktrunk, so the project's `.config/wt.toml` hooks install dependencies, copy env files, ...). They commit only on their own branch and rebase onto F before handing off.
+- **Merge back:** after review and Jarvis's approval, Hinata runs `worktree merge`: the worker's commits are squashed into one Conventional Commit and F is fast-forwarded to it. Result: one commit per work package on F, made by the team. Nothing is ever pushed; you push.
+- **Keeping workers current:** after every merge (and before every review), `worktree sync` rebases clean worker worktrees that are behind F. Busy or conflicting ones get a message to commit and rebase themselves.
+- **Your own work in the main worktree:** keep going as usual. A merge stops (exit 6) instead of touching your work if you have *staged* changes, or if your uncommitted changes touch the same files. Hinata's `docs/` edits stay uncommitted for you to commit.
+- **Look around:** `wt list` shows all worktrees with ahead/behind; `wt switch <F>-yuno` takes you into a worker's worktree.
+- Worktrunk silently skips project hooks you haven't approved when agents create worktrees. For a new project, approve them once yourself: `wt switch --create crewx-approve`, then `wt remove crewx-approve`. Agents never approve hooks.
 
 ## Files
 | Path | What |
 |---|---|
 | `~/.config/scripts/crewx/setup` | the start script |
 | `~/.config/scripts/crewx/settings.json` | crewx-only settings (`claude --settings`): hooks, teammate mode, permissions. Teammates get the same file from the lead. |
+| `~/.config/scripts/crewx/worktree` | git helper: branch guard, worker worktrees, squash-merge, sync (`worktree help`) |
 | `~/.config/scripts/crewx/log-event.sh` | hook: TaskCreated / TaskCompleted / TeammateIdle → `.crewx/activity.log` |
 | `~/.config/scripts/crewx/logs-activity.sh`, `logs-plan.sh` | the two Logs panes |
 | `~/.config/scripts/crewx/templates/` | starting content for the project docs |
