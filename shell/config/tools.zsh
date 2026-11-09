@@ -17,6 +17,12 @@ if [[ -n "$GHOSTTY_RESOURCES_DIR" ]]; then
   source "${GHOSTTY_RESOURCES_DIR}/shell-integration/zsh/ghostty-integration"
 fi
 
+# -- Worktrunk -- #
+# Setup Shell Integration for Worktrunk
+if command -v wt >/dev/null 2>&1; then
+  eval "$(command wt config shell init zsh)";
+fi
+
 # -- EZA -- #
 function ls() {
   local eza_args=(

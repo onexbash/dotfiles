@@ -35,6 +35,13 @@ export MISE_DATA_DIR="${XDG_DATA_HOME}/mise"
 # Proton Pass
 export PROTON_PASS_SESSION_DIR="${XDG_DATA_HOME}/proton-pass-cli"
 
+# Worktrunk
+export WORKTRUNK_SYSTEM_CONFIG_PATH="/etc/worktrunk/config.toml" # Global Config
+export WORKTRUNK_CONFIG_PATH="${XDG_CONFIG_HOME}/worktrunk/config.toml" # User Config
+export WORKTRUNK_PROJECT_CONFIG_PATH="worktrunk.toml" # Project-Wide Config
+export WORKTRUNK_VERBOSE=1 # Verbosity Level [0/1/2]
+export WORKTRUNK_MAX_CONCURRENT_COMMANDS=24 # Max parallel git commands
+
 # Rust
 export CARGO_HOME="${XDG_CONFIG_HOME}/rust/cargo"
 export RUSTUP_HOME="${XDG_CONFIG_HOME}/rust/rustup"
