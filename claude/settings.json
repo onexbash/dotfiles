@@ -1,7 +1,9 @@
 {
   "theme": "custom:catppuccin-mocha",
   "permissions": {
-    "additionalDirectories": ["~/"],
+    "additionalDirectories": [
+      "~/"
+    ],
     "allow": [
       "Read(~/**)",
       "Edit(~/dev/repos/cratos/**)",
@@ -40,9 +42,9 @@
       {
         "hooks": [
           {
-            "type": "command",
             "command": "tuios agent-hook claude-code --integration 3",
-            "timeout": 5
+            "timeout": 5,
+            "type": "command"
           }
         ]
       }
@@ -51,9 +53,9 @@
       {
         "hooks": [
           {
-            "type": "command",
             "command": "tuios agent-hook claude-code --integration 3",
-            "timeout": 5
+            "timeout": 5,
+            "type": "command"
           }
         ]
       }
@@ -62,9 +64,9 @@
       {
         "hooks": [
           {
-            "type": "command",
             "command": "tuios agent-hook claude-code --integration 3",
-            "timeout": 5
+            "timeout": 5,
+            "type": "command"
           }
         ]
       }
@@ -73,9 +75,9 @@
       {
         "hooks": [
           {
-            "type": "command",
             "command": "tuios agent-hook claude-code --integration 3",
-            "timeout": 310
+            "timeout": 310,
+            "type": "command"
           }
         ]
       }
@@ -84,9 +86,9 @@
       {
         "hooks": [
           {
-            "type": "command",
             "command": "tuios agent-hook claude-code --integration 3",
-            "timeout": 5
+            "timeout": 5,
+            "type": "command"
           }
         ]
       }
@@ -95,9 +97,9 @@
       {
         "hooks": [
           {
-            "type": "command",
             "command": "tuios agent-hook claude-code --integration 3",
-            "timeout": 5
+            "timeout": 5,
+            "type": "command"
           }
         ]
       }
@@ -106,9 +108,9 @@
       {
         "hooks": [
           {
-            "type": "command",
             "command": "tuios agent-hook claude-code --integration 3",
-            "timeout": 5
+            "timeout": 5,
+            "type": "command"
           }
         ]
       }
@@ -117,9 +119,9 @@
       {
         "hooks": [
           {
-            "type": "command",
             "command": "tuios agent-hook claude-code --integration 3",
-            "timeout": 5
+            "timeout": 5,
+            "type": "command"
           }
         ]
       }
@@ -128,9 +130,9 @@
       {
         "hooks": [
           {
-            "type": "command",
             "command": "tuios agent-hook claude-code --integration 3",
-            "timeout": 5
+            "timeout": 5,
+            "type": "command"
           }
         ]
       }
@@ -139,9 +141,9 @@
       {
         "hooks": [
           {
-            "type": "command",
             "command": "tuios agent-hook claude-code --integration 3",
-            "timeout": 5
+            "timeout": 5,
+            "type": "command"
           }
         ]
       }
@@ -150,9 +152,9 @@
       {
         "hooks": [
           {
-            "type": "command",
             "command": "tuios agent-hook claude-code --integration 3",
-            "timeout": 5
+            "timeout": 5,
+            "type": "command"
           }
         ]
       }
@@ -161,9 +163,9 @@
       {
         "hooks": [
           {
-            "type": "command",
             "command": "tuios agent-hook claude-code --integration 3",
-            "timeout": 5
+            "timeout": 5,
+            "type": "command"
           }
         ]
       }
@@ -172,9 +174,9 @@
       {
         "hooks": [
           {
-            "type": "command",
             "command": "tuios agent-hook claude-code --integration 3",
-            "timeout": 5
+            "timeout": 5,
+            "type": "command"
           }
         ]
       }
@@ -183,9 +185,9 @@
       {
         "hooks": [
           {
-            "type": "command",
             "command": "tuios agent-hook claude-code --integration 3",
-            "timeout": 5
+            "timeout": 5,
+            "type": "command"
           }
         ]
       }
@@ -221,7 +223,10 @@
       }
     },
     "worktrunk": {
-      "source": { "source": "github", "repo": "max-sixty/worktrunk" }
+      "source": {
+        "source": "github",
+        "repo": "max-sixty/worktrunk"
+      }
     }
   }
 }

@@ -38,6 +38,12 @@ done = true        # set false if "done" from the workers gets noisy
 [notifications.mail]
 between_agents = false # only alert on mail addressed to you
 
+# --  Agents  -- #
+# Hold Claude Code permission prompts in the Inbox (answer with keys, risky ones need a second press).
+# Needs the waiting hook: run `tuios integration install claude-code` after changing this.
+[agents.approvals]
+enabled = ["claude-code"]
+
 
 # --  Keybindings  -- #
 # Unbind defaults

@@ -30,6 +30,26 @@ Running `setup` again is safe: it reuses the session, restarts Jarvis only if he
 - Jarvis asks you directly only for critical decisions (breaking changes, new dependencies, data migrations, security, high cost) or blockers. Other questions are batched by Hinata.
 - To end: tell Jarvis you are done. Hinata removes merged worker worktrees and writes `docs/HANDOFF.md`, Jarvis shuts the team down. The next `setup` resumes from the handoff.
 
+## Working with tuios
+Every agent is a tuios pane, so tuios knows its state through the Claude Code integration (`tuios integration install claude-code`; `setup` warns if it's missing or outdated).
+
+| Where | What you see / do |
+|---|---|
+| **Rail** | every crewx agent with its state and its crewx line: Jarvis's goal, Hinata's current job, each worker's `WP` and branch |
+| **Ctrl+B i** (agents view) | *Needs you*: Jarvis's questions, Hinata's question batches and status mails, permission prompts, errors. *Ready for review*, *Working*, *Idle* below |
+| **Ctrl+B o** | jump to the oldest thing waiting for you |
+| **Jarvis's questions** (`ask-human`) | pick the answer with a digit in the Inbox; the answer reaches Jarvis as mail. Blocking decisions only: branch choice, critical decisions, blockers |
+| **Hinata's mail** | batched non-urgent questions and status digests. Reply with `r`; she records the answers and passes them on |
+| **Talking to an agent** | type in its pane, or `r` on its row: the reply is queued until the agent is at rest |
+| **Phone** | set up `[notify]` in the tuios config (ntfy, Pushover, webhook): Jarvis's questions and permission prompts reach you when you're away |
+
+Agents talk to each other with Agent Teams messages, not tuios mail. tuios mail is only the channel between the team and you.
+
+Limits:
+- Teammates start in the main worktree and `cd` into their own, so tuios's review (`Ctrl+B v`), checkpoints and the folder on a worker's row point at the main worktree. Review a worker's work with `git diff <F>...<F>-<worker>` or `wt switch <F>-<worker>`.
+- tuios task boards and `tuios fan` aren't used: the Agent Teams task list and the crewx worktree helper do that job.
+- A tuios daemon restart ends every pane. Don't resume crewx teammates from the Inbox's *Resume* rows (they'd come back outside the team); run `setup` again, and Jarvis resumes from `docs/HANDOFF.md`.
+
 ## Git and worktrees
 ```
 main worktree (project dir)   F = feat-<name>   you, Jarvis, Hinata

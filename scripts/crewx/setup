@@ -12,6 +12,14 @@ dir="$(cd "$dir" && pwd -P)"
 session="crewx-$(basename "$dir")"
 command -v tuios >/dev/null || { echo "crewx: tuios is not on PATH" >&2; exit 1; }
 
+# Agent states, mail notices and Inbox questions all come from the tuios Claude Code hooks.
+integration="$(tuios integration status claude-code 2>/dev/null | head -n1 || true)"
+if [[ "$integration" != *"installed, current"* ]]; then
+  echo "crewx: the tuios Claude Code integration is not installed and current: ${integration:-unknown}" >&2
+  echo "crewx: without it the rail, the Inbox and mail notices don't work. Fix: tuios integration install claude-code" >&2
+  sleep 3
+fi
+
 # Project files: create only what is missing, never overwrite.
 mkdir -p "$dir/docs" "$dir/.crewx"
 for f in PLAN CHANGELOG DECISIONS HANDOFF; do
