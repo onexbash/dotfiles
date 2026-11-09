@@ -1,15 +1,14 @@
 {
   "theme": "custom:catppuccin-mocha",
   "permissions": {
-    "additionalDirectories": [
-      "~/"
-    ],
+    "additionalDirectories": ["~/"],
     "allow": [
       "Read(~/**)",
       "Edit(~/dev/repos/cratos/**)",
       "Edit(~/dev/repos/onexbash/**)",
       "Edit(~/.config/**)",
       "Bash(tuios:*)",
+      "Bash(podman *)",
       "Bash(git status *)",
       "Bash(git diff *)",
       "Bash(git log *)",
@@ -35,7 +34,10 @@
     ]
   },
   "sandbox": {
-    "enabled": false
+    "network": {
+      "allowUnixSockets": ["/tmp/tuios-501"]
+    },
+    "excludedCommands": ["podman"]
   },
   "hooks": {
     "SessionStart": [

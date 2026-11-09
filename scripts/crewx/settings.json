@@ -4,6 +4,7 @@
     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
   },
   "permissions": {
+    "defaultMode": "auto",
     "allow": [
       "Edit(./**)",
       "Bash(git status*)", "Bash(git diff*)", "Bash(git log*)", "Bash(git show*)", "Bash(git ls-files*)",

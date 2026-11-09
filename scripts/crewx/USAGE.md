@@ -5,10 +5,26 @@ A Claude Code agent team (Agent Teams) that runs in tuios. Jarvis leads; Hinata 
 | Agent | Model | Role |
 |---|---|---|
 | Jarvis | opus | Team lead: plans, decides, delegates. The only one you need to talk to. |
-| Hinata | sonnet | Branch guard, plan, reviews, merges worker branches, changelog, decision log, question queue, status, handoff. Edits only `docs/`. |
+| Hinata | sonnet | Reviews and merges worker branches, keeps worktrees current, plan, changelog, decision log, question queue, status, handoff. Edits only `docs/`. |
 | Asta | haiku | Simple, fully specified packages. |
 | Yuno | sonnet | Medium packages. |
 | Yami | opus | Heavy packages; may propose improvements. |
+
+## When crewx pays off
+A team beats a single Claude session only when the work splits into **independent, substantial parts** (different files, each checkable on its own): they then run in parallel, on the cheapest model that does each part well, with a gate and a review in between. Every worker costs a spawn (about a minute) and a review-and-merge cycle, so for a small or tightly coupled change a plain `claude` session is faster and cheaper. Jarvis sizes the team to the request: questions and discussion he answers himself, one coherent change becomes one package for one worker, and only real seams become parallel packages.
+
+## The flow
+```
+you ─▶ Jarvis: plan, packages with context ─▶ Asta / Yuno / Yami in parallel (own worktrees)
+                                              │ gate + commit + rebase
+                                              ▼
+              Jarvis ◀─ "WP-n merged" ── Hinata: review, gate, squash-merge into F
+              (Yami's packages: Jarvis approves before the merge)
+```
+- **Context packs:** each package carries what Jarvis learned while planning (files and lines, signatures, conventions), so workers don't re-explore.
+- **Gate:** `.crewx/verify` holds one line with the project's fast checks (typecheck, lint, unit tests). Jarvis writes it at the first session in a project; check it once. Workers run it before handing off, Hinata before merging, Jarvis on F when the goal is done.
+- **Review without detours:** Hinata sends concrete findings straight back to the worker and merges Asta's and Yuno's packages herself once they pass. Jarvis only sees merges, Yami's verdicts and escalations, so his (Opus) context stays small.
+- **Warm workers:** a worker with more work at its level gets the next package directly instead of being shut down and respawned.
 
 ## Start
 ```bash
@@ -16,13 +32,14 @@ A Claude Code agent team (Agent Teams) that runs in tuios. Jarvis leads; Hinata 
 ```
 `setup`:
 1. Creates what is missing in the project, never overwriting: `docs/PLAN.md`, `docs/CHANGELOG.md`, `docs/DECISIONS.md`, `docs/HANDOFF.md`, `.crewx/activity.log`.
-2. Opens the tuios session `crewx-<dir name>`, or reuses it.
-3. Workspace 1 **Jarvis**: starts Jarvis in the Jarvis pane, unless Jarvis is already running there.
-   Teammates open as extra panes here and close when Jarvis shuts them down.
-4. Workspace 2 **Logs**: left `tail -F .crewx/activity.log`, right a live render of `docs/PLAN.md`. Plain scripts, no tokens.
-5. Attaches you to the session (or switches to it, if you are already in tuios).
+2. Checks the branch: if the project isn't a git repo it stops; if the main worktree isn't on `feat-*`, it asks you right there: proceed on it, or create `feat-<name>` (your uncommitted changes come along).
+3. Opens the tuios session `crewx-<dir name>`, or reuses it.
+4. Workspace 1 **Jarvis**: starts Jarvis in the Jarvis pane, unless Jarvis is already running there.
+5. Workspace 2 **Logs**: left `tail -F .crewx/activity.log`, right a live render of `docs/PLAN.md`. Plain scripts, no tokens.
+6. Workspace 3 **Workers**: a live `wt list` pane, and every teammate (Hinata and the workers) opens beside it and closes when Jarvis shuts it down. Keep the Worktrees pane open: Jarvis starts with `TMUX_PANE` pointing at it, which is how the teammates land on this workspace.
+7. Attaches you to the session (or switches to it, if you are already in tuios).
 
-Running `setup` again is safe: it reuses the session, restarts Jarvis only if he is not running, and recreates missing log panes.
+Running `setup` again is safe: it reuses the session, restarts Jarvis only if he is not running, and recreates missing panes. A Jarvis that was started by an older `setup` keeps opening teammates beside himself until you restart him.
 
 ## Work with it
 - Talk to Jarvis in his pane. He reads `docs/HANDOFF.md`, `PLAN.md` and `DECISIONS.md` first, then spawns Hinata.
@@ -57,9 +74,9 @@ main worktree (project dir)   F = feat-<name>   you, Jarvis, Hinata
 └─ .worktrees/<F>-yuno        branch <F>-yuno   Yuno
 └─ .worktrees/<F>-yami        branch <F>-yami   Yami
 ```
-- **Branch guard:** Hinata checks the main worktree's branch at start and before every review, merge and sync. If it isn't `feat-*`, the agents pause and Jarvis asks you: proceed on that branch, or create `feat-<name>` from the current state (your uncommitted changes come along).
+- **Branch guard:** `setup` asks you before Jarvis starts. After that, the helper refuses every worktree step on a branch that isn't `feat-*` (or one you approved); the agents then pause and Jarvis asks you through the Inbox.
 - **Workers** get their worktree on demand (`worktree up <worker>`, via worktrunk, so the project's `.config/wt.toml` hooks install dependencies, copy env files, ...). They commit only on their own branch and rebase onto F before handing off.
-- **Merge back:** after review and Jarvis's approval, Hinata runs `worktree merge`: the worker's commits are squashed into one Conventional Commit and F is fast-forwarded to it. Result: one commit per work package on F, made by the team. Nothing is ever pushed; you push.
+- **Merge back:** after her review and the gate (and Jarvis's OK for Yami's packages), Hinata runs `worktree merge`: the worker's commits are squashed into one Conventional Commit and F is fast-forwarded to it. Result: one commit per work package on F, made by the team. Nothing is ever pushed; you push.
 - **Keeping workers current:** after every merge (and before every review), `worktree sync` rebases clean worker worktrees that are behind F. Busy or conflicting ones get a message to commit and rebase themselves.
 - **Your own work in the main worktree:** keep going as usual. A merge stops (exit 6) instead of touching your work if you have *staged* changes, or if your uncommitted changes touch the same files. Hinata's `docs/` edits stay uncommitted for you to commit.
 - **Look around:** `wt list` shows all worktrees with ahead/behind; `wt switch <F>-yuno` takes you into a worker's worktree.
@@ -72,7 +89,9 @@ main worktree (project dir)   F = feat-<name>   you, Jarvis, Hinata
 | `~/.config/scripts/crewx/settings.json` | crewx-only settings (`claude --settings`): hooks, teammate mode, permissions. Teammates get the same file from the lead. |
 | `~/.config/scripts/crewx/worktree` | git helper: branch guard, worker worktrees, squash-merge, sync (`worktree help`) |
 | `~/.config/scripts/crewx/log-event.sh` | hook: TaskCreated / TaskCompleted / TeammateIdle → `.crewx/activity.log` |
-| `~/.config/scripts/crewx/logs-activity.sh`, `logs-plan.sh` | the two Logs panes |
+| `~/.config/scripts/crewx/jarvis.sh` | starts Jarvis under the tmux shim, with `TMUX_PANE` on the Workers anchor |
+| `~/.config/scripts/crewx/logs-activity.sh`, `logs-plan.sh`, `logs-worktrees.sh` | the Logs panes and the Workers anchor pane |
+| `<project>/.crewx/verify` | the project's gate: one shell line of fast checks |
 | `~/.config/scripts/crewx/templates/` | starting content for the project docs |
 | `~/.config/claude/agents/{jarvis,hinata,asta,yuno,yami}.md` | agent definitions, each self-contained (shared rules are duplicated at the end of every file; keep them identical) |
 
