@@ -1,0 +1,118 @@
+#!/usr/bin/env bash
+# crewx worktree helper: feature-branch guard, one worktree per worker, squash-merge back.
+# Run from anywhere inside the project. Prints one result line; non-zero exit = action needed.
+#   exit 2: not a git repo · 3: branch needs the human's decision · 5: send back to the worker · 6: needs the human
+set -euo pipefail
+
+usage() {
+  cat <<'EOF'
+Usage: ~/.config/scripts/crewx/worktree <command>
+  check                 feature-branch guard: "ok <F>" (exit 0) or "not-feature-branch <branch>" (exit 3)
+  approve-branch        the human chose to proceed on the current branch
+  new-feature <name>    the human chose a new branch: create feat-<name> from HEAD, switch the main worktree to it
+  up <worker>           create the worker's worktree (branch <F>-<worker>) or bring it up to date; prints its path
+  sync                  rebase every clean worker worktree that is behind <F>
+  merge <worker> <msg>  squash the worker's branch into one commit with <msg> and fast-forward <F> to it
+  remove <worker>       remove the worker's worktree and branch (only if clean and merged)
+EOF
+}
+
+die() { echo "crewx worktree: $1" >&2; exit "${2:-1}"; }
+
+main="$(git worktree list --porcelain 2>/dev/null | sed -n '1s/^worktree //p')" || true
+[ -n "$main" ] || { echo "not-a-git-repo"; exit 2; }
+F="$(git -C "$main" symbolic-ref --quiet --short HEAD)" || { echo "not-feature-branch (detached HEAD)"; exit 3; }
+
+log() { [ -d "$main/.crewx" ] && printf '%s  %s\n' "$(date +%T)" "$*" >> "$main/.crewx/activity.log"; return 0; }
+guard() {
+  [[ "$F" == feat-* ]] && return 0
+  [ "$(cat "$main/.crewx/branch-approved" 2>/dev/null)" = "$F" ] && return 0
+  echo "not-feature-branch $F"; exit 3
+}
+wt_path() { # worktree path of branch $1, empty if none
+  git -C "$main" worktree list --porcelain \
+    | awk -v b="branch refs/heads/$1" '/^worktree /{p=substr($0,10)} $0==b{print p}'
+}
+clean() { [ -z "$(git -C "$1" status --porcelain)" ]; }
+behind() { ! git -C "$main" merge-base --is-ancestor "$F" "$1"; }
+worker_branch() { # validates the worker name, prints <F>-<worker>
+  [[ "$1" =~ ^(asta|yuno|yami)(-[0-9]+)?$ ]] || die "unknown worker '$1' (asta, yuno, yami, optionally -<n>)"
+  echo "$F-$1"
+}
+sync_one() {
+  local b="$1" p; p="$(wt_path "$b")"; [ -n "$p" ] || return 0
+  if ! behind "$b"; then echo "up-to-date $b"
+  elif ! clean "$p"; then echo "busy $b: uncommitted changes; the worker must commit, then run: git rebase $F"
+  elif git -C "$p" rebase --quiet "$F" >/dev/null 2>&1; then echo "rebased $b"; log "sync    $b onto $F"
+  else git -C "$p" rebase --abort; echo "conflict $b: the worker must run: git rebase $F, and resolve"
+  fi
+}
+
+case "${1:-}" in
+  check) guard; echo "ok $F" ;;
+
+  approve-branch)
+    mkdir -p "$main/.crewx"; echo "$F" > "$main/.crewx/branch-approved"
+    log "branch  $F approved by the human"; echo "approved $F" ;;
+
+  new-feature)
+    n="${2:?name}"; b="feat-${n#feat-}"
+    git -C "$main" show-ref --quiet "refs/heads/$b" && die "branch $b already exists"
+    git -C "$main" switch --quiet -c "$b" # keeps the human's uncommitted changes
+    log "branch  created $b from $F"; echo "switched $b" ;;
+
+  up)
+    guard; b="$(worker_branch "${2:?worker}")"; p="$(wt_path "$b")"
+    if [ -z "$p" ]; then
+      command -v wt >/dev/null || die "worktrunk (wt) is not installed"
+      if git -C "$main" show-ref --quiet "refs/heads/$b"; then
+        wt -C "$main" switch "$b" --no-cd >&2
+      else
+        wt -C "$main" switch --create "$b" --base "$F" --no-cd >&2 # runs the project's wt hooks (deps, .env, ...)
+      fi
+      p="$(wt_path "$b")"; [ -n "$p" ] || die "wt did not create a worktree for $b"
+      rel="${p#"$main"/}" # keep worktrees inside the repo out of the main worktree's git status
+      if [ "$rel" != "$p" ] && ! git -C "$main" check-ignore -q "$rel"; then
+        echo "/${rel%%/*}/" >> "$(git -C "$main" rev-parse --path-format=absolute --git-common-dir)/info/exclude"
+      fi
+      [ -f "$main/.config/wt.toml" ] && echo "note: worktrunk skips project hooks the human has not approved (non-interactive). If dependencies or env files are missing in $p, ask the human to approve them once with: wt switch --create crewx-approve, then wt remove crewx-approve" >&2
+      log "up      $b"
+    else
+      sync_one "$b" >&2
+    fi
+    echo "$p" ;;
+
+  sync)
+    guard
+    git -C "$main" for-each-ref --format='%(refname:short)' refs/heads \
+      | grep -E "^$(sed 's/[.[\*^$/]/\\&/g' <<<"$F")-(asta|yuno|yami)(-[0-9]+)?$" \
+      | while read -r b; do sync_one "$b"; done || true ;; # no worker branches yet is fine
+
+  merge)
+    guard; b="$(worker_branch "${2:?worker}")"; msg="${3:?commit message}"; p="$(wt_path "$b")"
+    [ -n "$p" ] || die "no worktree for $b"
+    git -C "$main" diff --cached --quiet || die "the main worktree has staged changes; the human must commit or unstage them first" 6
+    clean "$p" || die "$b has uncommitted changes; the worker must commit first" 5
+    [ "$(git -C "$main" rev-list --count "$F..$b")" -gt 0 ] || die "$b has no commits ahead of $F" 5
+    git -C "$p" rebase --quiet "$F" >/dev/null 2>&1 \
+      || { git -C "$p" rebase --abort; die "conflict rebasing $b onto $F; the worker must run: git rebase $F, and resolve" 5; }
+    orig="$(git -C "$p" rev-parse HEAD)"
+    git -C "$p" reset --quiet --soft "$F"
+    git -C "$p" commit --quiet -m "$msg" || { git -C "$p" reset --quiet --soft "$orig"; die "commit failed (hook?); $b is unchanged" 5; }
+    git -C "$main" merge --quiet --ff-only "$b" \
+      || die "fast-forward of $F failed (do the human's uncommitted changes touch the same files?); nothing merged, $b holds the squashed commit" 6
+    log "merge   $b into $F: $(head -n1 <<<"$msg")"
+    echo "merged $b -> $F $(git -C "$main" rev-parse --short HEAD)"
+    "$0" sync ;;
+
+  remove)
+    b="$(worker_branch "${2:?worker}")"; p="$(wt_path "$b")"
+    [ -n "$p" ] || die "no worktree for $b"
+    clean "$p" || die "$b has uncommitted changes" 5
+    git -C "$main" merge-base --is-ancestor "$b" "$F" || die "$b has commits that are not in $F" 5
+    wt -C "$main" remove "$b" --foreground --force-delete >&2 # wt checks "merged" against main, not $F; checked above
+    log "remove  $b"; echo "removed $b" ;;
+
+  -h|--help|help) usage ;;
+  *) usage >&2; exit 1 ;;
+esac
