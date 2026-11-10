@@ -25,6 +25,8 @@ function construct_path() {
   local user_paths=(
     # Mise - shims
     $MISE_DATA_DIR/shims(N-/)
+    # PNPM - Global
+    $PNPM_HOME/bin(N-/)
     # Rust
     ${CARGO_HOME:-$XDG_CONFIG_HOME/rust/cargo}/bin(N-/)
     # Go

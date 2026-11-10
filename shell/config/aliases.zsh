@@ -27,6 +27,7 @@ alias gcm="git-credential-manager"
 alias ff="fastfetch"
 alias xzip="ouch"
 alias xcopy="copy_to_clipboard"
+alias ppath="print_path"
 
 # ssh-keygen
 alias ssh-keygen="x_ssh_keygen"
