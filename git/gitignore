@@ -6,19 +6,21 @@
 # --  [ Secrets & Local Environments ]  -- #
 .env
 .env.local
+# mise-en-place
+mise.local.toml
+.mise.local.toml
+mise.*.local.toml
+.mise.*.local.toml
+# Python venv
 .venv/
-venv/
-.direnv/
-.devenv/
 
 # --  [ OS Files ]  -- #
-# MacOS
+# macOS
 .DS_Store
 .AppleDouble
 .LSOverride
 ._*
-# Linux
-*~
+
 # Windows
 Thumbs.db
 Thumbs.db:encryptable
@@ -26,30 +28,32 @@ ehthumbs.db
 Desktop.ini
 $RECYCLE.BIN/
 
-# --  [ Swap & Temporary Files ]  -- #
-*.tmp
-*.bak
-
-# --  [ Log Files ]  -- #
-.nvimlog
-log/
-*.log
-
 # --  [ IDEs ]  -- #
 .idea/
 .vscode/
 .zed/
-.fleet/
-*.swp
-*.swo
 *.sublime-workspace
 
+# --  [ Swap, Backup & Temporary Files ]  -- #
+*.tmp
+*.bak
+# neovim
+*.swp
+*.swo
+*~
+.nvimlog
+
+# --  [ Log Files ]  -- #
+*.log
+
 # --  [ AI Tools & Code Agents ]  -- #
-**/.worktrees/ # Worktree Directory for AI Agents
-# Claude
+# Worktree directory for AI agents
+.worktrees/
+# Claude Code
+CLAUDE.local.md
 **/.claude/settings.local.json
 **/.claude/worktrees/
 **/.claude/agent-memory-local/
-**/CLAUDE.local.md
-
 **/.claude/.cc-writes/
+# Agent team: crewx
+STATE.md
