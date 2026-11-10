@@ -39,6 +39,9 @@ export PNPM_HOME="${XDG_DATA_HOME}/pnpm"
 export PROTON_PASS_SESSION_DIR="${XDG_DATA_HOME}/proton-pass-cli"
 export PASS_SSH_VAULT="SSH Keys"
 
+# Fnox
+export FNOX_CONFIG_DIR="${XDG_CONFIG_HOME}/fnox"
+
 # Worktrunk
 export WORKTRUNK_SYSTEM_CONFIG_PATH="/etc/worktrunk/config.toml" # Global Config
 export WORKTRUNK_CONFIG_PATH="${XDG_CONFIG_HOME}/worktrunk/config.toml" # User Config
