@@ -5,7 +5,7 @@ A Claude Code agent team (Agent Teams) that runs in tuios. Jarvis leads; Hinata 
 | Agent | Model | Role |
 |---|---|---|
 | Jarvis | opus | Team lead: plans, decides, delegates. The only one you need to talk to. |
-| Hinata | sonnet | Reviews and merges worker branches, keeps worktrees current, plan, changelog, decision log, question queue, status, handoff. Edits only `docs/`. |
+| Hinata | sonnet | Reviews and merges worker branches, keeps worktrees current, team state and handoff, decision log, question queue, status. Edits only `.crewx/STATE.md` and `docs/DECISIONS.md`. |
 | Asta | haiku | Simple, fully specified packages. |
 | Yuno | sonnet | Medium packages. |
 | Yami | opus | Heavy packages; may propose improvements. |
@@ -31,21 +31,33 @@ you ─▶ Jarvis: plan, packages with context ─▶ Asta / Yuno / Yami in para
 ~/.config/scripts/crewx/setup [project-dir]   # default: current directory
 ```
 `setup`:
-1. Creates what is missing in the project, never overwriting: `docs/PLAN.md`, `docs/CHANGELOG.md`, `docs/DECISIONS.md`, `docs/HANDOFF.md`, `.crewx/activity.log`.
+1. Creates what is missing in the project, never overwriting: `.crewx/STATE.md` and `.crewx/activity.log`, and keeps `.crewx/` out of git through `.git/info/exclude` (local, nothing to commit).
 2. Checks the branch: if the project isn't a git repo it stops; if the main worktree isn't on `feat-*`, it asks you right there: proceed on it, or create `feat-<name>` (your uncommitted changes come along).
 3. Opens the tuios session `crewx-<dir name>`, or reuses it.
 4. Workspace 1 **Jarvis**: starts Jarvis in the Jarvis pane, unless Jarvis is already running there.
-5. Workspace 2 **Logs**: left `tail -F .crewx/activity.log`, right a live render of `docs/PLAN.md`. Plain scripts, no tokens.
+5. Workspace 2 **Logs**: left `tail -F .crewx/activity.log`, right a live render of `.crewx/STATE.md`. Plain scripts, no tokens.
 6. Workspace 3 **Workers**: a live `wt list` pane, and every teammate (Hinata and the workers) opens beside it and closes when Jarvis shuts it down. Keep the Worktrees pane open: Jarvis starts with `TMUX_PANE` pointing at it, which is how the teammates land on this workspace.
 7. Attaches you to the session (or switches to it, if you are already in tuios).
 
 Running `setup` again is safe: it reuses the session, restarts Jarvis only if he is not running, and recreates missing panes. A Jarvis that was started by an older `setup` keeps opening teammates beside himself until you restart him.
 
 ## Work with it
-- Talk to Jarvis in his pane. He reads `docs/HANDOFF.md`, `PLAN.md` and `DECISIONS.md` first, then spawns Hinata.
+- Talk to Jarvis in his pane. He reads `.crewx/STATE.md` and `docs/DECISIONS.md` first, then spawns Hinata.
 - Ask Hinata for a status digest any time (in her pane, or through Jarvis).
 - Jarvis asks you directly only for critical decisions (breaking changes, new dependencies, data migrations, security, high cost) or blockers. Other questions are batched by Hinata.
-- To end: tell Jarvis you are done. Hinata removes merged worker worktrees and writes `docs/HANDOFF.md`, Jarvis shuts the team down. The next `setup` resumes from the handoff.
+- To end: tell Jarvis you are done. Hinata removes merged worker worktrees and writes the handoff into `.crewx/STATE.md`, Jarvis shuts the team down. The next `setup` resumes from it.
+
+## Files in your project
+| File | In git | What |
+|---|---|---|
+| `docs/DECISIONS.md` | **committed** (you commit it) | decisions that shape the project: architecture, interfaces, dependencies, data, security. Alternatives, reason, who approved. Created with the first such decision |
+| `.crewx/STATE.md` | ignored | the team's only state file: goal, branch, packages and status, open questions, team notes (gate command, branch approval), the handoff for the next session |
+| `.crewx/verify` | ignored | the gate command |
+| `.crewx/activity.log` | ignored | hook log |
+
+There is no changelog file: every package lands as one squashed Conventional Commit on your feature branch, so `git log` is the changelog. Generate release notes from it when you need them.
+
+A project set up by an older crewx still has `docs/PLAN.md`, `CHANGELOG.md`, `HANDOFF.md` (and `DECISIONS.md`). Jarvis reads the old plan and handoff once and carries what's open into `.crewx/STATE.md`; then delete those three yourself. Keep `docs/DECISIONS.md` if it has project decisions in it.
 
 ## Working with tuios
 Every agent is a tuios pane, so tuios knows its state through the Claude Code integration (`tuios integration install claude-code`; `setup` warns if it's missing or outdated).
@@ -78,7 +90,7 @@ main worktree (project dir)   F = feat-<name>   you, Jarvis, Hinata
 - **Workers** get their worktree on demand (`worktree up <worker>`, via worktrunk, so the project's `.config/wt.toml` hooks install dependencies, copy env files, ...). They commit only on their own branch and rebase onto F before handing off.
 - **Merge back:** after her review and the gate (and Jarvis's OK for Yami's packages), Hinata runs `worktree merge`: the worker's commits are squashed into one Conventional Commit and F is fast-forwarded to it. Result: one commit per work package on F, made by the team. Nothing is ever pushed; you push.
 - **Keeping workers current:** after every merge (and before every review), `worktree sync` rebases clean worker worktrees that are behind F. Busy or conflicting ones get a message to commit and rebase themselves.
-- **Your own work in the main worktree:** keep going as usual. A merge stops (exit 6) instead of touching your work if you have *staged* changes, or if your uncommitted changes touch the same files. Hinata's `docs/` edits stay uncommitted for you to commit.
+- **Your own work in the main worktree:** keep going as usual. A merge stops (exit 6) instead of touching your work if you have *staged* changes, or if your uncommitted changes touch the same files. Hinata's `docs/DECISIONS.md` edits stay uncommitted for you to commit.
 - **Look around:** `wt list` shows all worktrees with ahead/behind; `wt switch <F>-yuno` takes you into a worker's worktree.
 - Worktrunk silently skips project hooks you haven't approved when agents create worktrees. For a new project, approve them once yourself: `wt switch --create crewx-approve`, then `wt remove crewx-approve`. Agents never approve hooks.
 
@@ -92,10 +104,10 @@ main worktree (project dir)   F = feat-<name>   you, Jarvis, Hinata
 | `~/.config/scripts/crewx/jarvis.sh` | starts Jarvis under the tmux shim, with `TMUX_PANE` on the Workers anchor |
 | `~/.config/scripts/crewx/logs-activity.sh`, `logs-plan.sh`, `logs-worktrees.sh` | the Logs panes and the Workers anchor pane |
 | `<project>/.crewx/verify` | the project's gate: one shell line of fast checks |
-| `~/.config/scripts/crewx/templates/` | starting content for the project docs |
+| `~/.config/scripts/crewx/templates/` | starting content of `.crewx/STATE.md` and `docs/DECISIONS.md` |
 | `~/.config/claude/agents/{jarvis,hinata,asta,yuno,yami}.md` | agent definitions, each self-contained (shared rules are duplicated at the end of every file; keep them identical) |
 
 ## Notes
 - Your normal Claude Code sessions are unaffected: the crewx settings only load through `--settings` in `setup`.
-- `.crewx/` is per-machine noise; add it to the project's `.gitignore` if you don't want it tracked.
-- The PLAN pane uses `glow` if installed, else `cat`.
+- `.crewx/` stays out of git through the repository's local `.git/info/exclude`; your `.gitignore` is not touched.
+- The state pane uses `glow` if installed, else `cat`.
