@@ -95,8 +95,3 @@ set_gobin = false # go install → $GOPATH/bin
 # -- |   ENV   | -- #
 [env]
 GOPATH = "{{env.HOME}}/go"
-# Secrets
-GITHUB_PAT_PUBLIC_READ = { value = "{{ exec(command='~/.local/share/mise/installs/fnox/latest/fnox get GITHUB_PAT_PUBLIC_READ') }}", redact = true }
-CLAUDE_CODE_OAUTH_TOKEN = { value = "{{ exec(command='~/.local/share/mise/installs/fnox/latest/fnox get CLAUDE_CODE_OAUTH_TOKEN') }}", redact = true }
-# ONESETUP_VAULT_SECRET = { value = "{{ exec(command='~/.local/share/mise/installs/fnox/latest/fnox get ONESETUP_VAULT_SECRET') }}", redact = true, expand = false } # TODO: fix variable expansion issue with $ characters in passwords
-
