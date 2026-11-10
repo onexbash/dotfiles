@@ -37,6 +37,7 @@ export PNPM_HOME="${XDG_DATA_HOME}/pnpm"
 
 # Proton Pass
 export PROTON_PASS_SESSION_DIR="${XDG_DATA_HOME}/proton-pass-cli"
+export PASS_SSH_VAULT="SSH Keys"
 
 # Worktrunk
 export WORKTRUNK_SYSTEM_CONFIG_PATH="/etc/worktrunk/config.toml" # Global Config
