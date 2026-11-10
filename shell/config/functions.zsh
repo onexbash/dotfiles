@@ -47,7 +47,7 @@ pass_auth() {
   fi
 }
 # Read Secrets from Proton Pass & Export as Environment Variables (defined in secrets.env)
-export_secrets() {
+pass_env() {
   local file="$HOME/.config/shell/secrets.env" key ref value failed=0
 
   pass_auth || return
@@ -71,7 +71,7 @@ export_secrets() {
   log_ok "Secrets exported."
 }
 # Import SSH Keys from Proton Pass to the ssh-agent
-load_ssh() {
+pass_ssh() {
   local vault=${1:-"SSH Keys"}
 
   pass_auth || return
