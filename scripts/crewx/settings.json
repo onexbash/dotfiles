@@ -6,14 +6,10 @@
   "permissions": {
     "defaultMode": "auto",
     "allow": [
-      "Edit(./**)",
-      "Bash(git status*)", "Bash(git diff*)", "Bash(git log*)", "Bash(git show*)", "Bash(git ls-files*)",
-      "Bash(ls*)", "Bash(rg *)", "Bash(grep *)", "Bash(find *)", "Bash(wc *)",
-      "Bash(npm *)", "Bash(pnpm *)", "Bash(pytest*)", "Bash(go test*)", "Bash(make *)",
       "Bash(~/.config/scripts/crewx/worktree *)",
-      "Bash(git add*)", "Bash(git commit*)", "Bash(git rebase*)"
+      "Bash(git rebase:*)"
     ],
-    "deny": ["Bash(git push*)", "Bash(git switch*)", "Bash(git checkout*)", "Bash(git reset --hard*)", "Bash(rm -rf*)"]
+    "deny": ["Bash(git switch:*)", "Bash(git checkout:*)", "Bash(git reset --hard:*)", "Bash(rm -rf:*)", "Bash(rm -fr:*)"]
   },
   "hooks": {
     "TaskCreated": [

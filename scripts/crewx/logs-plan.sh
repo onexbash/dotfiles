@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-# crewx Logs pane (right): re-render ./docs/PLAN.md whenever it changes.
+# crewx Logs pane (right): re-render ./.crewx/STATE.md whenever it changes.
 cd "${1:-$PWD}" || exit 1
-file=./docs/PLAN.md
+file=./.crewx/STATE.md
 last=""
 render() {
   if command -v glow >/dev/null; then glow -s dark -w "$(tput cols)" "$file"; else cat "$file"; fi
