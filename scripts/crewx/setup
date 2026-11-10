@@ -36,12 +36,13 @@ elif [ "$rc" = 3 ] && [ -t 0 ]; then
   esac
 fi # not a terminal: Jarvis and Hinata ask through the tuios Inbox instead
 
-# Project files: create only what is missing, never overwrite.
-mkdir -p "$dir/docs" "$dir/.crewx"
-for f in PLAN CHANGELOG DECISIONS HANDOFF; do
-  [ -e "$dir/docs/$f.md" ] || cp "$CREWX/templates/$f.md" "$dir/docs/$f.md"
-done
+# Team-internal files live in .crewx/ (kept out of git locally); create only what is missing, never overwrite.
+# docs/DECISIONS.md, the one committed file, is created by Hinata when the first project decision comes up.
+mkdir -p "$dir/.crewx"
+[ -e "$dir/.crewx/STATE.md" ] || cp "$CREWX/templates/STATE.md" "$dir/.crewx/STATE.md"
 [ -e "$dir/.crewx/activity.log" ] || : > "$dir/.crewx/activity.log"
+exclude="$(git -C "$dir" rev-parse --path-format=absolute --git-common-dir)/info/exclude"
+git -C "$dir" check-ignore -q .crewx/STATE.md || { mkdir -p "$(dirname "$exclude")"; echo "/.crewx/" >> "$exclude"; }
 
 # Session: reuse it if it exists.
 fresh=0
@@ -83,7 +84,7 @@ else
 " >/dev/null
 fi
 
-# Workspace 2: activity log (left) and PLAN.md (right); tiling places them side by side.
+# Workspace 2: activity log (left) and .crewx/STATE.md (right); tiling places them side by side.
 [ -n "$(win_id Activity)" ] || tuios new-window Activity -s "$session" --workspace 2 --cwd "$dir" --no-focus -- "$CREWX/logs-activity.sh" "$dir" >/dev/null
 [ -n "$(win_id Plan)" ]     || tuios new-window Plan     -s "$session" --workspace 2 --cwd "$dir" --no-focus -- "$CREWX/logs-plan.sh" "$dir" >/dev/null
 

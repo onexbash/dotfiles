@@ -1,52 +1,436 @@
 {
-  "theme": "custom:catppuccin-mocha",
+  "env": {
+    "BASH_DEFAULT_TIMEOUT_MS": "300000",
+    "BASH_MAX_TIMEOUT_MS": "1800000"
+  },
   "permissions": {
     "additionalDirectories": ["~/"],
     "allow": [
       "Read(~/**)",
+      "Edit(./**)",
       "Edit(~/dev/repos/cratos/**)",
       "Edit(~/dev/repos/onexbash/**)",
       "Edit(~/.config/**)",
+      "WebSearch",
+      "WebFetch(domain:code.claude.com)",
+      "WebFetch(domain:docs.anthropic.com)",
+      "WebFetch(domain:svelte.dev)",
+      "WebFetch(domain:*.svelte.dev)",
+      "WebFetch(domain:shadcn-svelte.com)",
+      "WebFetch(domain:tailwindcss.com)",
+      "WebFetch(domain:www.typescriptlang.org)",
+      "WebFetch(domain:developer.mozilla.org)",
+      "WebFetch(domain:vitest.dev)",
+      "WebFetch(domain:playwright.dev)",
+      "WebFetch(domain:prettier.io)",
+      "WebFetch(domain:eslint.org)",
+      "WebFetch(domain:pnpm.io)",
+      "WebFetch(domain:nodejs.org)",
+      "WebFetch(domain:www.npmjs.com)",
+      "WebFetch(domain:go.dev)",
+      "WebFetch(domain:pkg.go.dev)",
+      "WebFetch(domain:huma.rocks)",
+      "WebFetch(domain:go-chi.io)",
+      "WebFetch(domain:opentofu.org)",
+      "WebFetch(domain:search.opentofu.org)",
+      "WebFetch(domain:registry.terraform.io)",
+      "WebFetch(domain:docs.ansible.com)",
+      "WebFetch(domain:podman.io)",
+      "WebFetch(domain:docs.podman.io)",
+      "WebFetch(domain:learn.microsoft.com)",
+      "WebFetch(domain:trivy.dev)",
+      "WebFetch(domain:aquasecurity.github.io)",
+      "WebFetch(domain:semgrep.dev)",
+      "WebFetch(domain:www.zaproxy.org)",
+      "WebFetch(domain:docs.renovatebot.com)",
+      "WebFetch(domain:mise.jdx.dev)",
+      "WebFetch(domain:brew.sh)",
+      "WebFetch(domain:formulae.brew.sh)",
+      "WebFetch(domain:neovim.io)",
+      "WebFetch(domain:ghostty.org)",
+      "WebFetch(domain:tuios.dev)",
+      "WebFetch(domain:worktrunk.dev)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "Bash(ls:*)",
+      "Bash(eza:*)",
+      "Bash(tree:*)",
+      "Bash(pwd)",
+      "Bash(cd:*)",
+      "Bash(which:*)",
+      "Bash(command -v:*)",
+      "Bash(type:*)",
+      "Bash(cat:*)",
+      "Bash(bat:*)",
+      "Bash(head:*)",
+      "Bash(tail:*)",
+      "Bash(less:*)",
+      "Bash(echo:*)",
+      "Bash(printf:*)",
+      "Bash(rg:*)",
+      "Bash(grep:*)",
+      "Bash(fd:*)",
+      "Bash(find:*)",
+      "Bash(xargs:*)",
+      "Bash(sed:*)",
+      "Bash(awk:*)",
+      "Bash(sort:*)",
+      "Bash(uniq:*)",
+      "Bash(cut:*)",
+      "Bash(tr:*)",
+      "Bash(tee:*)",
+      "Bash(wc:*)",
+      "Bash(jq:*)",
+      "Bash(yq:*)",
+      "Bash(file:*)",
+      "Bash(stat:*)",
+      "Bash(du:*)",
+      "Bash(df:*)",
+      "Bash(diff:*)",
+      "Bash(cmp:*)",
+      "Bash(basename:*)",
+      "Bash(dirname:*)",
+      "Bash(realpath:*)",
+      "Bash(readlink:*)",
+      "Bash(date:*)",
+      "Bash(uname:*)",
+      "Bash(whoami)",
+      "Bash(id)",
+      "Bash(env)",
+      "Bash(printenv:*)",
+      "Bash(ps:*)",
+      "Bash(lsof:*)",
+      "Bash(uptime)",
+      "Bash(sleep:*)",
+      "Bash(true)",
+      "Bash(false)",
+      "Bash(test:*)",
+      "Bash(mkdir:*)",
+      "Bash(touch:*)",
+      "Bash(cp:*)",
+      "Bash(mv:*)",
+      "Bash(ln:*)",
+      "Bash(rm:*)",
+      "Bash(rmdir:*)",
+      "Bash(chmod:*)",
+      "Bash(tar:*)",
+      "Bash(zip:*)",
+      "Bash(unzip:*)",
+      "Bash(gzip:*)",
+      "Bash(gunzip:*)",
+      "Bash(shasum:*)",
+      "Bash(md5:*)",
+      "Bash(base64:*)",
+      "Bash(open:*)",
+      "Bash(pbcopy)",
+      "Bash(pbpaste)",
+      "Bash(curl:*)",
+      "Bash(wget:*)",
+      "Bash(shellcheck:*)",
+      "Bash(shfmt:*)",
+      "Bash(bash -n:*)",
+      "Bash(zsh -n:*)",
+      "Bash(git:*)",
+      "Bash(wt:*)",
       "Bash(tuios:*)",
-      "Bash(podman *)",
-      "Bash(git status *)",
-      "Bash(git diff *)",
-      "Bash(git log *)",
-      "Bash(git show *)",
-      "Bash(git worktree list *)",
-      "Bash(git branch --show-current)",
-      "Bash(git -C * status *)",
-      "Bash(git -C * diff *)",
-      "Bash(git -C * log *)",
-      "Bash(wt list *)"
+      "Bash(node:*)",
+      "Bash(npm:*)",
+      "Bash(npx:*)",
+      "Bash(pnpm:*)",
+      "Bash(yarn:*)",
+      "Bash(bun:*)",
+      "Bash(bunx:*)",
+      "Bash(vitest:*)",
+      "Bash(playwright:*)",
+      "Bash(prettier:*)",
+      "Bash(eslint:*)",
+      "Bash(tsc:*)",
+      "Bash(go:*)",
+      "Bash(gofmt:*)",
+      "Bash(golangci-lint:*)",
+      "Bash(staticcheck:*)",
+      "Bash(python:*)",
+      "Bash(python3:*)",
+      "Bash(pip:*)",
+      "Bash(pip3:*)",
+      "Bash(pytest:*)",
+      "Bash(uv:*)",
+      "Bash(make:*)",
+      "Bash(mise:*)",
+      "Bash(brew:*)",
+      "Bash(podman:*)",
+      "Bash(tofu:*)",
+      "Bash(terraform:*)",
+      "Bash(ansible-lint:*)",
+      "Bash(ansible --version)",
+      "Bash(ansible-inventory:*)",
+      "Bash(trivy:*)",
+      "Bash(gitleaks:*)",
+      "Bash(semgrep:*)",
+      "Bash(az account show:*)",
+      "Bash(az repos list:*)",
+      "Bash(az repos show:*)",
+      "Bash(az repos pr list:*)",
+      "Bash(az repos pr show:*)",
+      "Bash(az pipelines list:*)",
+      "Bash(az pipelines show:*)",
+      "Bash(az pipelines runs list:*)",
+      "Bash(az pipelines runs show:*)",
+      "Bash(az pipelines build list:*)",
+      "Bash(az pipelines build show:*)",
+      "Bash(az boards work-item show:*)",
+      "Bash(az boards query:*)"
     ],
     "deny": [
       "Read(~/.ssh/**)",
       "Read(~/.aws/**)",
+      "Read(~/.azure/**)",
+      "Read(~/.kube/**)",
       "Read(~/.gnupg/**)",
       "Read(~/.config/gpg/**)",
       "Read(~/.config/gh/**)",
+      "Read(~/.config/containers/auth.json)",
+      "Read(~/.docker/config.json)",
+      "Read(~/.netrc)",
+      "Read(~/.npmrc)",
+      "Read(**/.env)",
+      "Read(**/.env.*)",
       "Edit(~/.config/gh/**)",
+      "Edit(~/.config/claude/settings.json)",
+      "Bash(git push:*)",
       "Bash(git push *)",
+      "Bash(git * push)",
       "Bash(git * push *)",
+      "Bash(git send-email:*)",
+      "Bash(git filter-branch:*)",
+      "Bash(git filter-repo:*)",
+      "Bash(git update-ref -d:*)",
       "Bash(wt merge *)",
-      "Bash(wt step push *)"
+      "Bash(wt merge:*)",
+      "Bash(wt step push *)",
+      "Bash(tuios ship:*)",
+      "Bash(gh pr merge:*)",
+      "Bash(gh release create:*)",
+      "Bash(gh repo delete:*)",
+      "Bash(gh repo create:*)",
+      "Bash(npm publish:*)",
+      "Bash(npm unpublish:*)",
+      "Bash(npm deprecate:*)",
+      "Bash(npm login:*)",
+      "Bash(npm logout:*)",
+      "Bash(npm adduser:*)",
+      "Bash(npm token:*)",
+      "Bash(npm owner:*)",
+      "Bash(npm access:*)",
+      "Bash(npm dist-tag add:*)",
+      "Bash(npm dist-tag rm:*)",
+      "Bash(npm team:*)",
+      "Bash(npm org:*)",
+      "Bash(pnpm publish:*)",
+      "Bash(pnpm unpublish:*)",
+      "Bash(pnpm deprecate:*)",
+      "Bash(pnpm login:*)",
+      "Bash(pnpm logout:*)",
+      "Bash(pnpm adduser:*)",
+      "Bash(pnpm token:*)",
+      "Bash(pnpm owner:*)",
+      "Bash(pnpm access:*)",
+      "Bash(pnpm dist-tag add:*)",
+      "Bash(pnpm dist-tag rm:*)",
+      "Bash(pnpm team:*)",
+      "Bash(pnpm org:*)",
+      "Bash(yarn publish:*)",
+      "Bash(yarn npm publish:*)",
+      "Bash(yarn npm login:*)",
+      "Bash(yarn npm logout:*)",
+      "Bash(yarn npm tag add:*)",
+      "Bash(yarn npm tag remove:*)",
+      "Bash(yarn login:*)",
+      "Bash(yarn owner:*)",
+      "Bash(bun publish:*)",
+      "Bash(bun pm token:*)",
+      "Bash(podman push:*)",
+      "Bash(podman login:*)",
+      "Bash(sudo:*)",
+      "Bash(su:*)",
+      "Bash(doas:*)",
+      "Bash(security:*)",
+      "Bash(dd:*)",
+      "Bash(mkfs:*)",
+      "Bash(diskutil erase:*)",
+      "Bash(diskutil eraseDisk:*)",
+      "Bash(diskutil eraseVolume:*)",
+      "Bash(shutdown:*)",
+      "Bash(reboot:*)",
+      "Bash(halt:*)",
+      "Bash(mise implode:*)",
+      "Bash(tofu destroy:*)",
+      "Bash(terraform destroy:*)",
+      "Bash(tofu force-unlock:*)",
+      "Bash(terraform force-unlock:*)"
+    ],
+    "ask": [
+      "Bash(rm -r:*)",
+      "Bash(rm -rf:*)",
+      "Bash(rm -fr:*)",
+      "Bash(rm -R:*)",
+      "Bash(find * -delete*)",
+      "Bash(find * -exec*)",
+      "Bash(xargs rm:*)",
+      "Bash(chmod -R:*)",
+      "Bash(chown:*)",
+      "Bash(kill:*)",
+      "Bash(killall:*)",
+      "Bash(pkill:*)",
+      "Bash(launchctl:*)",
+      "Bash(defaults write:*)",
+      "Bash(defaults delete:*)",
+      "Bash(crontab:*)",
+      "Bash(ssh:*)",
+      "Bash(scp:*)",
+      "Bash(rsync:*)",
+      "Bash(curl * -X POST*)",
+      "Bash(curl * -X PUT*)",
+      "Bash(curl * -X DELETE*)",
+      "Bash(curl * --data*)",
+      "Bash(curl * -d *)",
+      "Bash(curl * -F *)",
+      "Bash(curl * -T *)",
+      "Bash(git reset --hard:*)",
+      "Bash(git clean:*)",
+      "Bash(git restore:*)",
+      "Bash(git checkout --:*)",
+      "Bash(git checkout -f:*)",
+      "Bash(git switch -f:*)",
+      "Bash(git switch --discard-changes:*)",
+      "Bash(git stash drop:*)",
+      "Bash(git stash clear:*)",
+      "Bash(git branch -D:*)",
+      "Bash(git branch -d:*)",
+      "Bash(git branch --delete:*)",
+      "Bash(git branch -f:*)",
+      "Bash(git branch -m:*)",
+      "Bash(git branch -M:*)",
+      "Bash(git tag -d:*)",
+      "Bash(git tag --delete:*)",
+      "Bash(git rebase:*)",
+      "Bash(git commit --amend:*)",
+      "Bash(git reflog expire:*)",
+      "Bash(git gc:*)",
+      "Bash(git prune:*)",
+      "Bash(git remote add:*)",
+      "Bash(git remote set-url:*)",
+      "Bash(git remote remove:*)",
+      "Bash(git remote rm:*)",
+      "Bash(git config:*)",
+      "Bash(git worktree remove:*)",
+      "Bash(git worktree prune:*)",
+      "Bash(git submodule deinit:*)",
+      "Bash(wt remove:*)",
+      "Bash(wt step:*)",
+      "Bash(npm install -g:*)",
+      "Bash(npm install --global:*)",
+      "Bash(npm i -g:*)",
+      "Bash(npm i --global:*)",
+      "Bash(npm uninstall:*)",
+      "Bash(npm remove:*)",
+      "Bash(npm rm:*)",
+      "Bash(npm un:*)",
+      "Bash(npm link:*)",
+      "Bash(npm cache clean:*)",
+      "Bash(npm config set:*)",
+      "Bash(npm config delete:*)",
+      "Bash(pnpm add -g:*)",
+      "Bash(pnpm add --global:*)",
+      "Bash(pnpm install -g:*)",
+      "Bash(pnpm install --global:*)",
+      "Bash(pnpm i -g:*)",
+      "Bash(pnpm i --global:*)",
+      "Bash(pnpm remove:*)",
+      "Bash(pnpm rm:*)",
+      "Bash(pnpm uninstall:*)",
+      "Bash(pnpm un:*)",
+      "Bash(pnpm link:*)",
+      "Bash(pnpm store prune:*)",
+      "Bash(pnpm setup:*)",
+      "Bash(pnpm self-update:*)",
+      "Bash(pnpm config set:*)",
+      "Bash(pnpm config delete:*)",
+      "Bash(yarn global:*)",
+      "Bash(yarn remove:*)",
+      "Bash(yarn link:*)",
+      "Bash(yarn cache clean:*)",
+      "Bash(yarn config set:*)",
+      "Bash(yarn config unset:*)",
+      "Bash(yarn set version:*)",
+      "Bash(bun add -g:*)",
+      "Bash(bun add --global:*)",
+      "Bash(bun install -g:*)",
+      "Bash(bun install --global:*)",
+      "Bash(bun i -g:*)",
+      "Bash(bun i --global:*)",
+      "Bash(bun remove:*)",
+      "Bash(bun rm:*)",
+      "Bash(bun link:*)",
+      "Bash(bun pm cache rm:*)",
+      "Bash(bun upgrade:*)",
+      "Bash(pip install:*)",
+      "Bash(pip3 install:*)",
+      "Bash(pip uninstall:*)",
+      "Bash(pip3 uninstall:*)",
+      "Bash(uv pip install:*)",
+      "Bash(uv tool install:*)",
+      "Bash(brew install:*)",
+      "Bash(brew uninstall:*)",
+      "Bash(brew remove:*)",
+      "Bash(brew upgrade:*)",
+      "Bash(brew tap:*)",
+      "Bash(brew untap:*)",
+      "Bash(brew cleanup:*)",
+      "Bash(brew services:*)",
+      "Bash(mise use:*)",
+      "Bash(mise uninstall:*)",
+      "Bash(mise prune:*)",
+      "Bash(mise self-update:*)",
+      "Bash(mise settings set:*)",
+      "Bash(podman rm:*)",
+      "Bash(podman rmi:*)",
+      "Bash(podman system:*)",
+      "Bash(podman volume rm:*)",
+      "Bash(podman volume prune:*)",
+      "Bash(podman image prune:*)",
+      "Bash(podman container prune:*)",
+      "Bash(podman machine:*)",
+      "Bash(podman run * --privileged*)",
+      "Bash(podman run * -v *)",
+      "Bash(podman run * --volume*)",
+      "Bash(tofu apply:*)",
+      "Bash(tofu import:*)",
+      "Bash(tofu state:*)",
+      "Bash(tofu taint:*)",
+      "Bash(tofu untaint:*)",
+      "Bash(tofu workspace delete:*)",
+      "Bash(terraform apply:*)",
+      "Bash(terraform import:*)",
+      "Bash(terraform state:*)",
+      "Bash(terraform taint:*)",
+      "Bash(terraform untaint:*)",
+      "Bash(terraform workspace delete:*)",
+      "Bash(ansible-playbook:*)",
+      "Bash(az * create *)",
+      "Bash(az * delete *)",
+      "Bash(az * update *)",
+      "Bash(az pipelines run *)"
     ]
-  },
-  "sandbox": {
-    "network": {
-      "allowUnixSockets": ["/tmp/tuios-501"]
-    },
-    "excludedCommands": ["podman"]
   },
   "hooks": {
     "SessionStart": [
       {
         "hooks": [
           {
+            "type": "command",
             "command": "tuios agent-hook claude-code --integration 3",
-            "timeout": 5,
-            "type": "command"
+            "timeout": 5
           }
         ]
       }
@@ -55,9 +439,9 @@
       {
         "hooks": [
           {
+            "type": "command",
             "command": "tuios agent-hook claude-code --integration 3",
-            "timeout": 5,
-            "type": "command"
+            "timeout": 5
           }
         ]
       }
@@ -66,9 +450,9 @@
       {
         "hooks": [
           {
+            "type": "command",
             "command": "tuios agent-hook claude-code --integration 3",
-            "timeout": 5,
-            "type": "command"
+            "timeout": 5
           }
         ]
       }
@@ -77,9 +461,9 @@
       {
         "hooks": [
           {
+            "type": "command",
             "command": "tuios agent-hook claude-code --integration 3",
-            "timeout": 310,
-            "type": "command"
+            "timeout": 310
           }
         ]
       }
@@ -88,9 +472,9 @@
       {
         "hooks": [
           {
+            "type": "command",
             "command": "tuios agent-hook claude-code --integration 3",
-            "timeout": 5,
-            "type": "command"
+            "timeout": 5
           }
         ]
       }
@@ -99,9 +483,9 @@
       {
         "hooks": [
           {
+            "type": "command",
             "command": "tuios agent-hook claude-code --integration 3",
-            "timeout": 5,
-            "type": "command"
+            "timeout": 5
           }
         ]
       }
@@ -110,9 +494,9 @@
       {
         "hooks": [
           {
+            "type": "command",
             "command": "tuios agent-hook claude-code --integration 3",
-            "timeout": 5,
-            "type": "command"
+            "timeout": 5
           }
         ]
       }
@@ -121,9 +505,9 @@
       {
         "hooks": [
           {
+            "type": "command",
             "command": "tuios agent-hook claude-code --integration 3",
-            "timeout": 5,
-            "type": "command"
+            "timeout": 5
           }
         ]
       }
@@ -132,9 +516,9 @@
       {
         "hooks": [
           {
+            "type": "command",
             "command": "tuios agent-hook claude-code --integration 3",
-            "timeout": 5,
-            "type": "command"
+            "timeout": 5
           }
         ]
       }
@@ -143,9 +527,9 @@
       {
         "hooks": [
           {
+            "type": "command",
             "command": "tuios agent-hook claude-code --integration 3",
-            "timeout": 5,
-            "type": "command"
+            "timeout": 5
           }
         ]
       }
@@ -154,9 +538,9 @@
       {
         "hooks": [
           {
+            "type": "command",
             "command": "tuios agent-hook claude-code --integration 3",
-            "timeout": 5,
-            "type": "command"
+            "timeout": 5
           }
         ]
       }
@@ -165,9 +549,9 @@
       {
         "hooks": [
           {
+            "type": "command",
             "command": "tuios agent-hook claude-code --integration 3",
-            "timeout": 5,
-            "type": "command"
+            "timeout": 5
           }
         ]
       }
@@ -176,9 +560,9 @@
       {
         "hooks": [
           {
+            "type": "command",
             "command": "tuios agent-hook claude-code --integration 3",
-            "timeout": 5,
-            "type": "command"
+            "timeout": 5
           }
         ]
       }
@@ -187,9 +571,9 @@
       {
         "hooks": [
           {
+            "type": "command",
             "command": "tuios agent-hook claude-code --integration 3",
-            "timeout": 5,
-            "type": "command"
+            "timeout": 5
           }
         ]
       }
@@ -208,20 +592,20 @@
   "extraKnownMarketplaces": {
     "svelte": {
       "source": {
-        "source": "git",
-        "url": "https://github.com/sveltejs/ai-tools.git"
+        "source": "github",
+        "repo": "sveltejs/ai-tools"
       }
     },
     "ponytail": {
       "source": {
-        "source": "git",
-        "url": "https://github.com/dietrichgebert/ponytail.git"
+        "source": "github",
+        "repo": "DietrichGebert/ponytail"
       }
     },
     "impeccable": {
       "source": {
-        "source": "git",
-        "url": "https://github.com/pbakaus/impeccable.git"
+        "source": "github",
+        "repo": "pbakaus/impeccable"
       }
     },
     "worktrunk": {
@@ -230,5 +614,21 @@
         "repo": "max-sixty/worktrunk"
       }
     }
-  }
+  },
+  "sandbox": {
+    "network": {
+      "allowUnixSockets": ["/tmp/tuios-501"]
+    },
+    "excludedCommands": ["podman"]
+  },
+  "pluginConfigs": {
+    "ponytail@ponytail": {
+      "options": {
+        "ledger": true,
+        "sendNames": false
+      }
+    }
+  },
+  "theme": "custom:catppuccin-mocha",
+  "editorMode": "vim"
 }
