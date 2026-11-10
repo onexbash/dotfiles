@@ -34,12 +34,13 @@ you ─▶ Jarvis: plan, packages with context ─▶ Asta / Yuno / Yami in para
 1. Creates what is missing in the project, never overwriting: `.crewx/STATE.md` and `.crewx/activity.log`, and keeps `.crewx/` out of git through `.git/info/exclude` (local, nothing to commit).
 2. Checks the branch: if the project isn't a git repo it stops; if the main worktree isn't on `feat-*`, it asks you right there: proceed on it, or create `feat-<name>` (your uncommitted changes come along).
 3. Opens the tuios session `crewx-<dir name>`, or reuses it.
-4. Workspace 1 **Jarvis**: starts Jarvis in the Jarvis pane, unless Jarvis is already running there.
-5. Workspace 2 **Logs**: left `tail -F .crewx/activity.log`, right a live render of `.crewx/STATE.md`. Plain scripts, no tokens.
-6. Workspace 3 **Workers**: a live `wt list` pane, and every teammate (Hinata and the workers) opens beside it and closes when Jarvis shuts it down. Keep the Worktrees pane open: Jarvis starts with `TMUX_PANE` pointing at it, which is how the teammates land on this workspace.
-7. Attaches you to the session (or switches to it, if you are already in tuios).
+4. Workspace 1 **Coding**: left 30% lazygit (top) and a login shell (bottom), right 70% nvim in the project directory. tuios splits panes only while a client is attached, so `layout-coding.sh` shapes this workspace in the background right after you are attached; it takes a second or two.
+5. Workspace 2 **Jarvis**: starts Jarvis in the Jarvis pane, unless Jarvis is already running there. You land here.
+6. Workspace 3 **Logs**: left `tail -F .crewx/activity.log`, right a live render of `.crewx/STATE.md`. Plain scripts, no tokens.
+7. Workspace 4 **Workers**: a live `wt list` pane, and every teammate (Hinata and the workers) opens beside it and closes when Jarvis shuts it down. Keep the Worktrees pane open: Jarvis starts with `TMUX_PANE` pointing at it, which is how the teammates land on this workspace.
+8. Attaches you to the session (or switches to it, if you are already in tuios).
 
-Running `setup` again is safe: it reuses the session, restarts Jarvis only if he is not running, and recreates missing panes. A Jarvis that was started by an older `setup` keeps opening teammates beside himself until you restart him.
+Running `setup` again is safe: it reuses the session, restarts Jarvis only if he is not running, and recreates missing panes (the Coding layout only when its Git pane is gone). A session from an older `setup` (Jarvis on workspace 1) is renumbered in place: Jarvis, Logs and Workers move to 2–4 with their panes, and Coding is added as 1. A Jarvis that was started by an older `setup` keeps opening teammates beside himself until you restart him.
 
 ## Work with it
 - Talk to Jarvis in his pane. He reads `.crewx/STATE.md` and `docs/DECISIONS.md` first, then spawns Hinata.
@@ -77,7 +78,7 @@ Agents talk to each other with Agent Teams messages, not tuios mail. tuios mail 
 Limits:
 - Teammates start in the main worktree and `cd` into their own, so tuios's review (`Ctrl+B v`), checkpoints and the folder on a worker's row point at the main worktree. Review a worker's work with `git diff <F>...<F>-<worker>` or `wt switch <F>-<worker>`.
 - tuios task boards and `tuios fan` aren't used: the Agent Teams task list and the crewx worktree helper do that job.
-- A tuios daemon restart ends every pane. Don't resume crewx teammates from the Inbox's *Resume* rows (they'd come back outside the team); run `setup` again, and Jarvis resumes from `docs/HANDOFF.md`.
+- A tuios daemon restart ends every pane. Don't resume crewx teammates from the Inbox's *Resume* rows (they'd come back outside the team); run `setup` again, and Jarvis resumes from the handoff in `.crewx/STATE.md`.
 
 ## Git and worktrees
 ```
@@ -103,6 +104,7 @@ main worktree (project dir)   F = feat-<name>   you, Jarvis, Hinata
 | `~/.config/scripts/crewx/log-event.sh` | hook: TaskCreated / TaskCompleted / TeammateIdle → `.crewx/activity.log` |
 | `~/.config/scripts/crewx/jarvis.sh` | starts Jarvis under the tmux shim, with `TMUX_PANE` on the Workers anchor |
 | `~/.config/scripts/crewx/logs-activity.sh`, `logs-plan.sh`, `logs-worktrees.sh` | the Logs panes and the Workers anchor pane |
+| `~/.config/scripts/crewx/layout-coding.sh` | shapes the Coding workspace (splits, 30/70, lazygit, login shell) once a client is attached |
 | `<project>/.crewx/verify` | the project's gate: one shell line of fast checks |
 | `~/.config/scripts/crewx/templates/` | starting content of `.crewx/STATE.md` and `docs/DECISIONS.md` |
 | `~/.config/claude/agents/{jarvis,hinata,asta,yuno,yami}.md` | agent definitions, each self-contained (shared rules are duplicated at the end of every file; keep them identical) |
