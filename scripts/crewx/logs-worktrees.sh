@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
-# crewx Workers pane: live `wt list` of the project's worktrees (ahead/behind, uncommitted changes).
-# Teammate panes open beside this pane; keep it running, it anchors them.
-cd "${1:-$PWD}" || exit 1
+# crewx Workers pane: live `wt list` of the project's worktrees (ahead/behind, uncommitted changes).cd "${1:-$PWD}" || exit 1
 last=""
 while :; do
   out="$(wt list 2>&1 || git worktree list 2>&1)"

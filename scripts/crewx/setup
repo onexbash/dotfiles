@@ -34,10 +34,10 @@ elif [ "$rc" = 3 ] && [ -t 0 ]; then
         (cd "$dir" && "$CREWX/worktree" new-feature "$name") ;;
     *)  exit 0 ;;
   esac
-fi # not a terminal: Jarvis and Hinata ask through the tuios Inbox instead
+fi # not a terminal: Jarvis asks through the tuios Inbox instead
 
 # Team-internal files live in .crewx/ (kept out of git locally); create only what is missing, never overwrite.
-# docs/DECISIONS.md, the one committed file, is created by Hinata when the first project decision comes up.
+# docs/DECISIONS.md, the one committed file, is created by Jarvis when the first project decision comes up.
 mkdir -p "$dir/.crewx"
 [ -e "$dir/.crewx/STATE.md" ] || cp "$CREWX/templates/STATE.md" "$dir/.crewx/STATE.md"
 [ -e "$dir/.crewx/activity.log" ] || : > "$dir/.crewx/activity.log"
@@ -65,10 +65,8 @@ tuios set-workspace-name -s "$session" 2 Jarvis >/dev/null
 tuios set-workspace-name -s "$session" 3 Logs >/dev/null
 tuios set-workspace-name -s "$session" 4 Workers >/dev/null
 
-# Workspace 4: the Worktrees pane anchors the teammates. Jarvis starts with TMUX_PANE pointing at it,
-# so Claude Code splits every teammate pane off it, onto this workspace.
-anchor="$(win_id Worktrees)"
-[ -n "$anchor" ] || anchor="$(tuios new-window Worktrees -s "$session" --workspace 4 --cwd "$dir" --no-focus --print-id -- "$CREWX/logs-worktrees.sh" "$dir")"
+# Workspace 4: live `wt list` of the worker worktrees (workers are subagents of Jarvis, not panes).
+[ -n "$(win_id Worktrees)" ] || tuios new-window Worktrees -s "$session" --workspace 4 --cwd "$dir" --no-focus -- "$CREWX/logs-worktrees.sh" "$dir" >/dev/null
 
 # Workspace 1: the Editor pane runs nvim from a shell (closing nvim leaves the shell); layout-coding.sh adds lazygit and a shell.
 editor="$(win_id Editor)"
@@ -91,7 +89,7 @@ procs="$(ps -t "${tty#/dev/}" -o command= 2>/dev/null || true)" # not piped into
 if [[ "$procs" == *"claude --agent jarvis"* ]]; then
   echo "crewx: Jarvis is already running in $session"
 else
-  tuios send-text -s "$session" -w "$jarvis" "cd $(printf %q "$dir") && tuios tmux-shim -- $(printf %q "$CREWX/jarvis.sh") $anchor
+  tuios send-text -s "$session" -w "$jarvis" "cd $(printf %q "$dir") && claude --agent jarvis --settings $(printf %q "$SETTINGS")
 " >/dev/null
 fi
 

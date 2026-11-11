@@ -1,8 +1,4 @@
 {
-  "teammateMode": "tmux",
-  "env": {
-    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
-  },
   "permissions": {
     "defaultMode": "auto",
     "allow": [
@@ -12,13 +8,10 @@
     "deny": ["Bash(git switch:*)", "Bash(git checkout:*)", "Bash(git reset --hard:*)", "Bash(rm -rf:*)", "Bash(rm -fr:*)"]
   },
   "hooks": {
-    "TaskCreated": [
+    "SubagentStart": [
       { "hooks": [{ "type": "command", "command": "$HOME/.config/scripts/crewx/log-event.sh", "timeout": 5 }] }
     ],
-    "TaskCompleted": [
-      { "hooks": [{ "type": "command", "command": "$HOME/.config/scripts/crewx/log-event.sh", "timeout": 5 }] }
-    ],
-    "TeammateIdle": [
+    "SubagentStop": [
       { "hooks": [{ "type": "command", "command": "$HOME/.config/scripts/crewx/log-event.sh", "timeout": 5 }] }
     ]
   }
