@@ -42,6 +42,9 @@ export PASS_SSH_VAULT="SSH Keys"
 # Fnox
 export FNOX_CONFIG_DIR="${XDG_CONFIG_HOME}/fnox"
 
+# Docker/Podman
+export DOCKER_HOST="unix://${TMPDIR%/}/podman/podman-machine-default-api.sock"
+
 # Worktrunk
 export WORKTRUNK_SYSTEM_CONFIG_PATH="/etc/worktrunk/config.toml" # Global Config
 export WORKTRUNK_CONFIG_PATH="${XDG_CONFIG_HOME}/worktrunk/config.toml" # User Config

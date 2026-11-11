@@ -3,8 +3,70 @@
     "BASH_DEFAULT_TIMEOUT_MS": "300000",
     "BASH_MAX_TIMEOUT_MS": "1800000"
   },
+  "statusLine": {
+    "type": "command",
+    "command": "tuios agent-statusline claude-code --integration 1"
+  },
+  "enabledPlugins": {
+    "svelte@svelte": true,
+    "ponytail@ponytail": true,
+    "impeccable@impeccable": true,
+    "worktrunk@worktrunk": true,
+    "ui-ux-pro-max@ui-ux-pro-max-skill": true
+  },
+  "extraKnownMarketplaces": {
+    "svelte": {
+      "source": {
+        "source": "github",
+        "repo": "sveltejs/ai-tools"
+      }
+    },
+    "ponytail": {
+      "source": {
+        "source": "github",
+        "repo": "DietrichGebert/ponytail"
+      }
+    },
+    "impeccable": {
+      "source": {
+        "source": "github",
+        "repo": "pbakaus/impeccable"
+      }
+    },
+    "worktrunk": {
+      "source": {
+        "source": "github",
+        "repo": "max-sixty/worktrunk"
+      }
+    },
+    "ui-ux-pro-max-skill": {
+      "source": {
+        "source": "github",
+        "repo": "nextlevelbuilder/ui-ux-pro-max-skill"
+      }
+    }
+  },
+  "sandbox": {
+    "network": {
+      "allowUnixSockets": [
+        "/tmp/tuios-501"
+      ]
+    },
+    "excludedCommands": [
+      "podman"
+    ]
+  },
+  "pluginConfigs": {
+    "ponytail@ponytail": {
+      "options": {
+        "ledger": true,
+        "sendNames": false
+      }
+    }
+  },
+  "theme": "custom:catppuccin-mocha",
+  "editorMode": "vim",
   "permissions": {
-    "additionalDirectories": ["~/"],
     "allow": [
       "Read(~/**)",
       "Edit(./**)",
@@ -421,6 +483,9 @@
       "Bash(az * delete *)",
       "Bash(az * update *)",
       "Bash(az pipelines run *)"
+    ],
+    "additionalDirectories": [
+      "~/"
     ]
   },
   "hooks": {
@@ -578,57 +643,5 @@
         ]
       }
     ]
-  },
-  "statusLine": {
-    "type": "command",
-    "command": "tuios agent-statusline claude-code --integration 1"
-  },
-  "enabledPlugins": {
-    "svelte@svelte": true,
-    "ponytail@ponytail": true,
-    "impeccable@impeccable": true,
-    "worktrunk@worktrunk": true
-  },
-  "extraKnownMarketplaces": {
-    "svelte": {
-      "source": {
-        "source": "github",
-        "repo": "sveltejs/ai-tools"
-      }
-    },
-    "ponytail": {
-      "source": {
-        "source": "github",
-        "repo": "DietrichGebert/ponytail"
-      }
-    },
-    "impeccable": {
-      "source": {
-        "source": "github",
-        "repo": "pbakaus/impeccable"
-      }
-    },
-    "worktrunk": {
-      "source": {
-        "source": "github",
-        "repo": "max-sixty/worktrunk"
-      }
-    }
-  },
-  "sandbox": {
-    "network": {
-      "allowUnixSockets": ["/tmp/tuios-501"]
-    },
-    "excludedCommands": ["podman"]
-  },
-  "pluginConfigs": {
-    "ponytail@ponytail": {
-      "options": {
-        "ledger": true,
-        "sendNames": false
-      }
-    }
-  },
-  "theme": "custom:catppuccin-mocha",
-  "editorMode": "vim"
+  }
 }
