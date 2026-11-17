@@ -1,11 +1,16 @@
 {
   "theme": "custom:catppuccin-mocha",
   "editorMode": "vim",
+  "spinnerTipsEnabled": false,
+  "autoCompactThreshold": 60,
+  "autoUpdate": true,
+  "autoUpdatesChannel": "stable",
   "attribution": {
     "commit": "",
     "pr": "",
     "sessionUrl": false
   },
+  "notifications": true,
   "env": {
     "BASH_DEFAULT_TIMEOUT_MS": "300000",
     "BASH_MAX_TIMEOUT_MS": "1800000"
@@ -62,8 +67,16 @@
     }
   },
   "permissions": {
+    "defaultMode": "auto",
+    "additionalDirectories": [
+      "~/.config",
+      "~/dev/repos",
+      "~/.local/share",
+      "~/.local/state",
+      "/opt/homebrew"
+    ],
     "allow": [
-      "Read(~/**)",
+      "Read(*)",
       "Edit(./**)",
       "Edit(~/dev/repos/cratos/**)",
       "Edit(~/dev/repos/onexbash/**)",
@@ -241,16 +254,10 @@
     ],
     "deny": [
       "Read(~/.ssh/**)",
-      "Read(~/.aws/**)",
-      "Read(~/.azure/**)",
-      "Read(~/.kube/**)",
-      "Read(~/.gnupg/**)",
+      "Read(~/.config/azure/**)",
       "Read(~/.config/gpg/**)",
       "Read(~/.config/gh/**)",
-      "Read(~/.config/containers/auth.json)",
-      "Read(~/.docker/config.json)",
-      "Read(~/.netrc)",
-      "Read(~/.npmrc)",
+      "Read(~/.config/containers/podman-connections.json)",
       "Read(**/.env)",
       "Read(**/.env.*)",
       "Edit(~/.config/gh/**)",
@@ -478,15 +485,58 @@
       "Bash(az * delete *)",
       "Bash(az * update *)",
       "Bash(az pipelines run *)"
-    ],
-    "additionalDirectories": ["~/"]
+    ]
   },
   "sandbox": {
-    "network": {
-      "allowUnixSockets": ["/tmp/tuios-501"]
+    "enabled": true,
+    "autoAllowBashIfSandboxed": true,
+    "allowAppleEvents": true,
+    "allowUnsandboxedCommands": true,
+    "ripgrep": "/opt/homebrew/bin/rg",
+    "excludedCommands": [
+      "podman *",
+      "podman-compose *",
+      "playwright *",
+      "npx playwright *",
+      "pnpx playwright *",
+      "pnpm exec playwright *",
+      "swift build *",
+      "swift test *",
+      "swift run *",
+      "gh *",
+      "terraform *",
+      "tofu *",
+      "kubectl *",
+      "cloudflared *",
+      "supabase *",
+      "ansible *",
+      "ansible-playbook *"
+    ],
+    "filesystem": {
+      "allowWrite": [
+        "~/.config/npm",
+        "~/Library/Caches",
+        "~/.cache/uv",
+        "~/.config/rust/cargo/registry",
+        "~/.config/rust/cargo/git",
+        "~/.config/go/pkg/mod"
+      ]
     },
-    "excludedCommands": ["podman"]
+    "network": {
+      "allowLocalBinding": true,
+      "allowedDomains": [
+        "registry.npmjs.org",
+        "pypi.org",
+        "files.pythonhosted.org",
+        "crates.io",
+        "static.crates.io",
+        "proxy.golang.org",
+        "github.com"
+      ],
+      "allowUnixSockets": ["/tmp/tuios-501"]
+    }
   },
+
   "hooks": {
     "SessionStart": [
       {
