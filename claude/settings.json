@@ -2,7 +2,7 @@
   "theme": "custom:catppuccin-mocha",
   "editorMode": "vim",
   "spinnerTipsEnabled": false,
-  "autoCompactThreshold": 60,
+  "autoCompactThreshold": 70,
   "autoUpdate": true,
   "autoUpdatesChannel": "stable",
   "attribution": {
