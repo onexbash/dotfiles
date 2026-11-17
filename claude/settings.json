@@ -492,7 +492,6 @@
     "autoAllowBashIfSandboxed": true,
     "allowAppleEvents": true,
     "allowUnsandboxedCommands": true,
-    "ripgrep": "/opt/homebrew/bin/rg",
     "excludedCommands": [
       "podman *",
       "podman-compose *",
