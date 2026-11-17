@@ -23,6 +23,28 @@ if command -v wt >/dev/null 2>&1; then
   eval "$(command wt config shell init zsh)";
 fi
 
+# -- CLAUDE -- #
+# Claude Wrapper to Auto Trust Directories under ~/dev/
+function claude_trust() {
+  command -v jq >/dev/null || return 0      # stay silent if jq is missing
+  local trust_root="$HOME/dev" cfg="$HOME/.claude.json" key top common
+  local -a keys
+  if top=$(git rev-parse --show-toplevel 2>/dev/null); then
+    keys+=("$top")
+    common=$(git rev-parse --path-format=absolute --git-common-dir 2>/dev/null)
+    [[ "$common" == */.git ]] && keys+=("${common%/.git}")
+  else
+    keys+=("$(pwd -P)")
+  fi
+  for key in "${keys[@]}"; do
+    case "$key" in "$trust_root"|"$trust_root"/*) ;; *) continue ;; esac
+    [[ -f "$cfg" ]] || echo '{}' > "$cfg"
+    jq -e --arg p "$key" '.projects[$p].hasTrustDialogAccepted == true' "$cfg" >/dev/null 2>&1 && continue
+    jq --arg p "$key" '.projects[$p] = ((.projects[$p] // {}) + {hasTrustDialogAccepted: true})' \
+      "$cfg" > "$cfg.tmp" && mv "$cfg.tmp" "$cfg"
+  done
+}
+
 # -- EZA -- #
 function ls() {
   local eza_args=(

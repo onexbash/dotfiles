@@ -20,8 +20,8 @@ function load_shell_files() {
   local config_files=(
     "autoreload.zsh"
     "functions.zsh"
-    "aliases.zsh"
     "tools.zsh"
+    "aliases.zsh"
   )
   local file
   for file in "${config_files[@]}"; do

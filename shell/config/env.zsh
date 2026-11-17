@@ -76,8 +76,9 @@ export _ZO_RESOLVE_SYMLINKS=0                              # whether to resolve 
 export FUNCTIONS_CORE_TOOLS_TELEMETRY_OPTOUT=1 # opt-out of sending Azure Functions Core tools telematry to microsoft.
 export HOMEBREW_NO_ENV_HINTS=1                 # disable hints about homebrew environment variables.
 
-# Claude-Code
+# Claude
 export CLAUDE_CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/claude"
+export CLAUDE_TRUSTED_DIRS="${HOME}/dev:${HOME}/.config:${XDG_DATA_HOME}/dotfiles:${HOME}/.claude"
 export ANTHROPIC_CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/anthropic"
 export DISABLE_AUTOUPDATER=1 # disable Claude-Code Auto-Updater to be managed by homebrew
 
