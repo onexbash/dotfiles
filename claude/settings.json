@@ -1,4 +1,11 @@
 {
+  "theme": "custom:catppuccin-mocha",
+  "editorMode": "vim",
+  "attribution": {
+    "commit": "",
+    "pr": "",
+    "sessionUrl": false
+  },
   "env": {
     "BASH_DEFAULT_TIMEOUT_MS": "300000",
     "BASH_MAX_TIMEOUT_MS": "1800000"
@@ -13,6 +20,14 @@
     "impeccable@impeccable": true,
     "worktrunk@worktrunk": true,
     "ui-ux-pro-max@ui-ux-pro-max-skill": true
+  },
+  "pluginConfigs": {
+    "ponytail@ponytail": {
+      "options": {
+        "ledger": true,
+        "sendNames": false
+      }
+    }
   },
   "extraKnownMarketplaces": {
     "svelte": {
@@ -46,26 +61,6 @@
       }
     }
   },
-  "sandbox": {
-    "network": {
-      "allowUnixSockets": [
-        "/tmp/tuios-501"
-      ]
-    },
-    "excludedCommands": [
-      "podman"
-    ]
-  },
-  "pluginConfigs": {
-    "ponytail@ponytail": {
-      "options": {
-        "ledger": true,
-        "sendNames": false
-      }
-    }
-  },
-  "theme": "custom:catppuccin-mocha",
-  "editorMode": "vim",
   "permissions": {
     "allow": [
       "Read(~/**)",
@@ -484,9 +479,13 @@
       "Bash(az * update *)",
       "Bash(az pipelines run *)"
     ],
-    "additionalDirectories": [
-      "~/"
-    ]
+    "additionalDirectories": ["~/"]
+  },
+  "sandbox": {
+    "network": {
+      "allowUnixSockets": ["/tmp/tuios-501"]
+    },
+    "excludedCommands": ["podman"]
   },
   "hooks": {
     "SessionStart": [
