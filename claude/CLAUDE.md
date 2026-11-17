@@ -31,3 +31,7 @@
 ## Safety
 - Never run `tofu apply`/`destroy`, `ansible-playbook` against real hosts, or anything that changes shared infrastructure, pipelines or Azure DevOps state unless the user asked for exactly that.
 - Never print, log or commit secrets. `.env` files stay out of git; commit an `.env.template` instead.
+
+## Skills
+### Frontend (UI/UX)
+For any UI/visual frontend change, load the ui-ux-pro-max skill first
