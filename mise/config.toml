@@ -9,59 +9,63 @@
 [tools]
 ansible = "latest"
 azure-functions-core-tools = "latest"
-bun = "latest"
-clang = "latest"
-cmake = "latest"
-dotnet = "latest"
-fnox = "latest"
-gitleaks = "latest"
+perl = "latest"
+php = "latest"
+powershell = "latest"
 go = "latest"
 java = "latest"
 julia = "latest"
 lua = "latest"
-maven = "latest"
-mysql = "latest"
-node = "lts"
-npm = "latest"
-"npm:typescript" = "latest"
-opentofu = "latest"
-osv-scanner = "latest"
-perl = "latest"
-php = "latest"
-playwright = "latest"
-pnpm = "latest"
-postgres = "latest"
-powershell = "latest"
-python = { version = "latest", postinstall = "python -m pip install --upgrade playwright && python -m playwright install chromium" }
-uv = "latest"
-ruff = "latest"
 redis = "latest"
 ruby = "latest"
 rust = "latest"
-semgrep = "latest"
 supabase = "latest"
 svgo = "latest"
 swift = "latest"
-terraform = "latest"
 tree-sitter = "latest"
-trivy = "latest"
-yarn = "latest"
 zig = "latest"
+# C / .NET
+clang = "latest"
+cmake = "latest"
+dotnet = "latest"
+# SQL
+mysql = "latest"
+maven = "latest"
+postgres = "latest"
+# Node
+node = "lts"
+npm = "latest"
+pnpm = "latest"
+bun = "latest"
+yarn = "latest"
+"npm:typescript" = "latest"
+# Security
+playwright = "latest"
+osv-scanner = "latest"
+fnox = "latest"
+gitleaks = "latest"
+semgrep = "latest"
+trivy = "latest"
+# Terraform
+terraform = "latest"
+opentofu = "latest"
+# Python
+python = { version = "3.15", postinstall = "mise sync python --uv" } # Global Interpreter; synced with uv
+uv = "latest"
+ruff = "latest"
 
 # -- |   SETTINGS   | -- #
 [settings]
 activate_aggressive = true # Keep mise tools ahead of PATH entries
 activate_shims = true # Add mise shims directories to PATH
 auto_install = true # Auto Install missing tools
-# env_shell_expand = false # never expand $VAR inside env values (secrets may contain '$')
 idiomatic_version_file_enable_tools = [
   "node",
-  "python",
 ] # Additionally read other config-files if a project has no mise.toml
-minimum_release_age = "3d" # Ignore brand new tool releases (Supply-chain protection).
 disable_backends = ["asdf", "spinel", "ubi"] # Disable Backends
 jobs = 4 # Max Parallel install jobs
 experimental = false # Experimental Features
+http_timeout = "90s" # Default: 30s
 # Auto-trust configs
 trusted_config_paths = [
   "~/dev/repos/onexbash",
@@ -73,7 +77,6 @@ trusted_config_paths = [
 [settings.self_update]
 auto = true                # Enable/Disable Auto-Updates
 check_duration = "4h"      # frequency
-minimum_release_age = "3d" # minimum age
 
 # -- SETTINGS: tool_update -- #
 [settings.tool_update]
@@ -92,6 +95,18 @@ set_gobin = false # go install → $GOPATH/bin
 # [settings.node]
 # cflags="" # CFLAGS for compiling node.js
 
+# -- SETTINGS: python -- #
+[settings.python]
+uv_venv_auto = "source" # TODO: check if it should be `source` or `create|source`
+
 # -- |   ENV   | -- #
 [env]
 GOPATH = "{{env.HOME}}/go"
+PIP_REQUIRE_VIRTUALENV = "true" # stops accidental installations outside a virtual environment
+
+
+# -- |   TASKS   | -- #
+[tasks.sync_python]
+description = "Sync Python Installations between mise & uv"
+alias = "pysync"
+run = "mise sync python --uv"
