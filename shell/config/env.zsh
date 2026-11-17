@@ -32,6 +32,13 @@ export MISE_STATE_DIR="${XDG_STATE_HOME}/mise"
 export MISE_CACHE_DIR="${XDG_CACHE_HOME}/mise"
 export MISE_DATA_DIR="${XDG_DATA_HOME}/mise"
 
+# ONESETUP
+export ONESETUP_CONFIG="${XDG_CONFIG_HOME}/onesetup"
+export ONESETUP_REPO="https://github.com/onexbash/onesetup.git"
+export ONESETUP_SSH_KEY="id_github_onexbash"
+export ONESETUP_SSH_PASS="pass://SSH Keys/id_github_onexbash/Passphrase"
+export ONESETUP_VAULT_PASS="pass://Development/Ansible Vault - onesetup/Secret"
+
 # NPM
 export NPM_CONFIG_USERCONFIG="${XDG_CONFIG_HOME}/npm"
 
