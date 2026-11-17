@@ -1,0 +1,11 @@
+[providers.protonpass]
+type = "proton-pass"
+vault = "Development"
+
+[daemon]
+enabled = true
+
+[secrets]
+GITHUB_PAT_PUBLIC_READ = { provider = "protonpass", value = "pass://Development/GitHub PAT - Public_Read/Secret" }
+CLAUDE_CODE_OAUTH_TOKEN = { provider = "protonpass", value = "pass://Development/Claude Code - OAuth Token/Secret" }
+ONESETUP_VAULT_SECRET = { provider = "protonpass", value = "pass://Development/Ansible Vault - onesetup/Secret" }
