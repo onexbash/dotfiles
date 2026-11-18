@@ -456,3 +456,4 @@ subdir
 Herdr
 compinit
 autoload
+FPATH
