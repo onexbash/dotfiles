@@ -12,7 +12,6 @@ export XDG_BIN_DIR="${HOME}/.local/bin"
 # Personal Directory Shortcuts
 export XDEV="$HOME/dev" # Dev Directory
 export XCONFIG="$XDG_CONFIG_HOME" # Config Directory
-export XSCRIPTS="$XDG_CONFIG_HOME/scripts" # Scripts Directory
 export XENV="$XDG_CONFIG_HOME/shell/context" # Context Directory (Environment Specific Configs)
 export XCLOUD="$HOME/Library/CloudStorage/ProtonDrive-fabian@schlegel.one-folder" # Cloud Directory
 export XLOGS="$XDG_STATE_HOME/logs" # Logs Directory
@@ -23,8 +22,11 @@ export XPKG_SYSTEM="brew"
 export XPKG_DEVTOOLS="mise"
 export XPKG_PYTHON="uv"
 export XPKG_NODE="pnpm"
+# Scripts
+export XSCRIPT_DIR="$XDG_CONFIG_HOME/scripts" # Scripts Directory
+export XSCRIPT_DEBUG=0
 
-# Custom
+# Custom # TODO: check if these can be removed in favor of XSCRIPT_.. above
 export TOGGLE_SCRIPT_DEBUG_MODE=0 # enable/disable debugging mode for scripts that load the onexbash helper-script
 export TOGGLE_PATH_HELPER=0       # enable/disable MacOS path-helper utility
 
