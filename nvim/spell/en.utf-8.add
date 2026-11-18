@@ -445,3 +445,9 @@ Tooltip
 shellfiles
 noqa
 uv
+namespace
+fzf
+zoxide
+Fnox
+CLIs
+autocompletion
