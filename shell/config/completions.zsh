@@ -1,137 +1,151 @@
 # -- COMPLETIONS -- #
-# ~/.config/shell/completions.zsh (sourced by ~/.zshrc)
+# ~/.config/shell/completions.zsh (sourced by ~/.zshrc, zsh only)
 #
-# One directory for everything: ${XDG_CONFIG_HOME:-$HOME/.config}/shell/completions
-#   _<name>        zsh completion function, loaded on demand via fpath   (e.g. _rustup, _cargo)
-#   <name>.zsh     sourced at startup in zsh                              (e.g. tuios.zsh)
-#   <name>.bash    sourced at startup in bash
-#   <name>.sh      sourced in both shells
-#   anything else  ignored
+# ${XDG_CONFIG_HOME:-$HOME/.config}/shell/completions
+#   _<name>      zsh completion function, autoloaded on demand via fpath (preferred)
+#   <name>.zsh   sourced at startup, only for scripts that can't live in fpath (npm, pnpm)
+#   anything else is ignored (.bash, .ps1, ...)
+#
+# Generated completions are refreshed with `completions-refresh`, never at startup.
+
+[[ -o interactive ]] || return 0
 
 : "${COMPLETIONS_DIR:=${XDG_CONFIG_HOME:-$HOME/.config}/shell/completions}"
+: "${COMPLETIONS_CACHE:=${XDG_CACHE_HOME:-$HOME/.cache}/zsh}"
 
-# Minimal fallback, only used if log_info isn't defined elsewhere.
-if ! typeset -f log_info >/dev/null 2>&1; then
-  log_info() { printf '[INFO] %s\n' "$*" >&2; }
-fi
+# Carapace only for commands that have no good native completion, e.g. (kubectl helm).
+# Empty = carapace disabled. Run `completions-refresh` after changing this list.
+typeset -gaU CARAPACE_COMMANDS=( )
 
 setup_compinit() {
-  local dir="${1:-$COMPLETIONS_DIR}"
-  local zcompdump="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompdump-$ZSH_VERSION"
+  local dump="$COMPLETIONS_CACHE/zcompdump-$ZSH_VERSION"
   local -a candidates stale
 
-  # ---- Completion paths (only existing directories are added, no duplicates) ----
+  # ---- Completion paths (existing dirs only, no duplicates, own dir wins) ----
   candidates=(
-    "$dir"                                      # your _name files
-    "$HOMEBREW_PREFIX/share/zsh-completions"    # zsh-completions
-    "$HOMEBREW_PREFIX/share/zsh/site-functions" # brew-installed tools (incl. brew)
+    "$COMPLETIONS_DIR"
+    "$HOMEBREW_PREFIX/share/zsh-completions"
+    "$HOMEBREW_PREFIX/share/zsh/site-functions"
   )
   typeset -gU fpath
   fpath=( ${^candidates}(N/) $fpath )
 
   # ---- compinit with cached dump ----
-  # Full rebuild (incl. security check) if the dump is missing, older than a day,
-  # or the completions directory changed (file added, removed or renamed).
   zmodload zsh/complist
   autoload -Uz compinit
-  mkdir -p "${zcompdump:h}"
-  stale=( "$zcompdump"(N.mh+24) )
-  if (( $#stale )) || [[ ! -s $zcompdump || $dir -nt $zcompdump ]]; then
-    compinit -d "$zcompdump"
+  mkdir -p "$COMPLETIONS_CACHE"
+
+  stale=( "$dump"(N.mh+24) )
+  if (( $#stale )) || [[ ! -s $dump || $COMPLETIONS_DIR -nt $dump ]]; then
+    compinit -d "$dump"
+    # compinit does not rewrite a still-valid dump, so its mtime would stay old
+    # and every following start would run the full (slow) check again.
+    touch "$dump"
   else
-    compinit -C -d "$zcompdump"
+    compinit -C -d "$dump"
   fi
 
-  # ---- Nicer matching ----
+  # Compiled dump loads faster; compile in the background when outdated.
+  if [[ -s $dump && ( ! -s $dump.zwc || $dump -nt $dump.zwc ) ]]; then
+    zcompile "$dump" &!
+  fi
+
+  # ---- Styles ----
   zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
   zstyle ':completion:*:descriptions' format '[%d]'
-  
-  # ---- Carapace ----
-  source <(carapace _carapace)
+  zstyle ':completion:*' use-cache on
+  zstyle ':completion:*' cache-path "$COMPLETIONS_CACHE/compcache"
 }
 
 load_completions() {
-  # Completions only matter in interactive shells.
-  case $- in *i*) ;; *) return 0 ;; esac
-
-  local dir="${1:-$COMPLETIONS_DIR}"
-  local shell_ext file name restore_nullglob
-  local -a files loaded failed ondemand
-
-  if [ -n "${ZSH_VERSION:-}" ]; then
-    shell_ext=zsh
-    # Sourced zsh completion scripts call compdef, which needs compinit.
-    if ! typeset -f compdef >/dev/null 2>&1; then
-      autoload -Uz compinit && compinit
-    fi
-  elif [ -n "${BASH_VERSION:-}" ]; then
-    shell_ext=bash
-  else
-    log_info "load_completions: unsupported shell, skipping"
-    return 1
-  fi
-
-  if [ ! -d "$dir" ]; then
-    log_info "load_completions: $dir not found, nothing loaded"
-    return 0
-  fi
-
-  # Collect files without erroring on an empty directory.
-  if [ "$shell_ext" = zsh ]; then
-    eval 'files=( "$dir"/*(N) )'   # eval keeps zsh glob syntax away from bash's parser
-  else
-    restore_nullglob=$(shopt -p nullglob)
-    shopt -s nullglob
-    files=( "$dir"/* )
-    eval "$restore_nullglob"
-  fi
-
-  for file in "${files[@]}"; do
-    [ -f "$file" ] && [ -r "$file" ] || continue
-    name=${file##*/}
-    case "$name" in
-      _*)                       # zsh function file: compinit loads it on demand
-        [ "$shell_ext" = zsh ] && ondemand+=("${name#_}")
-        continue ;;
-      *."$shell_ext" | *.sh) ;; # source it
-      *) continue ;;
-    esac
-
-    # shellcheck disable=SC1090
-    if . "$file"; then
-      loaded+=("${name%.*}")
-    else
-      failed+=("$name")
-    fi
+  local f
+  local -a failed
+  for f in "$COMPLETIONS_DIR"/*.zsh(N.r) "$COMPLETIONS_CACHE"/carapace.zsh(N.r); do
+    source "$f" || failed+=( "${f:t}" )
   done
-
-  if [ "${#loaded[@]}" -gt 0 ]; then
-    log_info "Loaded ${#loaded[@]} completion(s) for $shell_ext: ${loaded[*]}"
-  fi
-  if [ "${#ondemand[@]}" -gt 0 ]; then
-    if eval '(( ${fpath[(Ie)$dir]} ))'; then
-      log_info "On-demand completion(s): ${ondemand[*]}"
-    else
-      log_info "On-demand completion(s) not active, $dir is not in fpath: ${ondemand[*]}"
-    fi
-  fi
-  if [ "${#loaded[@]}" -eq 0 ] && [ "${#ondemand[@]}" -eq 0 ]; then
-    log_info "No $shell_ext completions found in $dir"
-  fi
-  if [ "${#failed[@]}" -gt 0 ]; then
-    log_info "Failed to load completion(s): ${failed[*]}"
-  fi
+  (( $#failed )) && print -u2 "[completions] failed to load: ${failed[*]}"
+  return 0
 }
 
 runtime_completions() {
   # OpenTofu (bash-style completer, resolved via PATH at completion time)
   if (( $+commands[tofu] )); then
-    autoload -U +X bashcompinit && bashcompinit
+    autoload -Uz bashcompinit && bashcompinit
     complete -o nospace -C tofu tofu
   fi
 }
 
-# Function Calls
+# Regenerate static completion files. Run manually after tool updates
+# (e.g. after `brew upgrade` / `mise upgrade`), then `exec zsh`.
+completions-refresh() {
+  emulate -L zsh
+  local dir=$COMPLETIONS_DIR tmp name first
+  local -a cmd
+  mkdir -p "$dir" "$COMPLETIONS_CACHE" || return 1
+
+  # name -> command that prints a zsh completion starting with '#compdef'
+  local -A gen=(
+    uv            'uv generate-shell-completion zsh'
+    uvx           'uvx --generate-shell-completion zsh'
+    mise          'mise completion zsh'
+    rustup        'rustup completions zsh rustup'
+    cargo         'rustup completions zsh cargo'
+    golangci-lint 'golangci-lint completion zsh'
+    gitleaks      'gitleaks completion zsh'
+    trivy         'trivy completion zsh'
+    tuios         'tuios completion zsh'
+    fnox          'fnox completion zsh'
+  )
+
+  for name in ${(ko)gen}; do
+    cmd=( ${(z)gen[$name]} )
+    if (( ! $+commands[$cmd[1]] )); then
+      print -u2 "skip   _$name ($cmd[1] not found)"
+      continue
+    fi
+    tmp=$(mktemp "$dir/.$name.XXXXXX") || continue
+    first=
+    if "${cmd[@]}" >| "$tmp" 2>/dev/null && read -r first < "$tmp" && [[ $first == '#compdef'* ]]; then
+      mv -f "$tmp" "$dir/_$name" && print "ok     _$name"
+    else
+      rm -f "$tmp"
+      print -u2 "failed _$name (no '#compdef' output; may need to be sourced as $name.zsh)"
+    fi
+  done
+
+  # Carapace: one cached snippet for the selected commands only
+  if (( $+commands[carapace] && ${#CARAPACE_COMMANDS} )); then
+    for name in $CARAPACE_COMMANDS; do
+      carapace "$name" zsh
+    done >| "$COMPLETIONS_CACHE/carapace.zsh"
+    print "ok     carapace (${CARAPACE_COMMANDS[*]})"
+  else
+    rm -f "$COMPLETIONS_CACHE/carapace.zsh"
+  fi
+
+  # Force a full compinit on the next start
+  rm -f "$COMPLETIONS_CACHE"/zcompdump-*(N)
+  print "Done. Restart the shell with: exec zsh"
+}
+
+setup_fzftab() {
+  local plugin="$HOMEBREW_PREFIX/opt/fzf-tab/share/fzf-tab/fzf-tab.zsh"
+  (( $+commands[fzf] )) && [[ -r $plugin ]] || return 0
+
+  # ---- zsh completion styles fzf-tab relies on ----
+  zstyle ':completion:*' menu no                          # fzf-tab replaces the menu
+  zstyle ':completion:*:git-checkout:*' sort false        # keep git's own order
+  zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}   # colored files, if LS_COLORS is set
+
+  # ---- fzf-tab ----
+  zstyle ':fzf-tab:*' switch-group '<' '>'                # switch completion groups
+  zstyle ':fzf-tab:*' fzf-flags ${(Q)${(z)FZF_THEME_OPTS}} --height=50% --bind=tab:accept
+  zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath'
+
+  source "$plugin"
+}
+
 setup_compinit
 load_completions
 runtime_completions
+setup_fzftab
