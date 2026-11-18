@@ -17,8 +17,7 @@ function tty_styles() {
   else
     C_RED="" C_GREEN="" C_YELLOW="" C_BLUE="" C_PURPLE="" C_CYAN="" C_WHITE="" C_GRAY="" C_RESET=""
   fi
-
-  # Fixed-width labels so messages line up
+  # Prompt Style Variables
   I_SKIP="${C_GRAY}[${C_CYAN} SKIP ${C_GRAY}]${C_RESET} "
   I_WARN="${C_GRAY}[${C_YELLOW} WARN ${C_GRAY}]${C_RESET} "
   I_OK="${C_GRAY}[${C_GREEN} OK ${C_GRAY}]${C_RESET} "
@@ -27,7 +26,7 @@ function tty_styles() {
   I_ASK="${C_GRAY}[${C_BLUE} ? ${C_GRAY}]${C_RESET} "
   I_ASK_YN="${C_GRAY}[${C_BLUE} y/n ${C_GRAY}]${C_RESET} "
 }
-
+# Log Output Functions
 log_ok() { printf '%s%s\n' "$I_OK" "$*"; }
 log_info() { printf '%s%s\n' "$I_INFO" "$*"; }
 log_warn() { printf '%s%s\n' "$I_WARN" "$*" >&2; }

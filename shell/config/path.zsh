@@ -23,6 +23,8 @@ function construct_path() {
 
   # 1. User paths
   local user_paths=(
+    # Local Bin Dir
+    $XDG_BIN_DIR(N-/)
     # Mise - shims
     $MISE_DATA_DIR/shims(N-/)
     # PNPM - Global

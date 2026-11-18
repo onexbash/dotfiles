@@ -356,113 +356,31 @@ function get_bundle_id() {
   return $rc
 }
 
-# Azure CLI
+# -- AZURE CLI -- #
+
+# Authenticate Azure CLI
 function azlogin() {
-  # -- TENANTS: "Display name|tenant-id" -- #
-  local -a tenants
-  tenants=(
-    "Cratos[prod]|63f98c75-61b7-4c1c-b937-da7324147db9"
-    "DZ Bank|fcf9c1f5-c9d7-456c-922a-e8d2be15a058"
-    "EON Data|03e6c03e-074e-474c-8d40-3eac96d82a77"
-  )
+  command -v az >/dev/null 2>&1 || { log_err "Azure CLI (az) not found in PATH."; return 1; }
 
-  if ! command -v az >/dev/null 2>&1; then
-    printf '%s\n' "${I_ERR}Azure CLI (az) not found in PATH." >&2
-    return 1
+  local -a auth=()
+  local as=""
+  if [[ "${1:-}" == "--user" ]]; then
+    shift
+  elif [[ -n "$AZ_CLIENT_ID" && -n "$AZ_CLIENT_SECRET" ]]; then
+    auth=(--service-principal --username "$AZ_CLIENT_ID" --password "$AZ_CLIENT_SECRET")
+    as=" as service principal $AZ_CLIENT_ID"
   fi
 
-  if (( ${#tenants[@]} == 0 )); then
-    printf '%s\n' "${I_ERR}No tenants defined in azlogin()." >&2
-    return 1
-  fi
-
-  # -- ARGUMENTS -- #
-  # az login has no --subscription option, so it is extracted here and
-  # applied with `az account set` after the login. Everything else is passed through.
-  local subscription=""
-  local -a az_args
-  az_args=()
-  while (( $# > 0 )); do
-    case "$1" in
-      --subscription)
-        if [[ -z "${2:-}" ]]; then
-          printf '%s\n' "${I_ERR}--subscription requires a value." >&2
-          return 1
-        fi
-        subscription="$2"
-        shift 2
-        ;;
-      --subscription=*)
-        subscription="${1#*=}"
-        shift
-        ;;
-      *)
-        az_args+=("$1")
-        shift
-        ;;
-    esac
-  done
-
-  # -- MENU -- #
-  # Iterate instead of indexing: bash arrays start at 0, zsh arrays at 1
-  local entry name id choice rc i=0
-  printf '%s\n' "${I_INFO}Select a tenant:"
-  for entry in "${tenants[@]}"; do
-    i=$((i + 1))
-    printf '  %s%2d)%s %s %s(%s)%s\n' \
-      "$C_CYAN" "$i" "$C_RESET" "${entry%%|*}" "$C_GRAY" "${entry#*|}" "$C_RESET"
-  done
-
-  printf '%s' "${I_ASK}Tenant [1-${#tenants[@]}, q to cancel]: "
-  read -r choice
-
-  if [[ -z "$choice" || "$choice" == [qQ] ]]; then
-    printf '%s\n' "${I_SKIP}Login cancelled."
-    return 0
-  fi
-
-  # Regex without leading zeros avoids octal interpretation in bash arithmetic
-  if ! [[ "$choice" =~ ^[1-9][0-9]*$ ]] || (( choice > ${#tenants[@]} )); then
-    printf '%s\n' "${I_ERR}Invalid selection: ${choice}" >&2
-    return 1
-  fi
-
-  i=0
-  for entry in "${tenants[@]}"; do
-    i=$((i + 1))
-    if (( i == choice )); then
-      name="${entry%%|*}"
-      id="${entry#*|}"
-      break
-    fi
-  done
-
-  # -- LOGIN -- #
-  printf '%s\n' "${I_LOAD}Logging in to ${C_WHITE}${name}${C_RESET} ${C_GRAY}(${id})${C_RESET}"
-  # AZURE_CORE_LOGIN_EXPERIENCE_V2=off skips the interactive subscription picker
-  # (overrides core.login_experience_v2 for this call only)
+  # AZURE_CORE_LOGIN_EXPERIENCE_V2=off skips the interactive subscription picker (this call only)
+  log_info "Logging in to $AZ_TENANT ($AZ_TENANT_ID)$as"
   AZURE_CORE_LOGIN_EXPERIENCE_V2=off \
-    az login --tenant "$id" --allow-no-subscriptions --output none "${az_args[@]}"
-  rc=$?
+    az login "${auth[@]}" --tenant "$AZ_TENANT_ID" --allow-no-subscriptions --output none "$@" ||
+    { local rc=$?; log_err "az login failed (exit code $rc)."; return "$rc"; }
 
-  if (( rc != 0 )); then
-    printf '%s\n' "${I_ERR}az login failed (exit code ${rc})." >&2
-    return "$rc"
-  fi
-  printf '%s\n' "${I_OK}Logged in to ${name}."
+  az account set --subscription "$AZ_SUBSCRIPTION_ID" ||
+    { log_err "Could not select subscription $AZ_SUBSCRIPTION_ID."; return 1; }
 
-  # -- SUBSCRIPTION -- #
-  if [[ -n "$subscription" ]]; then
-    if ! az account set --subscription "$subscription"; then
-      printf '%s\n' "${I_ERR}Could not select subscription: ${subscription}" >&2
-      return 1
-    fi
-  fi
-
-  local current
-  current="$(az account show --query "name" --output tsv 2>/dev/null)"
-  printf '%s\n' "${I_INFO}Active subscription: ${C_WHITE}${current:-unknown}${C_RESET}"
-  return 0
+  log_ok "Logged in to $AZ_TENANT - subscription: $(az account show --query name --output tsv 2>/dev/null)"
 }
 
 # -- PODMAN -- #

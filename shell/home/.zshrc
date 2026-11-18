@@ -18,6 +18,7 @@ function load_shell_files() {
 
   # Load Config Shell Files that extend ~/.zshrc
   local config_files=(
+    "context.zsh"
     "autoreload.zsh"
     "functions.zsh"
     "tools.zsh"
