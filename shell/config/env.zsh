@@ -60,6 +60,9 @@ export PNPM_HOME="${XDG_DATA_HOME}/pnpm"
 # Azure
 export AZ_TENANT="cratos-prod"
 
+# Carapace
+export CARAPACE_BRIDGES="zsh,bash"
+
 # Proton Pass
 export PROTON_PASS_SESSION_DIR="${XDG_DATA_HOME}/proton-pass-cli"
 export PASS_SSH_VAULT="SSH Keys"

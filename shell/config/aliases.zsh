@@ -20,6 +20,7 @@ alias ff="fastfetch"
 alias xzip="ouch"
 alias xcopy="copy_to_clipboard"
 alias ppath="print_path"
+alias rust="rustc"
 
 # -- WRAPPERS / REPLACEMENTS  -- #
 alias gping='gping --color="#a6e3a1" --clear --horizontal-margin="20" --vertical-margin="20"'
