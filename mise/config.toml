@@ -17,7 +17,7 @@ julia = "latest"
 lua = "latest"
 redis = "latest"
 ruby = "latest"
-rust = "latest"
+rust = { version = "stable", components = ["rust-src", "rust-analyzer"] }
 supabase = "latest"
 svgo = "latest"
 swift = "latest"
@@ -52,6 +52,9 @@ opentofu = "latest"
 python = { version = "3.15", postinstall = "mise sync python --uv" } # Global Interpreter; synced with uv
 uv = "latest"
 ruff = "latest"
+"go:golang.org/x/tools/gopls" = "latest"
+"go:github.com/go-delve/delve/cmd/dlv" = "latest"
+golangci-lint = "latest"
 
 # -- |   SETTINGS   | -- #
 [settings]
@@ -59,8 +62,7 @@ activate_aggressive = true # Keep mise tools ahead of PATH entries
 activate_shims = true # Add mise shims directories to PATH
 auto_install = true # Auto Install missing tools
 idiomatic_version_file_enable_tools = [
-  "node",
-] # Additionally read other config-files if a project has no mise.toml
+  "node", "go"]
 disable_backends = ["asdf", "spinel", "ubi"] # Disable Backends
 jobs = 4 # Max Parallel install jobs
 experimental = false # Experimental Features
