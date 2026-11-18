@@ -30,7 +30,7 @@ function construct_path() {
     # PNPM - Global
     $PNPM_HOME/bin(N-/)
     # Rust
-    ${CARGO_HOME:-$XDG_CONFIG_HOME/rust/cargo}/bin(N-/)
+    ${CARGO_HOME:-$XDG_CONFIG_HOME/cargo}/bin(N-/)
     # Go
     ${GOBIN:-${GOPATH:-$XDG_CONFIG_HOME/go}/bin}(N-/)
   )

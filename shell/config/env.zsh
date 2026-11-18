@@ -78,8 +78,8 @@ export WORKTRUNK_VERBOSE=1 # Verbosity Level [0/1/2]
 export WORKTRUNK_MAX_CONCURRENT_COMMANDS=24 # Max parallel git commands
 
 # Rust
-export CARGO_HOME="${XDG_CONFIG_HOME}/rust/cargo"
-export RUSTUP_HOME="${XDG_CONFIG_HOME}/rust/rustup"
+export CARGO_HOME="${XDG_CONFIG_HOME}/cargo"
+export RUSTUP_HOME="${XDG_CONFIG_HOME}/rustup"
 source "${CARGO_HOME}/env" # load cargo environment
 
 # GoLang
