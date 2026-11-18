@@ -7,7 +7,6 @@
 
 # -- |   TOOLS   |-- #
 [tools]
-ansible = "latest"
 azure-functions-core-tools = "latest"
 perl = "latest"
 php = "latest"
