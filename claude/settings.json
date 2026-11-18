@@ -67,6 +67,7 @@
     }
   },
   "permissions": {
+    "blockReadsOutsideWorkingDirectories": false,
     "defaultMode": "auto",
     "additionalDirectories": [
       "~/.config",
