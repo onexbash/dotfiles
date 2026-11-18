@@ -454,3 +454,5 @@ autocompletion
 symlinked
 subdir
 Herdr
+compinit
+autoload
