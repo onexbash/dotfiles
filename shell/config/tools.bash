@@ -1,5 +1,3 @@
-#!/usr/bin/env bash
-
 # Starship
 eval "$(starship init bash)"
 

@@ -1,5 +1,3 @@
-#!/usr/bin/env bash
-
 # Define keys to load
 KEYS=(
   "$HOME/.ssh/id_ed25519"
