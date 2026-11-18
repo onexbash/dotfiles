@@ -22,6 +22,7 @@ function load_shell_files() {
     "autoreload.zsh"
     "functions.zsh"
     "tools.zsh"
+    "completions.zsh"
     "aliases.zsh"
   )
   local file
