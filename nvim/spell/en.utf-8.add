@@ -451,3 +451,5 @@ zoxide
 Fnox
 CLIs
 autocompletion
+symlinked
+subdir
