@@ -4,12 +4,12 @@
 
 # Print $PATH variable
 function print_path() {
-  local I_PATH="${FG_BLACK}[${FG_GREEN} 󰗽 ${FG_BLACK}] ${S_RESET}"
+  local I_PATH="${C_GRAY}[${C_GREEN} 󰗽 ${C_GRAY}]${C_RESET} "
   local tmp_path="$PATH"
   while [[ -n "$tmp_path" ]]; do
       # extract the first path entry
       local entry="${tmp_path%%:*}"
-      echo -e "${I_PATH}$entry"
+      _log "$I_PATH" "$entry"
       # Remove the processed entry from tmp_path
       if [[ "$tmp_path" == *:* ]]; then
           tmp_path="${tmp_path#*:}"
@@ -19,7 +19,36 @@ function print_path() {
   done
 }
 
+# Reload Shell Session
+function reload_shell() {
+  if [ -n "${ZSH_VERSION-}" ]; then
+    ((${#jobstates})) && { log_err "reload_shell: end background jobs first."; return 1; }
+    fc -AI 2>/dev/null # save this session's history
+    exec zsh -l
+  elif [ -n "${BASH_VERSION-}" ]; then
+    [ -n "$(jobs -p)" ] && { log_err "reload_shell: end background jobs first."; return 1; }
+    history -a # save this session's history
+    exec "$BASH" -l
+  fi
+  log_err "reload_shell: only zsh and bash are supported."
+  return 1
+}
+
+
 # -- SECRETS -- #
+# Watch the Proton Pass Auth URL opened in Browser
+_pass_login_watch() {
+  local line url opened=0
+  while IFS= read -r line || [[ -n $line ]]; do
+    printf '%s\n' "$line" # pass pass-cli's own output through unchanged
+    if ((!opened)) && [[ ${PASS_OPEN_BROWSER:-1} == 1 && $line == *https://account.proton.me/* ]]; then
+      url="https://account.proton.me/${line#*https://account.proton.me/}"
+      url=${url%%[[:space:]]*}
+      _open_url "$url" >/dev/null 2>&1 && opened=1 && log_info "Opened the login page in your default browser."
+    fi
+  done
+}
+
 # Ensure Proton Pass CLI is authenticated
 pass_auth() {
   [[ -n ${I_OK-} ]] || tty_styles
@@ -34,7 +63,8 @@ pass_auth() {
   fi
   log_warn "Proton Pass CLI is not authenticated."
   log_info "Running: pass-cli login${*:+ $*}"
-  if ! pass-cli login "$@"; then
+  # Process substitution keeps pass-cli's exit status (works in bash and zsh)
+  if ! pass-cli login "$@" > >(_pass_login_watch) 2>&1; then
     log_err "pass-cli login failed."
     return 1
   fi
@@ -46,6 +76,7 @@ pass_auth() {
     return 1
   fi
 }
+
 # Read Secrets from Proton Pass & Export as Environment Variables (defined in secrets.env)
 pass_env() {
   local file="$HOME/.config/shell/secrets.env" key ref value failed=0
@@ -96,12 +127,12 @@ xawake() {
   local hours="${1:-8}"
   pkill caffeinate 2>/dev/null
   nohup caffeinate -d -i -t $((hours * 3600)) >/dev/null 2>&1 & disown
-  echo "Awake for ${hours}h"
+  log_info "Awake for ${hours}h"
 }
 
 # Let the Mac sleep again
 xsleep() {
-  pkill caffeinate && echo "Sleep allowed"
+  pkill caffeinate && log_info "Sleep allowed"
 }
 
 # Prevent inactivity via mouse-input
@@ -122,7 +153,7 @@ function chinfo() {
 
   # Check if file/directory exists first
   if [ ! -e "$target_path" ]; then
-    echo -e "${I_ERR}Path does not exist: ${FG_RED}${target_path}${S_RESET}"
+    log_err "Path does not exist: ${C_RED}${target_path}${C_RESET}"
     return 1
   fi
 
@@ -141,28 +172,28 @@ function chinfo() {
       fi
       ;;
     *)
-      echo -e "${I_ERR}Unsupported Platform Detected: ${FG_RED}${os}${S_RESET}"
+      log_err "Unsupported Platform Detected: ${C_RED}${os}${C_RESET}"
       return 1
       ;;
   esac
 
   if [ -z "$stat_output" ]; then
-    echo -e "${I_ERR}Failed to get file information"
+    log_err "Failed to get file information"
     return 1
   fi
 
   # Shared output for all platforms
   read -r perms user group filename <<< "$stat_output"
-  echo -e "${FG_MAGENTA}[FILENAME]${S_RESET}${FG_WHITE} ${filename}${S_RESET}"
-  echo -e "${FG_MAGENTA}[PERMISSIONS]${S_RESET}${FG_WHITE} ${perms}${S_RESET}"
-  echo -e "${FG_MAGENTA}[USER]${S_RESET}${FG_WHITE} ${user}${S_RESET}"
-  echo -e "${FG_MAGENTA}[GROUP]${S_RESET}${FG_WHITE} ${group}${S_RESET}"
+  log_info "${C_PURPLE}[FILENAME]${C_RESET}${C_WHITE} ${filename}${C_RESET}"
+  log_info "${C_PURPLE}[PERMISSIONS]${C_RESET}${C_WHITE} ${perms}${C_RESET}"
+  log_info "${C_PURPLE}[USER]${C_RESET}${C_WHITE} ${user}${C_RESET}"
+  log_info "${C_PURPLE}[GROUP]${C_RESET}${C_WHITE} ${group}${C_RESET}"
 
   for flag in r w x; do
     if [ -"$flag" "$target_path" ]; then
-      echo -e "${FG_MAGENTA}[${flag}]${FG_WHITE} by ${USER}: ${FG_GRAY}[${FG_GREEN}YES${FG_GRAY}]${S_RESET}"
+      log_info "${C_PURPLE}[${flag}]${C_WHITE} by ${USER}: ${C_GRAY}[${C_GREEN}YES${C_GRAY}]${C_RESET}"
     else
-      echo -e "${FG_MAGENTA}[${flag}]${FG_WHITE} by ${USER}: ${FG_GRAY}[${FG_RED}NO${FG_GRAY}]${S_RESET}"
+      log_info "${C_PURPLE}[${flag}]${C_WHITE} by ${USER}: ${C_GRAY}[${C_RED}NO${C_GRAY}]${C_RESET}"
     fi
   done
 }
@@ -189,10 +220,10 @@ x_ssh_keygen() {
 
   # 1. Key type
   if [ -z "$type" ]; then
-    echo "Select key type:"
+    log_info "Select key type:"
     select type in ecdsa ecdsa-sk ed25519 ed25519-sk mldsa44-ed25519 rsa; do
       [ -n "$type" ] && break
-      echo "Invalid selection." >&2
+      log_err "Invalid selection."
     done
     [ -n "$type" ] || return 1   # aborted with Ctrl-D
   fi
@@ -206,18 +237,16 @@ x_ssh_keygen() {
     rsa)             pat='^ssh-rsa$' ;;
   esac
   if ! ssh -Q key 2>/dev/null | grep -qE "$pat"; then
-    printf 'Warning: "%s" is not listed by "ssh -Q key" on this system.\n' "$type" >&2
-    printf 'Continue anyway? [y/N] '
-    read -r answer || return 1
+    log_warn "$type is not listed by 'ssh -Q key' on this system."
+    input_yn answer "Continue Anyway?"
     case "$answer" in [yY]*) ;; *) return 1 ;; esac
   fi
 
   # 2. Filename (plain names go to ~/.ssh)
   while :; do
     if [ -z "$file" ]; then
-      printf 'Filename (saved in ~/.ssh unless a path is given): '
-      read -r file || return 1
-      [ -n "$file" ] || { echo "Filename must not be empty." >&2; continue; }
+      input_ask file "Filename (saved in ~/.ssh unless a path is given):" || return 1
+      [ -n "$file" ] || { log_err "Filename must not be empty."; continue; }
     fi
     case "$file" in
       "~/"*) file="$HOME/${file#\~/}" ;;
@@ -225,7 +254,7 @@ x_ssh_keygen() {
       *)     file="$HOME/.ssh/$file" ;;
     esac
     if [ -e "$file" ] || [ -e "$file.pub" ]; then
-      printf '"%s" already exists – choose another name.\n' "$file" >&2
+      log_err "\"$file\" already exists – choose another name."
       [ "$have_f" -eq 1 ] && return 1   # passed via -f: abort instead of prompting
       file=""
       continue
@@ -238,10 +267,9 @@ x_ssh_keygen() {
   # 3. Comment
   if [ "$have_C" -eq 0 ]; then
     while :; do
-      printf 'Comment: '
-      read -r comment || return 1
+      input_ask comment "Comment:" || return 1
       [ -n "$comment" ] && break
-      echo "Comment must not be empty." >&2
+      log_err "Comment must not be empty."
     done
   fi
 
@@ -252,28 +280,25 @@ x_ssh_keygen() {
     ecdsa) set -- "$@" -b 521 ;;
     *-sk)
       set -- "$@" -O verify-required
-      printf 'Store key on the security key (resident, recoverable via ssh-keygen -K)? [y/N] '
-      read -r answer || return 1
+      input_yn answer "Store key on the security key (resident, recoverable via ssh-keygen -K)?" || return 1
       case "$answer" in [yY]*) set -- "$@" -O resident ;; esac
       ;;
   esac
 
-  printf '\nRunning: ssh-keygen'
-  printf ' %s' "$@"
-  printf '\n\n'
+  log_info "Running: ssh-keygen $*"
   command ssh-keygen "$@" || return   # stop here if key generation failed
 
   # 5. Copy fingerprint (SHA256) to clipboard
   fp=$(command ssh-keygen -l -E sha256 -f "$file.pub" 2>/dev/null | awk '{print $2}')
   if [ -z "$fp" ]; then
-    printf 'Warning: could not read fingerprint of "%s.pub".\n' "$file" >&2
+    log_warn "Could not read fingerprint of \"$file.pub\"."
   elif command -v copy_to_clipboard >/dev/null 2>&1; then
     # copy_to_clipboard reads stdin; on failure it prints the text and a warning itself
     if printf '%s' "$fp" | copy_to_clipboard; then
-      printf '\nFingerprint copied to clipboard: %s\n' "$fp"
+      log_ok "Fingerprint copied to clipboard: $fp"
     fi
   else
-    printf '\nFingerprint: %s (copy_to_clipboard not defined)\n' "$fp"
+    log_info "Fingerprint: $fp (copy_to_clipboard not defined)"
   fi
 }
 
@@ -296,7 +321,7 @@ pick_script() {
 # Custom Command [get_bundle_id]: Get the BundleID of an App
 function get_bundle_id() {
   if [[ "$(detect_os)" != "osx" ]]; then
-    echo -e "${I_ERR}get_bundle_id only works on macOS" >&2
+    log_err "get_bundle_id only works on macOS"
     return 1
   fi
 
@@ -308,14 +333,14 @@ function get_bundle_id() {
     --stdout) mode="stdout" ;;
     --copy) mode="copy" ;;
     -*)
-      echo -e "${I_ERR}Unknown option: ${C_RED}${arg}${C_RESET}" >&2
+      log_err "Unknown option: ${C_RED}${arg}${C_RESET}"
       return 1
       ;;
     *) apps+=("$arg") ;;
     esac
   done
   if [[ ${#apps[@]} -eq 0 ]]; then
-    echo -e "${I_INFO}Usage: get_bundle_id [--stdout | --copy] <App Name | /path/to/App.app> [...]" >&2
+    log_info "Usage: get_bundle_id [--stdout | --copy] <App Name | /path/to/App.app> [...]" >&2
     return 1
   fi
 
@@ -330,14 +355,14 @@ function get_bundle_id() {
     fi
 
     if [[ -z "$id" ]]; then
-      echo -e "${I_ERR}App not found: ${C_RED}${app}${C_RESET}" >&2
+      log_err "App not found: ${C_RED}${app}${C_RESET}"
       rc=1
     elif [[ "$mode" == "copy" ]]; then
       ids+=("$id")
     elif [[ ${#apps[@]} -eq 1 ]]; then
-      echo "$id"
+      echo "$id" # plain value, so it can be captured with $(...)
     else
-      echo -e "${I_OK}${C_WHITE}${app}${C_RESET}: ${C_CYAN}${id}${C_RESET}"
+      log_ok "${C_WHITE}${app}${C_RESET}: ${C_CYAN}${id}${C_RESET}"
     fi
   done
 
@@ -347,7 +372,7 @@ function get_bundle_id() {
       IFS=$'\n'
       printf '%s' "${ids[*]}"
     ) | copy_to_clipboard; then
-      echo -e "${I_OK}Copied to clipboard: ${C_CYAN}${ids[*]}${C_RESET}"
+      log_ok "Copied to clipboard: ${C_CYAN}${ids[*]}${C_RESET}"
     else
       rc=1
     fi

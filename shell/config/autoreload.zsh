@@ -15,7 +15,7 @@ _cfg_autoreload() {
   for f in $_CFG_WATCH; do
     zstat -A mtime +mtime -- $f 2>/dev/null || continue   # follows symlinks
     if (( mtime > _CFG_LOADED_AT )); then
-      print -P "%F{magenta}↻ ${f:t} changed, reloading shell%f"
+      log_ "↻ ${f:t} changed, reloading shell"
       fc -AI                                  # flush history before exec
       [[ -o login ]] && exec zsh -l || exec zsh   # keep login/non-login mode
     fi

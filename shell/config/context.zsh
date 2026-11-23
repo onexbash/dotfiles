@@ -28,9 +28,9 @@ function env_azure() {
 
   case "$tenant" in
     cratos-dev|cratos-prod|eon-dev) ;;
-    *) log_warn "env_azure: unknown tenant '$tenant' (cratos-dev, cratos-prod, eon-dev)" >&2; return 1 ;;
+    *) log_warn "env_azure: unknown tenant '$tenant' (cratos-dev, cratos-prod, eon-dev)"; return 1 ;;
   esac
-  [[ -r "$file" ]] || { log_err "env_azure: $file not found" >&2; return 1; }
+  [[ -r "$file" ]] || { log_err "env_azure: $file not found"; return 1; }
 
   # Clear values from the previous tenant, then load the new ones
   unset AZ_DEVOPS_ORG AZ_DEVOPS_PROJECT AZ_DEVOPS_REPO \

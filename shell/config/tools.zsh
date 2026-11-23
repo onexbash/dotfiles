@@ -128,30 +128,29 @@ function gck_update() {
 gck_add_caller() {
   tty_styles
   local prog="$1" bin
- 
+
   if [ -z "$prog" ]; then
-    echo -ne "${I_ASK}Program or path to add to allowed callers (e.g. git): "
-    read -r prog
+    input_ask prog "Program or path to add to allowed callers (e.g. git):" || return 1
   fi
   prog="${prog/#\~/$HOME}"   # expand leading ~ (not expanded when typed at the prompt)
- 
+
   case "$prog" in
     # Path given: make it absolute and normalized (resolves ./ and ../)
     */*) bin="$(cd "$(dirname "$prog")" 2>/dev/null && pwd)/$(basename "$prog")" ;;
     # Name given: resolve via PATH (zsh: whence -p, bash: type -P)
     *)   bin="$(whence -p "$prog" 2>/dev/null || type -P "$prog" 2>/dev/null)" ;;
   esac
- 
+
   if [ ! -f "$bin" ] || [ ! -x "$bin" ]; then
-    echo -e "${I_ERR}'${prog}' is not an executable program" >&2
+    log_err "'${prog}' is not an executable program"
     return 1
   fi
- 
-  echo -e "${I_INFO}Adding allowed caller: ${C_CYAN}${bin}${C_RESET}"
+
+  log_info "Adding allowed caller: ${C_CYAN}${bin}${C_RESET}"
   if git-credential-keepassxc caller add --uid "$(id -u)" --gid "$(id -g)" "$bin"; then
-    echo -e "${I_OK}Added ${C_CYAN}${bin}${C_RESET}"
+    log_ok "Added ${C_CYAN}${bin}${C_RESET}"
   else
-    echo -e "${I_ERR}Failed to add ${C_CYAN}${bin}${C_RESET}" >&2
+    log_err "Failed to add ${C_CYAN}${bin}${C_RESET}"
     return 1
   fi
 }

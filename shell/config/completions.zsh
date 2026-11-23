@@ -63,7 +63,7 @@ load_completions() {
   for f in "$COMPLETIONS_DIR"/*.zsh(N.r) "$COMPLETIONS_CACHE"/carapace.zsh(N.r); do
     source "$f" || failed+=( "${f:t}" )
   done
-  (( $#failed )) && print -u2 "[completions] failed to load: ${failed[*]}"
+  (( $#failed )) && log_warn "[completions] failed to load: ${failed[*]}"
   return 0
 }
 
@@ -100,16 +100,16 @@ completions-refresh() {
   for name in ${(ko)gen}; do
     cmd=( ${(z)gen[$name]} )
     if (( ! $+commands[$cmd[1]] )); then
-      print -u2 "skip   _$name ($cmd[1] not found)"
+      log_skip "_$name ($cmd[1] not found)"
       continue
     fi
     tmp=$(mktemp "$dir/.$name.XXXXXX") || continue
     first=
     if "${cmd[@]}" >| "$tmp" 2>/dev/null && read -r first < "$tmp" && [[ $first == '#compdef'* ]]; then
-      mv -f "$tmp" "$dir/_$name" && print "ok     _$name"
+      mv -f "$tmp" "$dir/_$name" && log_ok "_$name"
     else
       rm -f "$tmp"
-      print -u2 "failed _$name (no '#compdef' output; may need to be sourced as $name.zsh)"
+      log_err "_$name (no '#compdef' output; may need to be sourced as $name.zsh)"
     fi
   done
 
@@ -118,14 +118,14 @@ completions-refresh() {
     for name in $CARAPACE_COMMANDS; do
       carapace "$name" zsh
     done >| "$COMPLETIONS_CACHE/carapace.zsh"
-    print "ok     carapace (${CARAPACE_COMMANDS[*]})"
+    log_ok "carapace (${CARAPACE_COMMANDS[*]})"
   else
     rm -f "$COMPLETIONS_CACHE/carapace.zsh"
   fi
 
   # Force a full compinit on the next start
   rm -f "$COMPLETIONS_CACHE"/zcompdump-*(N)
-  print "Done. Restart the shell with: exec zsh"
+  log_info "Done. Restart the shell with: exec zsh"
 }
 
 setup_fzftab() {
