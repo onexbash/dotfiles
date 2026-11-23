@@ -30,11 +30,11 @@ function run_autostart_apps() {
   filter="${1:-}"
 
   if [ ! -d "$dir" ]; then
-    echo -e "${I_ERR}Directory not found: ${C_CYAN}${dir}${C_RESET}" >&2
+    log_err "Directory not found: ${C_CYAN}${dir}${C_RESET}"
     return 1
   fi
 
-  [ "$dry_run" -eq 1 ] && echo -e "${I_INFO}Dry run – nothing will be started."
+  [ "$dry_run" -eq 1 ] && log_info "Dry run – nothing will be started."
 
   for f in "$dir"/*.plist; do
     [ -f "$f" ] || continue
@@ -60,14 +60,14 @@ function run_autostart_apps() {
     fi
 
     if [ ${#cmd[@]} -eq 0 ]; then
-      echo -e "${I_SKIP}${name} ${C_BLACK}(no Program/ProgramArguments)${C_RESET}"
+      log_skip "${name} ${C_GRAY}(no Program/ProgramArguments)${C_RESET}"
       continue
     fi
 
     label=$(plutil -extract Label raw -o - "$f" 2>/dev/null) || label="$name"
 
     if [ "$dry_run" -eq 1 ]; then
-      echo -e "${I_INFO}${C_CYAN}${label}${C_RESET} → ${cmd[*]}"
+      log_info "${C_CYAN}${label}${C_RESET} → ${cmd[*]}"
       count=$((count + 1))
       continue
     fi
@@ -75,26 +75,26 @@ function run_autostart_apps() {
     if [ "${prog##*/}" = "open" ]; then
       # "open" returns immediately, so its exit status is reliable
       if "${cmd[@]}" >/dev/null 2>&1; then
-        echo -e "${I_OK}${C_CYAN}${label}${C_RESET}"
+        log_ok "${C_CYAN}${label}${C_RESET}"
         count=$((count + 1))
       else
-        echo -e "${I_ERR}${C_CYAN}${label}${C_RESET} → ${cmd[*]}" >&2
+        log_err "${C_CYAN}${label}${C_RESET} → ${cmd[*]}"
         failed=$((failed + 1))
       fi
     else
       # Other programs may keep running: start detached, no job-control output
       ("${cmd[@]}" >/dev/null 2>&1 &)
-      echo -e "${I_OK}${C_CYAN}${label}${C_RESET} ${C_BLACK}(started in background)${C_RESET}"
+      log_ok "${C_CYAN}${label}${C_RESET} ${C_GRAY}(started in background)${C_RESET}"
       count=$((count + 1))
     fi
   done
 
   if [ "$dry_run" -eq 1 ]; then
-    echo -e "${I_INFO}${count} agent(s) listed."
+    log_info "${count} agent(s) listed."
   elif [ "$failed" -gt 0 ]; then
-    echo -e "${I_WARN}${count} agent(s) started, ${C_RED}${failed} failed${C_RESET}."
+    log_warn "${count} agent(s) started, ${C_RED}${failed} failed${C_RESET}."
   else
-    echo -e "${I_INFO}${count} agent(s) started."
+    log_info "${count} agent(s) started."
   fi
 }
 

@@ -17,8 +17,16 @@
 
 set -uo pipefail
 
+# Log functions (log_*) from the shell utilities
+UTIL_FILE="${XDG_CONFIG_HOME:-$HOME/.config}/shell/util.sh"
+# shellcheck source=/dev/null
+source "$UTIL_FILE" || {
+  echo "ERROR: cannot load $UTIL_FILE" >&2
+  exit 1
+}
+
 die() {
-  echo "ERROR: $*" >&2
+  log_err "$*"
   exit 1
 }
 show_help() { awk 'NR == 1 { next } /^#/ { sub(/^# ?/, ""); print; next } /^$/ { print; next } { exit }' "$0"; }
@@ -72,8 +80,8 @@ LIST_DIR="$(mktemp -d)" || die "Could not create a temp directory"
 trap 'rm -rf "$LIST_DIR"' EXIT
 : >"$REPORT"
 
-echo "Mode:   $([[ "$APPLY" == true ]] && echo "APPLY" || echo "DRY RUN (nothing is changed)")"
-echo "Report: $REPORT"
+log_info "Mode:   $([[ "$APPLY" == true ]] && echo "APPLY" || echo "DRY RUN (nothing is changed)")"
+log_info "Report: $REPORT"
 echo
 
 # Magic bytes of native executables
@@ -94,7 +102,7 @@ total_change=0
 total_ok=0
 
 for root in "${ROOTS[@]}"; do
-  echo "== $root"
+  log_ "== $root"
   echo "== $root" >>"$REPORT"
   n_ok=0
   n_change=0
@@ -128,19 +136,19 @@ for root in "${ROOTS[@]}"; do
     rel="${path#"$root"}"
     rel="${rel#/}"
     line="$(printf '   %4s -> %s   %s' "$have" "$want" "${rel:-.}")"
-    ((n_change < SHOW_MAX)) && echo "$line"
+    ((n_change < SHOW_MAX)) && echo "$line" # change list: plain rows, same as in the report
     echo "$line" >>"$REPORT"
     printf '%s\0' "$path" >>"$LIST_DIR/$want"
     n_change=$((n_change + 1))
   done < <(find "$root" -name .git -prune -o \( -type d -o -type f \) -exec "${STAT[@]}" {} + 2>>"$REPORT")
 
-  ((n_change > SHOW_MAX)) && echo "   ... and $((n_change - SHOW_MAX)) more (see report)"
-  echo "   correct: $n_ok, $([[ "$APPLY" == true ]] && echo "changing" || echo "would change"): $n_change"
+  ((n_change > SHOW_MAX)) && log_info "... and $((n_change - SHOW_MAX)) more (see report)"
+  log_info "correct: $n_ok, $([[ "$APPLY" == true ]] && echo "changing" || echo "would change"): $n_change"
 
   if [[ "$APPLY" == true ]]; then
     for m in 700 600 500 400; do
       [[ -s "$LIST_DIR/$m" ]] || continue
-      xargs -0 chmod "$m" <"$LIST_DIR/$m" || echo "   WARNING: some chmod $m calls failed (see messages above)" >&2
+      xargs -0 chmod "$m" <"$LIST_DIR/$m" || log_warn "some chmod $m calls failed (see messages above)"
     done
   fi
   echo
@@ -149,9 +157,9 @@ for root in "${ROOTS[@]}"; do
   total_ok=$((total_ok + n_ok))
 done
 
-echo "Total: correct $total_ok, $([[ "$APPLY" == true ]] && echo "changed" || echo "would change") $total_change"
+log_ok "Total: correct $total_ok, $([[ "$APPLY" == true ]] && echo "changed" || echo "would change") $total_change"
 if [[ "$APPLY" == true ]]; then
-  echo "Check 'git status' in your repos: git tracks the execute bit."
+  log_info "Check 'git status' in your repos: git tracks the execute bit."
 else
-  echo "DRY RUN finished. Nothing was changed. Re-run with --apply to make the changes."
+  log_info "DRY RUN finished. Nothing was changed. Re-run with --apply to make the changes."
 fi

@@ -6,38 +6,46 @@ set -euo pipefail
 CREWX="$HOME/.config/scripts/crewx"
 SETTINGS="$CREWX/settings.json"
 
+# Log & input functions (log_*, input_*) from the shell utilities
+UTIL_FILE="${XDG_CONFIG_HOME:-$HOME/.config}/shell/util.sh"
+# shellcheck source=/dev/null
+source "$UTIL_FILE" || {
+  echo "crewx: cannot load $UTIL_FILE" >&2
+  exit 1
+}
+
 dir="${1:-$PWD}"
 [ -d "$dir" ] || {
-  echo "crewx: project directory not found: $dir" >&2
+  log_err "crewx: project directory not found: $dir"
   exit 1
 }
 dir="$(cd "$dir" && pwd -P)"
 session="crewx-$(basename "$dir")"
 command -v tuios >/dev/null || {
-  echo "crewx: tuios is not on PATH" >&2
+  log_err "crewx: tuios is not on PATH"
   exit 1
 }
 
 # Agent states, mail notices and Inbox questions all come from the tuios Claude Code hooks.
 integration="$(tuios integration status claude-code 2>/dev/null | head -n1 || true)"
 if [[ "$integration" != *"installed, current"* ]]; then
-  echo "crewx: the tuios Claude Code integration is not installed and current: ${integration:-unknown}" >&2
-  echo "crewx: without it the rail, the Inbox and mail notices don't work. Fix: tuios integration install claude-code" >&2
+  log_warn "crewx: the tuios Claude Code integration is not installed and current: ${integration:-unknown}"
+  log_warn "crewx: without it the rail, the Inbox and mail notices don't work. Fix: tuios integration install claude-code"
   sleep 3
 fi
 
 # Branch guard, settled here in the terminal (no tokens, no waiting agents). The helper still guards every later step.
 guard="$(cd "$dir" && "$CREWX/worktree" check 2>/dev/null)" && rc=0 || rc=$?
 if [ "$rc" = 2 ]; then
-  echo "crewx: $dir is not a git repository; workers need git worktrees. Run 'git init' and commit once first." >&2
+  log_err "crewx: $dir is not a git repository; workers need git worktrees. Run 'git init' and commit once first."
   exit 1
 elif [ "$rc" = 3 ] && [ -t 0 ]; then
-  echo "crewx: the main worktree is on '${guard#not-feature-branch }', not a feat-* branch."
-  read -r -p "crewx: [p]roceed on it, [n]ew feat branch, [q]uit? " choice
+  log_warn "crewx: the main worktree is on '${guard#not-feature-branch }', not a feat-* branch."
+  input_ask choice "crewx: [p]roceed on it, [n]ew feat branch, [q]uit?"
   case "$choice" in
   p*) (cd "$dir" && "$CREWX/worktree" approve-branch) ;;
   n*)
-    read -r -p "crewx: name (feat-<name>): feat-" name
+    input_ask name "crewx: name for the new branch (feat-<name>):"
     (cd "$dir" && "$CREWX/worktree" new-feature "$name")
     ;;
   *) exit 0 ;;
@@ -51,7 +59,7 @@ fi # not a terminal: Jarvis asks through the tuios Inbox instead
 claude_trust() { # $1: resolved project dir; returns 1 on a failed write, 0 otherwise
   [ -n "${CLAUDE_TRUSTED_DIRS:-}" ] || return 0
   command -v jq >/dev/null || {
-    echo "crewx: jq not found, skipping Claude Code auto-trust" >&2
+    log_warn "crewx: jq not found, skipping Claude Code auto-trust"
     return 0
   }
   local project="$1" key common entry t trusted=0 cfg tmp
@@ -93,13 +101,13 @@ claude_trust() { # $1: resolved project dir; returns 1 on a failed write, 0 othe
       rm -f "$tmp"
       return 1
     }
-    echo "crewx: Claude Code now trusts $key (inside CLAUDE_TRUSTED_DIRS)"
+    log_ok "crewx: Claude Code now trusts $key (inside CLAUDE_TRUSTED_DIRS)"
   else
     rm -f "$tmp"
     return 1
   fi
 }
-claude_trust "$dir" || echo "crewx: could not pre-trust $dir for Claude Code; accept the trust dialog in the Jarvis pane" >&2
+claude_trust "$dir" || log_warn "crewx: could not pre-trust $dir for Claude Code; accept the trust dialog in the Jarvis pane"
 
 # Team-internal files live in .crewx/ (kept out of git locally); create only what is missing, never overwrite.
 # docs/DECISIONS.md, the one committed file, is created by Jarvis when the first project decision comes up.
@@ -155,7 +163,7 @@ jarvis="$(win_id Jarvis)"
 tty="$(tuios list-windows -s "$session" --json | jq -r --arg id "$jarvis" '.windows[] | select(.window_id == $id) | .tty')"
 procs="$(ps -t "${tty#/dev/}" -o command= 2>/dev/null || true)" # not piped into grep -q: pipefail + SIGPIPE
 if [[ "$procs" == *"claude --agent jarvis"* ]]; then
-  echo "crewx: Jarvis is already running in $session"
+  log_info "crewx: Jarvis is already running in $session"
 else
   tuios send-text -s "$session" -w "$jarvis" "cd $(printf %q "$dir") && claude --agent jarvis --settings $(printf %q "$SETTINGS")
 " >/dev/null
