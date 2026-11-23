@@ -12,6 +12,9 @@
     "allow_connector_file_uploads": {
       "allowed": false
     },
+    "allow_computer_use": {
+      "allowed": false
+    },
     "enforce_web_search_mcp_isolation": {
       "allowed": false
     }
