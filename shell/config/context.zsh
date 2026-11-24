@@ -21,8 +21,9 @@ function main() {
 
 # Load Azure Environment Variables
 # Usage: env_azure [cratos-dev|cratos-prod|eon-dev|..]
-function env_azure() {
-  local dir="$env_dir/azure" # env_dir inherited from main()
+function env_azure() { 
+  local env_dir="${XENV:-$XDG_CONFIG_HOME/shell/context}"
+  local dir="$env_dir/azure"
   local tenant="${1:-${AZ_TENANT:-cratos-dev}}"
   local file="$dir/$tenant.env"
 
@@ -39,7 +40,6 @@ function env_azure() {
   export AZ_TENANT="$tenant"
   log_info "Azure tenant: $AZ_TENANT (org: ${AZ_DEVOPS_ORG:-none}, config: $file)"
 }
-
 
 # Call Main Function (shell startup)
 main >/dev/null

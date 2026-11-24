@@ -1,6 +1,6 @@
 # -- COMPLETIONS -- #
 # ~/.config/shell/completions.zsh (sourced by ~/.zshrc, zsh only)
-#
+# 
 # ${XDG_CONFIG_HOME:-$HOME/.config}/shell/completions
 #   _<name>      zsh completion function, autoloaded on demand via fpath (preferred)
 #   <name>.zsh   sourced at startup, only for scripts that can't live in fpath (npm, pnpm)
@@ -128,24 +128,22 @@ completions-refresh() {
   log_info "Done. Restart the shell with: exec zsh"
 }
 
-setup_fzftab() {
-  local plugin="$HOMEBREW_PREFIX/opt/fzf-tab/share/fzf-tab/fzf-tab.zsh"
-  (( $+commands[fzf] )) && [[ -r $plugin ]] || return 0
+# Setup ZSH-Autosuggestions
+setup_autosuggestions() {
+  local plugin="$HOMEBREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
+  [[ -r $plugin ]] || return 0
 
-  # ---- zsh completion styles fzf-tab relies on ----
-  zstyle ':completion:*' menu no                          # fzf-tab replaces the menu
-  zstyle ':completion:*:git-checkout:*' sort false        # keep git's own order
-  zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}   # colored files, if LS_COLORS is set
+  # Suggest from history first; if nothing matches, from what Tab would complete.
+  typeset -ga ZSH_AUTOSUGGEST_STRATEGY=( history completion )
+  typeset -g  ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20    # no suggestions for long command lines
+  # typeset -g ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8' # change if suggestions are hard to see
 
-  # ---- fzf-tab ----
-  zstyle ':fzf-tab:*' switch-group '<' '>'                # switch completion groups
-  zstyle ':fzf-tab:*' fzf-flags ${(Q)${(z)FZF_THEME_OPTS}} --height=50% --bind=tab:accept
-  zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath'
-
+  # Load after compinit: it wraps the widgets that exist at load time.
+  # (zsh-syntax-highlighting, if used, must still be sourced after this file.)
   source "$plugin"
 }
 
 setup_compinit
 load_completions
 runtime_completions
-setup_fzftab
+setup_autosuggestions  # gray inline suggestions, accept with → or End

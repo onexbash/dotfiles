@@ -59,6 +59,8 @@ export PNPM_HOME="${XDG_DATA_HOME}/pnpm"
 
 # Azure
 export AZ_TENANT="cratos-prod"
+export AZ_EXTENSIONS=("azure-devops" "resource-graph" "ssh" "application-insights") # List of Azure CLI Extensions to install
+export AZURE_DEVOPS_CACHE_DIR="${XDG_CACHE_HOME}/azure-devops"
 
 # Carapace
 export CARAPACE_BRIDGES="zsh,bash"

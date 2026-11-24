@@ -384,7 +384,7 @@ function get_bundle_id() {
 # -- AZURE CLI -- #
 
 # Authenticate Azure CLI
-function azlogin() {
+function az-login() {
   command -v az >/dev/null 2>&1 || { log_err "Azure CLI (az) not found in PATH."; return 1; }
 
   local -a auth=()
@@ -410,8 +410,8 @@ function azlogin() {
 
 # Activate Entra Roles (PIM)
 # Usage: azpim [-d <0-8>] [-j <justification>] 
-function azpim() {
-  local duration="PT8H" justification="Required for my work in the IAM Team" dry=0
+function az-pim() {
+  local duration="PT8H" justification="Activated via azpim (Azure CLI)" dry=0
   local acct tenant utype uid now just body resp code msg eligible active
   local rid scope name status ok=0 pending=0 skip=0 fail=0
   local graph="https://graph.microsoft.com/v1.0/roleManagement/directory"
@@ -439,12 +439,13 @@ function azpim() {
   command -v az >/dev/null 2>&1 || { log_err "Azure CLI (az) not found in PATH."; return 1; }
   [[ -n "${AZ_TENANT_ID:-}" ]] || { log_err "azpim: AZ_TENANT_ID not set - run env_azure <tenant> first."; return 1; }
 
-  acct=$(az account show --query "[tenantId, user.type]" --output tsv 2>/dev/null)
-  tenant=${acct%%$'\t'*}
-  utype=${acct##*$'\t'}
+  # join() returns one string "tenantId|userType" - independent of how az formats lists in tsv
+  acct=$(az account show --query "join('|', [tenantId, user.type])" --output tsv 2>/dev/null)
+  tenant=${acct%%|*}
+  utype=${acct##*|}
   if [[ "$tenant" != "$AZ_TENANT_ID" || "$utype" != "user" ]]; then
-    log_warn "azpim: Azure CLI is not signed in as a user in $AZ_TENANT - running azlogin --user"
-    azlogin --user || return $?
+    log_warn "azpim: Azure CLI is not signed in as a user in $AZ_TENANT - running az-login --user"
+    az-login --user || return $?
   fi
 
   uid=$(az ad signed-in-user show --query id --output tsv 2>/dev/null) && [[ -n "$uid" ]] ||
@@ -504,11 +505,28 @@ function azpim() {
   (( dry )) && return 0
   log_info "azpim: activated $ok, pending approval $pending, already active $skip, failed $fail"
   if (( fail )); then
-    log_warn "azpim: policy failures (MFA, justification, ticket, max duration) - try azlogin --user with MFA, -j <text> or a shorter -d"
+    log_warn "azpim: policy failures (MFA, justification, ticket, max duration) - try az-login --user with MFA, -j <text> or a shorter -d"
     return 1
   fi
 }
+# Installs missing extensions from $AZ_EXTENSIONS. 
+# Usage: az-extensions [--upgrade]
+function az-extensions() {
+  command -v az >/dev/null 2>&1 || { log_err "Azure CLI (az) not found in PATH."; return 1; }
+  local -a upgrade=()
+  [[ "${1:-}" == "--upgrade" ]] && upgrade=(--upgrade)
 
+  local installed ext
+  installed=$(az extension list --query "[].name" -o tsv 2>/dev/null)
+  for ext in "${AZ_EXTENSIONS[@]}"; do
+    if [[ -z "${upgrade[*]}" ]] && grep -qx -- "$ext" <<<"$installed"; then
+      continue
+    fi
+    log_info "Azure CLI extension: $ext"
+    az extension add --name "$ext" "${upgrade[@]}" --only-show-errors ||
+      log_err "Could not install extension $ext"
+  done
+}
 
 # -- PODMAN -- #
 function pd-rm() {
