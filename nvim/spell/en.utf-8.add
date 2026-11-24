@@ -463,3 +463,12 @@ renderer
 ffmpeg
 LLMs
 OpenJDK
+azpim
+oklch
+rgb
+hsl
+fg
+hsla
+rgba
+bg
+tmTheme

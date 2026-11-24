@@ -11,11 +11,11 @@ end
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
 
--- Load Modules
-require("core.globals")
-require("core.keymaps")
-require("core.options")
-require("core.autocmd")
-require("core.filetypes")
--- Load plugins
+-- Load Utils -> `/lua/utils/init.lua`
+require("utils")
+
+-- Load Modules -> `/lua/core/init.lua`
+require("core")
+
+-- Load plugins -> `lua/plugins/init.lua`
 require("plugins")
