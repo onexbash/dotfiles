@@ -408,6 +408,108 @@ function azlogin() {
   log_ok "Logged in to $AZ_TENANT - subscription: $(az account show --query name --output tsv 2>/dev/null)"
 }
 
+# Activate Entra Roles (PIM)
+# Usage: azpim [-d <0-8>] [-j <justification>] 
+function azpim() {
+  local duration="PT8H" justification="Required for my work in the IAM Team" dry=0
+  local acct tenant utype uid now just body resp code msg eligible active
+  local rid scope name status ok=0 pending=0 skip=0 fail=0
+  local graph="https://graph.microsoft.com/v1.0/roleManagement/directory"
+
+  # -- Arguments -- #
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      -d|--duration)
+        [[ -n "${2:-}" ]] || { log_err "azpim: $1 needs a value"; return 1; }
+        duration="$2"; shift 2 ;;
+      -j|--justification)
+        [[ -n "${2:-}" ]] || { log_err "azpim: $1 needs a value"; return 1; }
+        justification="$2"; shift 2 ;;
+      -n|--dry-run) dry=1; shift ;;
+      -h|--help)
+        printf '%s\n' "Usage: azpim [-d|--duration <hours|ISO8601>] [-j|--justification <text>] [-n|--dry-run]"
+        return 0 ;;
+      *) log_err "azpim: unknown option '$1' (see azpim --help)"; return 1 ;;
+    esac
+  done
+  [[ "$duration" =~ ^[0-9]+$ ]] && duration="PT${duration}H"
+  [[ "$duration" == P* ]] || { log_err "azpim: invalid duration '$duration' (e.g. 4 or PT4H or PT30M)"; return 1; }
+
+  # -- Login: must be a *user* in the current context tenant (service principals cannot self-activate) -- #
+  command -v az >/dev/null 2>&1 || { log_err "Azure CLI (az) not found in PATH."; return 1; }
+  [[ -n "${AZ_TENANT_ID:-}" ]] || { log_err "azpim: AZ_TENANT_ID not set - run env_azure <tenant> first."; return 1; }
+
+  acct=$(az account show --query "[tenantId, user.type]" --output tsv 2>/dev/null)
+  tenant=${acct%%$'\t'*}
+  utype=${acct##*$'\t'}
+  if [[ "$tenant" != "$AZ_TENANT_ID" || "$utype" != "user" ]]; then
+    log_warn "azpim: Azure CLI is not signed in as a user in $AZ_TENANT - running azlogin --user"
+    azlogin --user || return $?
+  fi
+
+  uid=$(az ad signed-in-user show --query id --output tsv 2>/dev/null) && [[ -n "$uid" ]] ||
+    { log_err "azpim: could not resolve the signed-in user."; return 1; }
+
+  # -- Eligible + already active roles (Graph PIM API) -- #
+  eligible=$(az rest --method GET \
+    --url "$graph/roleEligibilityScheduleInstances/filterByCurrentUser(on='principal')?\$expand=roleDefinition" \
+    --query "value[].[roleDefinitionId, directoryScopeId, roleDefinition.displayName]" --output tsv) ||
+    { log_err "azpim: could not list eligible role assignments."; return 1; }
+
+  [[ -n "$eligible" ]] || { log_info "azpim: no eligible Entra roles found for $uid in $AZ_TENANT."; return 0; }
+
+  active=$(az rest --method GET \
+    --url "$graph/roleAssignmentScheduleInstances/filterByCurrentUser(on='principal')" \
+    --query "value[].[roleDefinitionId, directoryScopeId]" --output tsv) ||
+    { log_err "azpim: could not list active role assignments."; return 1; }
+
+  # -- Activate -- #
+  now=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+  just=${justification//\\/\\\\}   # JSON-escape backslashes
+  just=${just//\"/\\\"}            # JSON-escape double quotes
+
+  log_info "azpim: activating eligible roles in $AZ_TENANT for $duration"
+  while IFS=$'\t' read -r rid scope name <&3; do
+    [[ -n "$rid" ]] || continue
+
+    if [[ $'\n'"$active"$'\n' == *$'\n'"$rid"$'\t'"$scope"$'\n'* ]]; then
+      log_info "already active : $name ($scope)"; skip=$((skip + 1)); continue
+    fi
+    if (( dry )); then
+      log_info "[dry-run]      : would activate $name ($scope) for $duration"; continue
+    fi
+
+    body=$(printf '{"action":"selfActivate","principalId":"%s","roleDefinitionId":"%s","directoryScopeId":"%s","justification":"%s","scheduleInfo":{"startDateTime":"%s","expiration":{"type":"AfterDuration","duration":"%s"}}}' \
+      "$uid" "$rid" "$scope" "$just" "$now" "$duration")
+
+    if resp=$(az rest --method POST --url "$graph/roleAssignmentScheduleRequests" \
+        --headers "Content-Type=application/json" --body "$body" \
+        --query status --output tsv 2>&1); then
+      status=${resp##*$'\n'}
+      case "$status" in
+        PendingApproval) log_warn "pending approval: $name ($scope)"; pending=$((pending + 1)) ;;
+        *)               log_ok   "activated      : $name ($scope) [$status]"; ok=$((ok + 1)) ;;
+      esac
+    else
+      code=$(printf '%s' "$resp" | sed -n 's/.*"code":[[:space:]]*"\([^"]*\)".*/\1/p' | head -n 1)
+      msg=$(printf '%s' "$resp" | sed -n 's/.*"message":[[:space:]]*"\([^"]*\)".*/\1/p' | head -n 1)
+      if [[ "$code" == "RoleAssignmentExists" ]]; then
+        log_info "already active : $name ($scope)"; skip=$((skip + 1))
+      else
+        log_err "failed         : $name ($scope) - ${code:-error}: ${msg:-$resp}"; fail=$((fail + 1))
+      fi
+    fi
+  done 3<<<"$eligible"
+
+  (( dry )) && return 0
+  log_info "azpim: activated $ok, pending approval $pending, already active $skip, failed $fail"
+  if (( fail )); then
+    log_warn "azpim: policy failures (MFA, justification, ticket, max duration) - try azlogin --user with MFA, -j <text> or a shorter -d"
+    return 1
+  fi
+}
+
+
 # -- PODMAN -- #
 function pd-rm() {
   podman rmi --all --force

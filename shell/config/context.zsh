@@ -4,7 +4,7 @@
 
 # This File is used to load Context Specific Environment Configs, like Azure CLI Variables that differ between Tenants.
 # Basically everything that has to be set per Environment.
-# Configs: ~/.config/env
+# Configs: ~/.config/shell/context
 #
 # Shell startup:  loads the tenant from $AZ_TENANT  (default: cratos-dev).
 # Switch later :  env_azure cratos-prod             (argument wins over $AZ_TENANT)
@@ -12,17 +12,17 @@
 
 # -- Main Function -- #
 function main() {
-  local env_dir="${XENV:-${XDG_CONFIG_HOME:-$HOME/.config}/env}"
-  env_azure "$@"                 # env_azure sees env_dir
+  local env_dir="${XENV:-$XDG_CONFIG_HOME/shell/context}"
+  env_azure "$@"
 }
 
 # -- Azure -- #
-# Configs: ~/.config/env/azure/<tenant>.env
+# Configs: ~/.config/shell/context/azure/<tenant>.env
 
 # Load Azure Environment Variables
 # Usage: env_azure [cratos-dev|cratos-prod|eon-dev|..]
 function env_azure() {
-  local dir="${env_dir:-${XENV:-${XDG_CONFIG_HOME:-$HOME/.config}/env}}/azure" # env_dir inherited from main()
+  local dir="$env_dir/azure" # env_dir inherited from main()
   local tenant="${1:-${AZ_TENANT:-cratos-dev}}"
   local file="$dir/$tenant.env"
 
