@@ -1,0 +1,15 @@
+CRATOS - Templates
+BusinessCentralKivo
+ENVYZE - Hybit
+CRATOS - Sandbox
+ENVYZE - Testproject
+CratosBenchflow
+CratosAIServer
+CRATOS - Internal Services
+CratosWebtools
+CratosJune5Automation
+ENVYZE - Agile Testproject
+Envyze Business Development
+CRATOS - AI Services
+IAC Test Project
+CRATOS - Infrastructure as Code
