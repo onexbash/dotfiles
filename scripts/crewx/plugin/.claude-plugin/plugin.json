@@ -1,0 +1,5 @@
+{
+  "name": "crewx",
+  "version": "2.0.0",
+  "description": "crewx: one lead (Jarvis) takes a request from prompt to a verified, merged result. Implementers, a tester and a scribe run in parallel; a deterministic gate and one state file per session keep it honest. Loaded only by ~/.config/scripts/crewx/crewx via --plugin-dir."
+}

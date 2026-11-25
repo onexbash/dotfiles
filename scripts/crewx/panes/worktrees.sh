@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
-# crewx Workers pane: live `wt list` of the project's worktrees (ahead/behind, uncommitted changes).cd "${1:-$PWD}" || exit 1
+# crewx Worktrees pane: live `wt list` of the project's worktrees (ahead/behind, uncommitted changes).
 # shellcheck source=/dev/null
-source "${XDG_CONFIG_HOME:-$HOME/.config}/shell/util.sh" || exit 1
+source "${XDG_CONFIG_HOME:-$HOME/.config}/shell/util.sh" 2>/dev/null || log_info() { echo "$*"; }
+cd "${1:-$PWD}" || exit 1
+printf '\e]2;crewx worktrees\a'
 last=""
 while :; do
   out="$(wt list 2>&1 || git worktree list 2>&1)"

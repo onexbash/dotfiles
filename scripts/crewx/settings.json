@@ -3,16 +3,20 @@
     "defaultMode": "auto",
     "allow": [
       "Bash(~/.config/scripts/crewx/worktree *)",
-      "Bash(git rebase:*)"
+      "Bash(~/.config/scripts/crewx/crewx gate*)",
+      "Bash(git rebase:*)",
+      "Bash(tuios set-agent-meta *)",
+      "Bash(tuios send-agent-message *)",
+      "Bash(tuios ask-human *)",
+      "Bash(tuios read-agent-messages *)"
     ],
-    "deny": ["Bash(git switch:*)", "Bash(git checkout:*)", "Bash(git reset --hard:*)", "Bash(rm -rf:*)", "Bash(rm -fr:*)"]
-  },
-  "hooks": {
-    "SubagentStart": [
-      { "hooks": [{ "type": "command", "command": "$HOME/.config/scripts/crewx/log-event.sh", "timeout": 5 }] }
-    ],
-    "SubagentStop": [
-      { "hooks": [{ "type": "command", "command": "$HOME/.config/scripts/crewx/log-event.sh", "timeout": 5 }] }
+    "deny": [
+      "Bash(git switch:*)",
+      "Bash(git checkout:*)",
+      "Bash(git reset --hard:*)",
+      "Bash(git push:*)",
+      "Bash(rm -rf:*)",
+      "Bash(rm -fr:*)"
     ]
   }
 }

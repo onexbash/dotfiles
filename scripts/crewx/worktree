@@ -19,11 +19,15 @@ EOF
 
 die() { echo "crewx worktree: $1" >&2; exit "${2:-1}"; }
 
-main="$(git worktree list --porcelain 2>/dev/null | sed -n '1s/^worktree //p')" || true
+AGENTS="asta|yuno|yami|noelle|mimosa" # crewx agents that get a worktree: implementers, tester, scribe
+
+# "main" is the lead's worktree: the project dir, or a goal worktree made by `crewx new`. Its branch is F.
+main="$(git rev-parse --show-toplevel 2>/dev/null)" || true
 [ -n "$main" ] || { echo "not-a-git-repo"; exit 2; }
 F="$(git -C "$main" symbolic-ref --quiet --short HEAD)" || { echo "not-feature-branch (detached HEAD)"; exit 3; }
+[[ "$F" =~ -($AGENTS)(-[0-9]+)?$ ]] && die "run this from the lead's worktree, not from the agent worktree $main"
 
-log() { [ -d "$main/.crewx" ] && printf '%s  %s\n' "$(date +%T)" "$*" >> "$main/.crewx/activity.log"; return 0; }
+log() { [ -d "$main/.crewx" ] && printf '%s  %s\n' "$(date +%T)" "$*" >> "$main/.crewx/worktree.log"; return 0; }
 guard() {
   [[ "$F" == feat-* ]] && return 0
   [ "$(cat "$main/.crewx/branch-approved" 2>/dev/null)" = "$F" ] && return 0
@@ -36,7 +40,7 @@ wt_path() { # worktree path of branch $1, empty if none
 clean() { [ -z "$(git -C "$1" status --porcelain)" ]; }
 behind() { ! git -C "$main" merge-base --is-ancestor "$F" "$1"; }
 worker_branch() { # validates the worker name, prints <F>-<worker>
-  [[ "$1" =~ ^(asta|yuno|yami)(-[0-9]+)?$ ]] || die "unknown worker '$1' (asta, yuno, yami, optionally -<n>)"
+  [[ "$1" =~ ^($AGENTS)(-[0-9]+)?$ ]] || die "unknown agent '$1' (${AGENTS//|/, }, optionally -<n>)"
   echo "$F-$1"
 }
 sync_one() {
@@ -85,7 +89,7 @@ case "${1:-}" in
   sync)
     guard
     git -C "$main" for-each-ref --format='%(refname:short)' refs/heads \
-      | grep -E "^$(sed 's/[.[\*^$/]/\\&/g' <<<"$F")-(asta|yuno|yami)(-[0-9]+)?$" \
+      | grep -E "^$(sed 's/[.[\*^$/]/\\&/g' <<<"$F")-($AGENTS)(-[0-9]+)?$" \
       | while read -r b; do sync_one "$b"; done || true ;; # no worker branches yet is fine
 
   merge)
