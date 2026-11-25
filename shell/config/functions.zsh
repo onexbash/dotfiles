@@ -103,7 +103,7 @@ pass_env() {
 }
 # Import SSH Keys from Proton Pass to the ssh-agent
 pass_ssh() {
-  local vault=${1:-"SSH Keys"}
+  local vault=${1:-"Development"}
 
   pass_auth || return
 

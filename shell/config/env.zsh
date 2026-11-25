@@ -1,15 +1,16 @@
 # --            env.zsh            -- #
 # --       sourced by: .zshenv     -- #
 # --                               -- #
-#
-# -- ENVIRONMENT VARIABLES   -- #
-# XDG base dirs
+
+# --   XDG BASE DIRECTORIES   -- #
 export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
 export XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"
 export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
 export XDG_STATE_HOME="${XDG_STATE_HOME:-$HOME/.local/state}"
 export XDG_BIN_DIR="${HOME}/.local/bin"
-# Personal Directory Shortcuts
+
+# --   CUSTOM   -- #
+# Directory Shortcuts
 export XDEV="$HOME/dev" # Dev Directory
 export XCONFIG="$XDG_CONFIG_HOME" # Config Directory
 export XENV="$XDG_CONFIG_HOME/shell/context" # Context Directory (Environment Specific Configs)
@@ -17,22 +18,27 @@ export XCLOUD="$HOME/Library/CloudStorage/ProtonDrive-fabian@schlegel.one-folder
 export XLOGS="$XDG_STATE_HOME/logs" # Logs Directory
 export XTEMP="/tmp" # Temp Directory
 export XSHELL="zsh" # Preferred Shell
-# Preferred Package Managers
+
+# Package Managers
 export XPKG_SYSTEM="brew"
 export XPKG_DEVTOOLS="mise"
 export XPKG_PYTHON="uv"
 export XPKG_NODE="pnpm"
+
 # Scripts
 export XSCRIPT_DIR="$XDG_CONFIG_HOME/scripts" # Scripts Directory
 export XSCRIPT_DEBUG=0
 
-# Custom # TODO: check if these can be removed in favor of XSCRIPT_.. above
-export TOGGLE_SCRIPT_DEBUG_MODE=0 # enable/disable debugging mode for scripts that load the onexbash helper-script
-export TOGGLE_PATH_HELPER=0       # enable/disable MacOS path-helper utility
-
-# -- TOOLS ENVIRONMENT -- #
-# ZSH
+# --   TOOLS   -- #
+# Bash / Zsh
+export SHELL_NAME=${ZSH_VERSION:+zsh}${BASH_VERSION:+bash}
+export SHELL_CONFIG_DIR="${XDG_CONFIG_HOME}/shell"
 export ZDOTDIR="${ZDOTDIR:-$HOME}"
+export BASHDIR="${BASHDIR:-$HOME}"
+
+# Powershell
+export POWERSHELL_TELEMETRY_OPTOUT=1
+export POWERSHELL_UPDATECHECK="Off"
 
 # Mise
 export MISE_CONFIG_DIR="${XDG_CONFIG_HOME}/mise"
@@ -40,7 +46,7 @@ export MISE_STATE_DIR="${XDG_STATE_HOME}/mise"
 export MISE_CACHE_DIR="${XDG_CACHE_HOME}/mise"
 export MISE_DATA_DIR="${XDG_DATA_HOME}/mise"
 
-# ONESETUP
+# Onesetup
 export ONESETUP_CONFIG="${XDG_CONFIG_HOME}/onesetup/config.yml"
 export ONESETUP_REPO="https://github.com/onexbash/onesetup.git"
 export ONESETUP_SSH_KEY="~/.ssh/id_github_onexbash"
@@ -51,10 +57,10 @@ export ONESETUP_VAULT_PASS="pass://Development/Ansible Vault - onesetup/Secret"
 export XDG_BIN_HOME="${XDG_BIN_DIR}"
 export UV_TOOL_BIN_DIR="${XDG_BIN_DIR}"
 
-# NPM
+# npm
 export NPM_CONFIG_USERCONFIG="${XDG_CONFIG_HOME}/npm"
 
-# PNPM
+# pnpm
 export PNPM_HOME="${XDG_DATA_HOME}/pnpm"
 
 # Azure
@@ -63,7 +69,7 @@ export AZ_EXTENSIONS=("azure-devops" "resource-graph" "ssh" "application-insight
 export AZURE_DEVOPS_CACHE_DIR="${XDG_CACHE_HOME}/azure-devops"
 
 # Carapace
-export CARAPACE_BRIDGES="zsh,bash"
+export CARAPACE_BRIDGES="zsh,bash" # TODO: check if still used
 
 # Proton Pass
 export PROTON_PASS_SESSION_DIR="${XDG_DATA_HOME}/proton-pass-cli"
