@@ -2,6 +2,10 @@
 tiled = true
 daemon = true
 
+[daemon]
+keep_awake = "agents"  # crewx runs unattended: don't let the Mac sleep while an agent works (display may still lock)
+resume_agents = "auto" # after a daemon restart, resume each pane's conversation; crewx re-injects its state file
+
 [appearance]
 theme = "onextheme"
 glyphs = "default"      # default | unicode | heavy | ascii | <custom set>
@@ -33,17 +37,50 @@ suppress_focused = true
 [notifications.agent.states]
 needs_input = true
 errored = true
-done = true        # set false if "done" from the workers gets noisy
+done = false       # crewx: the lead ends turns while its subagents still work, so "done" would alert too early.
+# The real finish arrives as the mail "crewx: done – <goal>" (below). Set true for plain sessions.
 
 [notifications.mail]
-between_agents = false # only alert on mail addressed to you
+between_agents = false # only alert on mail addressed to you (crewx questions and "done" mails are)
+
+# --  Phone  -- #
+# Push Inbox items to the phone, also with no client attached. Nothing is sent until a provider is set.
+# After a change: run `tuios config apply` from a terminal OUTSIDE tuios, then `tuios notify test`.
+[notify]
+quiet_active_seconds = 120 # hold a push while you are typing at a client
+# web_url = "https://..."  # only if you run tuios-web: the push then links to the Inbox item
+
+[notify.triggers]
+approval = true  # permission prompts held in the Inbox
+plan = true      # plans waiting for approval
+question = true  # an agent waiting on a question in its pane
+ask = true       # tuios ask-human (crewx: "use my defaults?")
+mail = true      # mail to you (crewx: the question round, "done", gate give-ups); default is false
+errored = true   # a pane that errored; default is false
+finished = false # every finished turn: too noisy with crewx
+
+# Pick one provider. TODO: Install the ntfy app, subscribe to a long random topic, keep the topic secret.
+# [notify.ntfy]
+# url = "https://ntfy.sh/<long-random-topic>"
+# token_env = "NTFY_TOKEN"   # only for a protected topic or your own server; read from the daemon's environment
+#
+# [notify.pushover]
+# user_env = "PUSHOVER_USER"
+# token_env = "PUSHOVER_TOKEN"
 
 # --  Agents  -- #
+[agents]
+silent_after = "20m" # a hooked agent with no report for this long shows as "no report"; crewx gate runs take up to 10 min
+
 # Hold Claude Code permission prompts in the Inbox (answer with keys, risky ones need a second press).
 # Needs the waiting hook: run `tuios integration install claude-code` after changing this.
 [agents.approvals]
 enabled = ["claude-code"]
+hold_seconds = 300        # max; default 120. Longer hold = time to answer from the phone before the prompt falls back to the pane
 
+[agents.permissions]
+mode = "strict"
+grants = ["read", "write", "fan", "respond", "admin"]
 
 # --  Keybindings  -- #
 # Unbind defaults
@@ -93,6 +130,11 @@ key = "alt+c"
 type = "shell"
 command = "~/.config/tuios/scripts/layout_coding.sh"
 description = "Load Layout: coding"
+[[keybindings.command]]
+key = "alt+b"
+type = "popup"
+command = '~/.config/scripts/crewx/crewx status; printf "\nEnter to close"; read -r _'
+description = "crewx: all sessions"
 
 [plugins]
 enabled = ["worktrunk"]
