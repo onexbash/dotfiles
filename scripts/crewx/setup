@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-# crewx 1 entry point, kept so old aliases keep working. Use `crewx start` instead.
-exec "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/crewx" start "$@"

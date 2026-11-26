@@ -1,4 +1,5 @@
-worktree-path = ".worktrees/{{ branch | sanitize }}"
+# Outside every repo, so Claude Code in a worktree doesn't also load the main checkout's CLAUDE.md.
+worktree-path = "~/dev/worktrees/{{ repo }}/{{ branch | sanitize }}"
 
 [commit.generation]
 command = "MAX_THINKING_TOKENS=0 claude -p --no-session-persistence --model=haiku --tools='' --safe-mode --setting-sources='user' --system-prompt=''"
