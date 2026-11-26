@@ -27,4 +27,5 @@ alias crewx="~/.config/scripts/crewx"
 alias gping='gping --color="#a6e3a1" --clear --horizontal-margin="20" --vertical-margin="20"'
 alias ping="ping -c 2"
 alias ssh-keygen="x_ssh_keygen"
+alias claude="claude --dangerously-skip-permissions"
 # alias claude="claude_trust"
